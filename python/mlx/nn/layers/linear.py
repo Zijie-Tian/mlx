@@ -74,6 +74,94 @@ class Linear(Module):
         """Return a :obj:`QuantizedLinear` layer that approximates this layer."""
         return QuantizedLinear.from_linear(self, group_size, bits)
 
+class HermesLinear(Module):
+    r"""Applies an affine transformation to the input.
+
+    Concretely:
+
+    .. math::
+
+        y = x W^\top + b
+
+    where:
+    where :math:`W` has shape ``[output_dims, input_dims]`` and :math:`b` has shape ``[output_dims]``.
+
+    The values are initialized from the uniform distribution :math:`\mathcal{U}(-{k}, {k})`,
+    where :math:`k = \frac{1}{\sqrt{D_i}}` and :math:`D_i` is equal to ``input_dims``.
+
+    Args:
+        input_dims (int): The dimensionality of the input features
+        output_dims (int): The dimensionality of the output features
+        bias (bool, optional): If set to ``False`` then the layer will
+          not use a bias. Default is ``True``.
+    """
+
+    def __init__(self, input_dims: int, output_dims: int, bias: bool = True) -> None:
+        super().__init__()
+        scale = math.sqrt(1.0 / input_dims)
+        self.weight = mx.random.uniform(
+            low=-scale,
+            high=scale,
+            shape=(output_dims, input_dims),
+        )
+        if bias:
+            self.bias = mx.random.uniform(
+                low=-scale,
+                high=scale,
+                shape=(output_dims,),
+            )
+        self.first_call = True
+        self.w_up = None
+        self.w_down = None
+        self.bias_up = None
+        self.bias_down = None
+
+    def _extra_repr(self) -> str:
+        return f"input_dims={self.weight.shape[1]}, output_dims={self.weight.shape[0]}, bias={'bias' in self}"
+
+    def __call__(self, x: mx.array) -> mx.array:
+        if self.first_call:
+            self.weight = mx.array(self.weight, dtype=mx.bfloat16)
+            # Split the array vertically
+            self.w_up, self.w_down = mx.split(self.weight, 2, axis=0)
+            if "bias" in self:
+                self.bias = mx.array(self.bias, dtype=mx.bfloat16)
+                # Split the array vertically
+                self.bias_up, self.bias_down = mx.split(self.bias, 2, axis=0)
+
+            #! Call the function once to compile it
+            self.first_call = False
+        
+        assert self.w_up is not None
+        assert self.w_down is not None
+
+        def shard_gemv_with_bias(w_up, w_down, bias_up, bias_down, x):
+            y_up = mx.addmm(bias_up, x, w_up.T, stream=mx.cpu)
+            y_down = mx.addmm(bias_down, x, w_down.T, stream=mx.gpu)
+            y = mx.concatenate([y_up, y_down], axis=0)
+            return y
+        
+        def shard_gemv_wo_bias(w_up, w_down, x):
+            y_up = mx.matmul(x, w_up.T, stream=mx.cpu)
+            y_down = mx.matmul(x, w_down.T, stream=mx.gpu)
+            y = mx.concatenate([y_up, y_down], axis=0)
+            return y
+        
+        compile_with_bias_fn = mx.compile(shard_gemv_with_bias)
+        compile_wo_bias_fn = mx.compile(shard_gemv_wo_bias)
+
+        if "bias" not in self:
+            y = compile_wo_bias_fn(self.w_up, self.w_down, x)
+        else:
+            y = compile_with_bias_fn(self.w_up, self.w_down, self.bias_up, self.bias_down, x)
+
+        return y
+
+
+    def to_quantized(self, group_size: int = 64, bits: int = 4):
+        """Return a :obj:`QuantizedLinear` layer that approximates this layer."""
+        return QuantizedLinear.from_linear(self, group_size, bits)
+
 
 class Bilinear(Module):
     r"""Applies a bilinear transformation to the inputs.

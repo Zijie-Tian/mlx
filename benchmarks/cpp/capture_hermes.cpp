@@ -8,6 +8,8 @@ namespace mx = mlx::core;
 
 int main() {
     // 构造计算图（在lambda内部定义）
+    mx::metal::start_capture("mlx_trace.gputrace");
+
     auto compute_graph = [](const std::vector<mx::array>& inputs) {
         mx::array a_up = inputs[0];
         mx::array a_down = inputs[1];
@@ -27,21 +29,21 @@ int main() {
     mx::array a_up = mx::random::uniform({M / 2, K});
     mx::array a_down = mx::random::uniform({M / 2, K});
     mx::array b = mx::random::uniform({K, N});
-    std::vector<mx::array> inputs = {a_up, a_down, b};
+
+    //> Just Hack.
+    mx::array a_up_sub = mx::random::uniform({M / 4, K});
+    std::vector<mx::array> inputs = {a_up_sub, a_down, b};
 
     mx::array a = mx::concatenate({a_up, a_down}, 0);
-    mx::array c = mx::matmul(a, b);
     // 编译计算图
     auto compiled_fn = mx::compile(compute_graph);
-
-    TIMEM("matmul_cpu", mx::matmul, a, b, mx::Device::cpu);
-    TIMEM("matmul_gpu", mx::matmul, a, b, mx::Device::gpu);
     
     // 执行编译后的函数
+
+    mx::array c_ref = mx::matmul(a, b);
+
     auto compiled_result = compiled_fn(inputs)[0];
-    // std::cout << "Reference result:\n" << c << std::endl;
-    // std::cout << "Compiled result:\n" << compiled_result << std::endl;
-    // 将vector转换为可输出的字符串格式
+
     std::stringstream ss;
     ss << "[";
     for (size_t i = 0; i < compiled_result.shape().size(); ++i) {
@@ -53,8 +55,7 @@ int main() {
     ss << "]";
     std::cout << "Compiled result shape: " << ss.str() << std::endl;
 
-    // 性能测试（需要调整TIME宏调用方式）
-    TIMEM("compile", compiled_fn, inputs);
+    mx::metal::stop_capture();
 
     return 0;
 }

@@ -62,7 +62,7 @@ from mlx.nn.layers.convolution_transpose import (
 )
 from mlx.nn.layers.dropout import Dropout, Dropout2d, Dropout3d
 from mlx.nn.layers.embedding import Embedding
-from mlx.nn.layers.linear import Bilinear, Identity, Linear
+from mlx.nn.layers.linear import Bilinear, Identity, Linear, HermesLinear
 from mlx.nn.layers.normalization import (
     BatchNorm,
     GroupNorm,

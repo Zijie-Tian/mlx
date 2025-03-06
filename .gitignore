@@ -85,3 +85,7 @@ build/
 
 # Jetbrains
 .cache
+
+build/
+build_xcode/
+**/*.gputrace/
