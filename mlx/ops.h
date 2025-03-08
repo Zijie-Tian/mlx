@@ -1512,4 +1512,18 @@ array contiguous(
 
 /** @} */
 
+//> Zijie Tian : This is for TMAC
+array tmac_gemv(
+  const array& acivation,
+  const array& qweight_qvals,
+  const array& Scales,
+  const int& M,
+  const int& K,
+  const int& N,
+  const int& group_size,
+  const int& bm,
+  const int& nbits,
+  StreamOrDevice s /* = {} */);
+
+
 } // namespace mlx::core

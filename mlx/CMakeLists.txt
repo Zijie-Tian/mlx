@@ -17,8 +17,7 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/transforms.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/utils.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/linalg.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/version.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/backend/metal/metal.h)
+          ${CMAKE_CURRENT_SOURCE_DIR}/version.cpp)
 
 if(MSVC)
   # Disable some MSVC warnings to speed up compilation.

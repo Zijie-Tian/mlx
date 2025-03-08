@@ -5003,4 +5003,26 @@ array contiguous(
       {a});
 }
 
+array tmac_gemv(
+    const array& acivation,
+    const array& qweight_qvals,
+    const array& Scales,
+    const int& M,
+    const int& K,
+    const int& N,
+    const int& group_size,
+    const int& bm,
+    const int& nbits,
+    StreamOrDevice s /* = {} */) {
+  return array(
+      Shape{M, N},
+      float32,
+      std::make_shared<TMACMatmul>(
+        to_stream(s),
+        M, K, N,
+        nbits, group_size, bm
+      ),
+      {acivation, qweight_qvals, Scales});
+}
+
 } // namespace mlx::core

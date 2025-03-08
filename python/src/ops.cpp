@@ -5124,4 +5124,36 @@ void init_ops(nb::module_& m) {
                  [0, 1, 0],
                  [0, 1, 0]], dtype=float32)
       )pbdoc");
+  m.def(
+      "tmac_gemv",
+      &mx::tmac_gemv,
+      nb::arg("activation"),
+      nb::arg("qweight_qvals"),
+      nb::arg("scales"),
+      "M"_a,
+      "K"_a,
+      "N"_a,
+      "group_size"_a,
+      "bm"_a,
+      "nbits"_a,
+      nb::kw_only(),
+      "stream"_a = nb::none(),
+      nb::sig("def tmac_gemv(activation: array, qweight_qvals: array, scales: array, /, M: int, K: int, N: int, group_size: int, bm: int, nbits: int, *, stream: Union[None, Stream, Device] = None) -> array"),
+      R"pbdoc(
+          T-MAC量化矩阵向量乘法
+  
+          Args:
+              activation (array): 输入激活值矩阵，形状(M, K)
+              qweight_qvals (array): 量化权重值矩阵
+              scales (array): 缩放因子矩阵
+              M (int): 输出矩阵行数
+              K (int): 输入矩阵列数/输出矩阵列数
+              N (int): 输出矩阵列数
+              group_size (int): 量化分组大小
+              bm (int): 块大小参数
+              nbits (int): 量化位宽
+  
+          Returns:
+              array: 量化矩阵乘法结果，形状(M, N)
+      )pbdoc");
 }

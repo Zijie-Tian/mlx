@@ -5007,4 +5007,36 @@ bool Hadamard::is_equivalent(const Primitive& other) const {
   return scale_ == h_other.scale_;
 }
 
+std::vector<array> TMACMatmul::vjp(
+  const std::vector<array>& primals,
+  const std::vector<array>& cotangents,
+  const std::vector<int>& argnums,
+  const std::vector<array>&) {
+  std::vector<array> vjps = {};
+  return vjps;
+}
+
+std::vector<array> TMACMatmul::jvp(
+  const std::vector<array>& primals,
+  const std::vector<array>& tangents,
+  const std::vector<int>& argnums) {
+  if (argnums.size() > 1 || argnums[0] != 0) {
+    throw std::runtime_error(
+        "[TMACMatmul::jvp] No JVP wrt the quantized matrix yet.");
+  }
+  return {tangents[0]};
+}
+
+std::pair<std::vector<array>, std::vector<int>> TMACMatmul::vmap(
+  const std::vector<array>& inputs,
+  const std::vector<int>& axes) {
+  return {};
+}
+
+std::vector<Shape> TMACMatmul::output_shapes(
+    const std::vector<array>& inputs) {
+  Shape shape(this -> M_, this -> N_);
+  return {shape};
+}
+
 } // namespace mlx::core

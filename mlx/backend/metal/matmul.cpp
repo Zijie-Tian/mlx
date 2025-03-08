@@ -1804,4 +1804,8 @@ void GatherMM::eval_gpu(const std::vector<array>& inputs, array& out) {
   d.add_temporaries(std::move(copies), s.index);
 }
 
+// void TMACMatmul::eval_gpu(const std::vector<array>& inputs, array& out) {  // [!++]
+//   throw std::runtime_error("[TMACMatmul] GPU implementation not yet supported");  // [!++]
+// }  // [!++]
+
 } // namespace mlx::core

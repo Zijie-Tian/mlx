@@ -147,6 +147,7 @@ UNARY_GPU(Square)
 UNARY_GPU(Sqrt)
 UNARY_GPU(Tan)
 UNARY_GPU(Tanh)
+// UNARY_GPU(TMACMatmul)
 
 void Log::eval_gpu(const std::vector<array>& inputs, array& out) {
   switch (base_) {
