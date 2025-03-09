@@ -1576,11 +1576,15 @@ class TMACMatmul : public UnaryPrimitive {
     Stream stream, 
     int M, int K, int N,
     int group_size,
+    int act_group_size,
+    int kfactor, int g,
     int bm, int nbits) 
     : UnaryPrimitive(stream),
-    M_(4096), K_(4096), N_(1),
-    group_size_(128),
-    bm_(16), nbits_(2) {}
+    M_(M), K_(K), N_(N),
+    group_size_(group_size),
+    act_group_size_(act_group_size),
+    kfactor_(kfactor), g_(g),
+    bm_(bm), nbits_(nbits) {}
  
    void eval_cpu(const std::vector<array>& inputs, array& out) override;
    void eval_gpu(const std::vector<array>& inputs, array& out) override {}
@@ -1598,8 +1602,11 @@ class TMACMatmul : public UnaryPrimitive {
    int M_;
    int K_;
    int N_;
+   int act_group_size_;
    int group_size_;
    int bm_;
+   int g_;
+   int kfactor_;
    int nbits_;
  };
 

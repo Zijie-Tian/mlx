@@ -19,6 +19,7 @@ int main() {
 
         return std::vector<mx::array>{c};
     };
+    
 
     // 创建输入数据
     int M = 4096;

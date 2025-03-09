@@ -5011,18 +5011,23 @@ array tmac_gemv(
     const int& K,
     const int& N,
     const int& group_size,
+    const int& act_group_size,
+    const int& kfactor,
+    const int& g,
     const int& bm,
     const int& nbits,
     StreamOrDevice s /* = {} */) {
   return array(
-      Shape{M, N},
-      float32,
+      Shape{N, M},
+      float16,
       std::make_shared<TMACMatmul>(
         to_stream(s),
         M, K, N,
-        nbits, group_size, bm
-      ),
-      {acivation, qweight_qvals, Scales});
+        group_size, 
+        act_group_size,
+        kfactor, g,
+        bm, nbits
+      ), {acivation, qweight_qvals, Scales});
 }
 
 } // namespace mlx::core

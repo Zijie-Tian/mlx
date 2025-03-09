@@ -20,7 +20,8 @@ int main() {
         a_up,
         a_down,
         M, K, N,
-        128, 16, 2,
+        128, 64,
+        16, 4, 256, 2,
         mx::Device::cpu
     );
 
