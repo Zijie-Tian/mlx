@@ -124,6 +124,7 @@ int main() {
     std::cout << "Compiled result shape: " << ss.str() << std::endl;
 
     // 性能测试（需要调整TIME宏调用方式）
+    // TODO : Fix Segmentation Fault Error when calling TIME.
     // TIMEM("compile", compiled_fn, inputs);
     auto start_time = time_now();
     for (int i = 0; i < 1000; ++i) {

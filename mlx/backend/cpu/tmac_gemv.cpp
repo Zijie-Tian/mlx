@@ -38,6 +38,12 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     }
 
     //! =============      Allocate vars.   =============
+    array QLUT = inputs[3];
+    array LUT_Scales = inputs[4];
+    array LUT_Biases = inputs[5];
+    QLUT.set_data(allocator::malloc_or_wait(QLUT.nbytes()));
+    LUT_Scales.set_data(allocator::malloc_or_wait(LUT_Scales.nbytes()));
+    LUT_Biases.set_data(allocator::malloc_or_wait(LUT_Biases.nbytes()));
     // array QLUT = zeros({this -> N_, this -> K_ / this -> g_, 1 << this -> g_}, int8);
     // array LUT_Scales = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
     // array LUT_Biases = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
@@ -50,9 +56,9 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     auto activations_buf = inputs[0].data<float16_t>();
     auto qweight_buf = inputs[1].data<uint8_t>();
     auto scales_buf = inputs[2].data<float16_t>();
-    auto qlut_buf = inputs[3].data<uint8_t>();
-    auto lut_scales_buf = inputs[4].data<float16_t>();
-    auto lut_biases_buf = inputs[5].data<float16_t>();
+    auto qlut_buf = QLUT.data<uint8_t>();
+    auto lut_scales_buf = LUT_Scales.data<float16_t>();
+    auto lut_biases_buf = LUT_Biases.data<float16_t>();
     auto output_buf = output.data<float16_t>();
 
     // 修正函数调用参数

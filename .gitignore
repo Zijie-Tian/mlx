@@ -89,3 +89,9 @@ build/
 build/
 build_xcode/
 **/*.gputrace/
+
+# Some data
+*.npy
+*.npz
+*.pkl
+*.pickle
