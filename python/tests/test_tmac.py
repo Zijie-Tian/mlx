@@ -141,9 +141,6 @@ def test_tmac_gemv():
     activation = np.random.randn(N, K).astype(out_dtype)
     weight = np.random.randn(M, K)
 
-    # activation = np.load("activation.npy")
-    # weight = np.load("weight.npy")
-
     # 量化权重
     qweight, scale = weight_quant(weight, group_size, force_per_tensor=True)
 
@@ -210,7 +207,7 @@ def test_tmac_gemv():
     print("mx_C_ref = ", mx_C_ref)
     print("mx_real_ref = ", mx_real_ref)
 
-    # import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
 
 if __name__ == "__main__":
     test_tmac_gemv()
