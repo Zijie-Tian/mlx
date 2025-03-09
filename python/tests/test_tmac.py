@@ -201,5 +201,7 @@ def test_tmac_gemv():
     print("mx_C_ref = ", mx_C_ref)
     print("mx_real_ref = ", mx_real_ref)
 
+    import pdb; pdb.set_trace()
+
 if __name__ == "__main__":
     test_tmac_gemv()

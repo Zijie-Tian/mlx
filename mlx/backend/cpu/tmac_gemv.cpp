@@ -11,6 +11,11 @@
 #include <mlx/backend/cpu/tmac/kernels.h>
 // #include "mlx/backend/cpu/buffer.h"  // 添加buffer头文件
 
+
+#define milliseconds(x) \
+  (std::chrono::duration_cast<std::chrono::nanoseconds>(x).count() / 1e6)
+#define time_now() std::chrono::high_resolution_clock::now()
+
 namespace mlx::core {
 
 /**
@@ -30,39 +35,34 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     }
 
     //! =============      Allocate vars.   =============
-    array QLUT = zeros({this -> N_, this -> K_ / this -> g_, 1 << this -> g_}, int8);
-    array LUT_Scales = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
-    array LUT_Biases = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
-    QLUT.eval();
-    LUT_Scales.eval();
-    LUT_Biases.eval();
+    // array QLUT = zeros({this -> N_, this -> K_ / this -> g_, 1 << this -> g_}, int8);
+    // array LUT_Scales = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
+    // array LUT_Biases = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
+    // QLUT.eval();
+    // LUT_Scales.eval();
+    // LUT_Biases.eval();
 
     //! ============= Turn to void pointer. =============
     // 修正缓冲区转换方式
     auto activations_buf = inputs[0].data<float16_t>();
     auto qweight_buf = inputs[1].data<uint8_t>();
     auto scales_buf = inputs[2].data<float16_t>();
-
-    void* activations_ptr = (void*)activations_buf;
-    void* qweight_ptr = (void*)qweight_buf;
-    void* scales_ptr = (void*)scales_buf;
-
-    // 获取指针的正确方式
-    auto qlut_buf = QLUT.data<uint8_t>();
-    auto lut_scales_buf = LUT_Scales.data<float16_t>();
-    auto lut_biases_buf = LUT_Biases.data<float16_t>();
+    auto qlut_buf = inputs[3].data<uint8_t>();
+    auto lut_scales_buf = inputs[4].data<float16_t>();
+    auto lut_biases_buf = inputs[5].data<float16_t>();
     auto output_buf = output.data<float16_t>();
 
+    auto start_time = time_now();
     // 修正函数调用参数
     int err_no = preprocessor_int8(
         this->M_ * this->nbits_,
         this->K_,
         this->N_,
         this->nbits_,
-        activations_ptr,
-        lut_scales_buf,
-        lut_biases_buf,
-        qlut_buf
+        (void*)activations_buf,
+        (void*)lut_scales_buf,
+        (void*)lut_biases_buf,
+        (void*)qlut_buf
     );
     if (err_no != 0) {
         std::cout << "preprocessor_int8 failed with Parameters : " <<
@@ -73,6 +73,10 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         return;   
     }
 
+    auto end_time = time_now();
+    auto duration = end_time - start_time;
+    std::cout << "preprocessor_int8 done! Time : " << milliseconds(duration) << " msec" << std::endl;
+
     // std::cout << "preprocessor_int8 done!" << std::endl;
     // std::cout << "QLUT: " << QLUT << "shape : " << QLUT.shape() << std::endl;
     // std::cout << "LUT_Scales: " << LUT_Scales << "shape : " << LUT_Scales.shape() << std::endl;
@@ -80,7 +84,7 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     // std::cout << "qgemm_output: " << qgemm_output << "shape : " << qgemm_output.shape() << std::endl;
     // std::cout << "Scales :" << inputs[2] << "shape : " << inputs[2].shape() << std::endl;
 
-    // TODO : Add for loop for each BM.
+    auto start_time2 = time_now();
     int ngroups_per_elem = 8 / this->g_;
     for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
         int ret = qgemm_lut_int8(
@@ -89,10 +93,10 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
             this->N_,
             this->nbits_,
             (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
-            qlut_buf,
-            scales_ptr,
-            lut_scales_buf,
-            lut_biases_buf, 
+            (void *)qlut_buf,
+            (void *)scales_buf,
+            (void *)lut_scales_buf,
+            (void *)lut_biases_buf, 
             (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
         );
         if (ret != 0) {
@@ -104,6 +108,10 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
             return;
         }
     }
+
+    auto end_time2 = time_now();
+    auto duration2 = end_time2 - start_time2;
+    std::cout << "qgemm_lut_int8 done! Time : " << milliseconds(duration2) << " msec" << std::endl;
 }
 
 

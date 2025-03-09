@@ -5007,6 +5007,9 @@ array tmac_gemv(
     const array& acivation,
     const array& qweight_qvals,
     const array& Scales,
+    const array& QLUT,
+    const array& LUT_Scales,
+    const array& LUT_Biases,
     const int& M,
     const int& K,
     const int& N,
@@ -5027,7 +5030,7 @@ array tmac_gemv(
         act_group_size,
         kfactor, g,
         bm, nbits
-      ), {acivation, qweight_qvals, Scales});
+      ), {acivation, qweight_qvals, Scales, QLUT, LUT_Scales, LUT_Biases});
 }
 
 } // namespace mlx::core
