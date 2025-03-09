@@ -10,7 +10,7 @@ namespace mx = mlx::core;
 
 int main() {
     // 创建输入数据
-    int M = 3200;
+    int M = 8640;
     int K = 3200;
     int N = 1;
 

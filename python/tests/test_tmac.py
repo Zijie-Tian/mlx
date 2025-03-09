@@ -167,6 +167,11 @@ def test_tmac_gemv():
     mx_zero = None
     mx_A_t = mx.array(A_t)
     mx_Scales_t = mx.array(Scales_t, mx.float16)
+    
+    # 修改后正确代码：
+    mx_QLUT = mx.zeros((N, K // g, 1 << g), mx.uint8)
+    mx_LUT_Scales = mx.zeros((N, K // act_group_size), mx.float16)
+    mx_LUT_Biases = mx.zeros((N, K // act_group_size), mx.float16)
 
     mx_Adq = mx.array(Adq)
     mx_real_ref = mx.matmul(mx_activation, mx_weight.T)
@@ -184,6 +189,9 @@ def test_tmac_gemv():
         mx_activation,
         mx_A_t,
         mx_Scales_t,
+        mx_QLUT,
+        mx_LUT_Scales,
+        mx_LUT_Biases,
         M=M,
         K=K,
         N=N,
@@ -193,6 +201,7 @@ def test_tmac_gemv():
         g=g,
         bm=bm,
         nbits=nbits,
+        n_threads=12,
         stream=mx.cpu
     )
     mx.eval(mx_output)
@@ -201,7 +210,7 @@ def test_tmac_gemv():
     print("mx_C_ref = ", mx_C_ref)
     print("mx_real_ref = ", mx_real_ref)
 
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
 
 if __name__ == "__main__":
     test_tmac_gemv()
