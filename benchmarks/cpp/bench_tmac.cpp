@@ -21,6 +21,8 @@ int main() {
     int act_group_size = 64;
     int kfactor = 16;
 
+    int n_threads = 12;
+
     int ngroups_per_elem = 8 / g;
     mx::array A_t = mx::random::randint(0, 255, {M / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
     mx::array Scales_t = mx::random::uniform({M / bm, K / group_size, bm / nbits}, mx::float16);
@@ -53,6 +55,7 @@ int main() {
             group_size, 
             act_group_size,
             kfactor, g, bm, nbits,
+            n_threads,
             mx::Device::cpu
         );
         output.eval();
@@ -70,6 +73,7 @@ int main() {
         group_size, 
         act_group_size,
         kfactor, g, bm, nbits,
+        n_threads,
         mx::Device::cpu
     );
     output.eval();

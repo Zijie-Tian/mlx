@@ -5019,6 +5019,7 @@ array tmac_gemv(
     const int& g,
     const int& bm,
     const int& nbits,
+    const int& n_threads,
     StreamOrDevice s /* = {} */) {
   return array(
       Shape{N, M},
@@ -5029,7 +5030,7 @@ array tmac_gemv(
         group_size, 
         act_group_size,
         kfactor, g,
-        bm, nbits
+        bm, nbits, n_threads
       ), {acivation, qweight_qvals, Scales, QLUT, LUT_Scales, LUT_Biases});
 }
 

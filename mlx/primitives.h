@@ -8,6 +8,7 @@
 #include "mlx/device.h"
 #include "mlx/io/load.h"
 #include "mlx/stream.h"
+#include <mlx/threadpool.h>
 
 #define DEFINE_VMAP()                                                 \
   virtual std::pair<std::vector<array>, std::vector<int>> vmap(       \
@@ -1578,13 +1579,14 @@ class TMACMatmul : public UnaryPrimitive {
     int group_size,
     int act_group_size,
     int kfactor, int g,
-    int bm, int nbits) 
+    int bm, int nbits, 
+    int n_threads) 
     : UnaryPrimitive(stream),
     M_(M), K_(K), N_(N),
     group_size_(group_size),
     act_group_size_(act_group_size),
     kfactor_(kfactor), g_(g),
-    bm_(bm), nbits_(nbits) {}
+    bm_(bm), nbits_(nbits), pool_(n_threads) {}
  
    void eval_cpu(const std::vector<array>& inputs, array& out) override;
    void eval_gpu(const std::vector<array>& inputs, array& out) override {}
@@ -1608,6 +1610,8 @@ class TMACMatmul : public UnaryPrimitive {
    int g_;
    int kfactor_;
    int nbits_;
+
+   ThreadPool pool_;
  };
 
 class GatherQMM : public UnaryPrimitive {

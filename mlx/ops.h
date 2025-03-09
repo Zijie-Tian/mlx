@@ -1529,6 +1529,7 @@ array tmac_gemv(
   const int& g,
   const int& bm,
   const int& nbits,
+  const int& n_threads,
   StreamOrDevice s /* = {} */);
 
 

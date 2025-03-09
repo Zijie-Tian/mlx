@@ -2,6 +2,8 @@
 
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include <future>
 #include "mlx/array.h"
 #include "mlx/backend/cpu/copy.h"
 #include "mlx/backend/cpu/gemm.h"
@@ -9,6 +11,7 @@
 #include "mlx/ops.h"
 
 #include <mlx/backend/cpu/tmac/kernels.h>
+#include <mlx/threadpool.h>
 // #include "mlx/backend/cpu/buffer.h"  // 添加buffer头文件
 
 
@@ -52,7 +55,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     auto lut_biases_buf = inputs[5].data<float16_t>();
     auto output_buf = output.data<float16_t>();
 
-    auto start_time = time_now();
     // 修正函数调用参数
     int err_no = preprocessor_int8(
         this->M_ * this->nbits_,
@@ -73,10 +75,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         return;   
     }
 
-    auto end_time = time_now();
-    auto duration = end_time - start_time;
-    std::cout << "preprocessor_int8 done! Time : " << milliseconds(duration) << " msec" << std::endl;
-
     // std::cout << "preprocessor_int8 done!" << std::endl;
     // std::cout << "QLUT: " << QLUT << "shape : " << QLUT.shape() << std::endl;
     // std::cout << "LUT_Scales: " << LUT_Scales << "shape : " << LUT_Scales.shape() << std::endl;
@@ -84,34 +82,49 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     // std::cout << "qgemm_output: " << qgemm_output << "shape : " << qgemm_output.shape() << std::endl;
     // std::cout << "Scales :" << inputs[2] << "shape : " << inputs[2].shape() << std::endl;
 
-    auto start_time2 = time_now();
+    std::vector<std::future<int>> bm_tiles;
     int ngroups_per_elem = 8 / this->g_;
     for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-        int ret = qgemm_lut_int8(
-            this->bm_,
-            this->K_,
-            this->N_,
-            this->nbits_,
-            (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
-            (void *)qlut_buf,
-            (void *)scales_buf,
-            (void *)lut_scales_buf,
-            (void *)lut_biases_buf, 
-            (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
+        bm_tiles.emplace_back(this->pool_.enqueue(std::bind(
+                    &qgemm_lut_int8,
+                    this->bm_,
+                    this->K_,
+                    this->N_,
+                    this->nbits_,
+                    (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
+                    (void *)qlut_buf,
+                    (void *)scales_buf,
+                    (void *)lut_scales_buf,
+                    (void *)lut_biases_buf, 
+                    (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
+                )
+            )
         );
-        if (ret != 0) {
-            std::cout << "qgemm_lut_int8 failed with Parameters : " <<
-                "m = " << this->bm_ <<
-                ", k = " << this->K_ <<
-                ", n = " << this->N_ <<
-                ", b = " << this->nbits_ << std::endl;
-            return;
-        }
-    }
 
-    auto end_time2 = time_now();
-    auto duration2 = end_time2 - start_time2;
-    std::cout << "qgemm_lut_int8 done! Time : " << milliseconds(duration2) << " msec" << std::endl;
+        // int ret = qgemm_lut_int8(
+        //     this->bm_,
+        //     this->K_,
+        //     this->N_,
+        //     this->nbits_,
+        //     (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
+        //     (void *)qlut_buf,
+        //     (void *)scales_buf,
+        //     (void *)lut_scales_buf,
+        //     (void *)lut_biases_buf, 
+        //     (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
+        // );
+        // if (ret != 0) {
+        //     std::cout << "qgemm_lut_int8 failed with Parameters : " <<
+        //         "m = " << this->bm_ <<
+        //         ", k = " << this->K_ <<
+        //         ", n = " << this->N_ <<
+        //         ", b = " << this->nbits_ << std::endl;
+        //     return;
+        // }
+    }
+    for (auto& tile : bm_tiles) {
+        tile.wait();
+    }
 }
 
 
