@@ -21,7 +21,7 @@ int main() {
     int act_group_size = 64;
     int kfactor = 16;
 
-    int n_threads = 12;
+    int n_threads = 24;
 
     int ngroups_per_elem = 8 / g;
     mx::array A_t = mx::random::randint(0, 255, {M / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
@@ -38,9 +38,9 @@ int main() {
     Scales_t.eval();
     activation.eval();
 
-    std::cout << "A_t : " << A_t << std::endl;
-    std::cout << "Scales_t : " << Scales_t << std::endl;
-    std::cout << "activation : " << activation << std::endl;
+    // std::cout << "A_t : " << A_t << std::endl;
+    // std::cout << "Scales_t : " << Scales_t << std::endl;
+    // std::cout << "activation : " << activation << std::endl;
 
     mx::array output = zeros({N, M}, mx::float16);
     for (int i = 0; i < 10; ++i) {
@@ -62,24 +62,26 @@ int main() {
     }
 
     auto start_time = time_now();
-    output = mx::tmac_gemv(
-        activation,
-        A_t,
-        Scales_t,
-        QLUT,
-        LUT_Scales,
-        LUT_Biases,
-        M, K, N,
-        group_size, 
-        act_group_size,
-        kfactor, g, bm, nbits,
-        n_threads,
-        mx::Device::cpu
-    );
-    output.eval();
+    for (int i = 0; i < 100; ++i) {
+        output = mx::tmac_gemv(
+            activation,
+            A_t,
+            Scales_t,
+            QLUT,
+            LUT_Scales,
+            LUT_Biases,
+            M, K, N,
+            group_size, 
+            act_group_size,
+            kfactor, g, bm, nbits,
+            n_threads,
+            mx::Device::cpu
+        );
+        output.eval();
+    }
     std::cout << "output : " << output << std::endl;
     auto end_time = time_now();
-    std::cout << "tmac-gemv time: " << milliseconds(end_time - start_time) << " ms" << std::endl;
+    std::cout << "tmac-gemv time: " << milliseconds(end_time - start_time) / 100 << " ms" << std::endl;
 
     // TIMEM(
     //     "tmac-gemv",

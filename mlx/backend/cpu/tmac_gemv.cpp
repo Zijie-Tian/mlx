@@ -106,27 +106,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
                 )
             )
         );
-
-        // int ret = qgemm_lut_int8(
-        //     this->bm_,
-        //     this->K_,
-        //     this->N_,
-        //     this->nbits_,
-        //     (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
-        //     (void *)qlut_buf,
-        //     (void *)scales_buf,
-        //     (void *)lut_scales_buf,
-        //     (void *)lut_biases_buf, 
-        //     (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
-        // );
-        // if (ret != 0) {
-        //     std::cout << "qgemm_lut_int8 failed with Parameters : " <<
-        //         "m = " << this->bm_ <<
-        //         ", k = " << this->K_ <<
-        //         ", n = " << this->N_ <<
-        //         ", b = " << this->nbits_ << std::endl;
-        //     return;
-        // }
     }
     for (auto& tile : bm_tiles) {
         tile.wait();
