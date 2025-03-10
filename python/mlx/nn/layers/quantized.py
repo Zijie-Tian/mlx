@@ -39,6 +39,7 @@ def quantize(
         if bool_or_params := class_predicate(path, m):
             if hasattr(m, "to_quantized"):
                 if isinstance(bool_or_params, bool):
+                    print(f"Quantizing {m}")
                     return m.to_quantized(group_size=group_size, bits=bits)
                 elif isinstance(bool_or_params, dict):
                     return m.to_quantized(**bool_or_params)
@@ -390,6 +391,8 @@ class TMACQuantizedLinear(Module):
         bias: bool = True,
     ):
         super().__init__()
+        self.out_dtype = mx.float16
+        self.qweight_dtype = mx.uint8
 
         # Quantization config
         self.M = M
@@ -406,18 +409,19 @@ class TMACQuantizedLinear(Module):
 
         # TODO : This shape is not correct. packed shape is not correct.
         rand_scale = math.sqrt(1 / K)
-        weight = mx.random.uniform(
+        self.weight = mx.random.uniform(
             low=-rand_scale,
             high=rand_scale,
             shape=(M, K),
         )
 
-        pesudo_weight, pesudo_scales = tmac_weight_quant(weight, group_size, force_per_tensor=True)
-        pesudo_weight = mx.round(pesudo_weight + 2 ** (nbits - 1)).astype(mx.uint8)
-        pesudo_scales = pesudo_scales.astype(mx.float16)
+        self.pesudo_weight, self.pesudo_scales = tmac_weight_quant(self.weight, group_size, force_per_tensor=True)
+        self.pesudo_weight = mx.round(self.pesudo_weight + 2 ** (nbits - 1)).astype(mx.uint8)
+        self.pesudo_scales = self.pesudo_scales.astype(mx.float16)
+
         self.packed_weight, self.scales_t = tmac_pack_weights(
-            pesudo_weight,
-            pesudo_scales,
+            self.pesudo_weight,
+            self.pesudo_scales,
             None,
             bits=self.nbits,
             g=self.g,
@@ -427,6 +431,9 @@ class TMACQuantizedLinear(Module):
             simd_n_out=8,            
         )
 
+        #! Dequantize the weight.
+        self.dequantize()
+
         #! Not need `eval` because we allocate it in tmac_gemv function.
         self.mx_QLUT = mx.zeros((N, K // g, 1 << g), mx.uint8)
         self.mx_LUT_Scales = mx.zeros((N, K // act_group_size), mx.float16)
@@ -434,7 +441,7 @@ class TMACQuantizedLinear(Module):
 
         # And bias if needed
         if bias:
-            self.bias = mx.zeros((K,))
+            self.bias = mx.zeros((N,), mx.float16)
 
         # Freeze this model's parameters
         self.freeze()
@@ -453,11 +460,27 @@ class TMACQuantizedLinear(Module):
             f"group_size={self.group_size}, bits={self.bits}"
         )
 
-    def __call__(self, x):
+    def dequantize(self):
+        if self.K % self.group_size != 0:
+            #! Just skip this.
+            return
+
+        self.Adq = self.pesudo_weight.T.reshape(
+            self.K // self.group_size, self.group_size, self.M).astype(mx.float16) - (2 ** (self.nbits - 1))
+        self.Adq = self.Adq.transpose(1, 0, 2) / self.pesudo_scales.T
+        self.Adq = self.Adq.transpose(1, 0, 2).reshape(self.K, self.M).astype(self.out_dtype)
+
+    def _forward_ref(self, x):
+        x = mx.matmul(x, self.Adq)
+        if "bias" in self:
+            x = x + self["bias"]
+        return x
+
+    def _forward(self, x):
         mx_output = mx.tmac_gemv(
             x,
             self.packed_weight,
-            self.scales_t,            
+            1 / self.scales_t,         
             self.mx_QLUT,
             self.mx_LUT_Scales,
             self.mx_LUT_Biases,
@@ -474,8 +497,27 @@ class TMACQuantizedLinear(Module):
             stream=mx.cpu
         )
         if "bias" in self:
-            mx_output = mx_output + self["bias"]
+            try:
+                mx_output = mx_output + self["bias"]
+            except Exception as e:
+                import pdb; pdb.set_trace()
+                raise e
         return mx_output
+
+    def __call__(self, x):
+        # Check if the input tensor has the expected shape [batch, seq, hidden]
+        assert len(x.shape) == 3 and x.shape[0] == 1, "Input shape should be [1, seq, hidden]"
+        _, seq_len, hidden_size = x.shape
+        outputs = []
+        outputs_ref = []
+        for i in range(seq_len):
+            # Extract the current sequence element
+            current_x = x[:, i, :]
+            # Perform the forward pass for the current sequence element
+            output = self._forward(current_x)
+            outputs.append(output)
+
+        return mx.stack(outputs, axis=1)
 
     @classmethod
     def from_linear(cls, 
@@ -497,12 +539,14 @@ class TMACQuantizedLinear(Module):
             M, K, N, group_size, act_group_size, 
             kfactor, g, bm, nbits, n_threads, stream, bias
         )
-        pesudo_weight, pesudo_scales = tmac_weight_quant(weight, ql.group_size, force_per_tensor=True)
-        pesudo_weight = mx.round(pesudo_weight + 2 ** (nbits - 1)).astype(mx.uint8)
-        pesudo_scales = pesudo_scales.astype(mx.float16)
+        ql.pesudo_weight, ql.pesudo_scales = tmac_weight_quant(weight, ql.group_size, force_per_tensor=True)
+        ql.pesudo_weight = mx.round(ql.pesudo_weight + 2 ** (nbits - 1)).astype(mx.uint8)
+        ql.pesudo_scales = ql.pesudo_scales.astype(mx.float16)
+        ql.weight = weight
+
         ql.packed_weight, ql.scales_t = tmac_pack_weights(
-            pesudo_weight,
-            pesudo_scales,
+            ql.pesudo_weight,
+            ql.pesudo_scales,
             None,
             bits=ql.nbits,
             g=ql.g,
@@ -511,6 +555,8 @@ class TMACQuantizedLinear(Module):
             simd_n_in=16,
             simd_n_out=8, 
         )
+        ql.dequantize()
+
         if "bias" in linear_layer:
             ql.bias = linear_layer.bias
 

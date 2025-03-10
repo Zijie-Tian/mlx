@@ -5,7 +5,7 @@ from typing import Any
 
 import mlx.core as mx
 from mlx.nn.layers.base import Module
-from mlx.nn.layers.quantized import QuantizedLinear
+from mlx.nn.layers.quantized import QuantizedLinear, TMACQuantizedLinear
 
 
 class Identity(Module):
@@ -73,6 +73,117 @@ class Linear(Module):
     def to_quantized(self, group_size: int = 64, bits: int = 4):
         """Return a :obj:`QuantizedLinear` layer that approximates this layer."""
         return QuantizedLinear.from_linear(self, group_size, bits)
+
+class TMACLinear(Module):
+    r"""Applies an affine transformation to the input.
+
+    Concretely:
+
+    .. math::
+
+        y = x W^\top + b
+
+    where:
+    where :math:`W` has shape ``[output_dims, input_dims]`` and :math:`b` has shape ``[output_dims]``.
+
+    The values are initialized from the uniform distribution :math:`\mathcal{U}(-{k}, {k})`,
+    where :math:`k = \frac{1}{\sqrt{D_i}}` and :math:`D_i` is equal to ``input_dims``.
+
+    Args:
+        input_dims (int): The dimensionality of the input features
+        output_dims (int): The dimensionality of the output features
+        bias (bool, optional): If set to ``False`` then the layer will
+          not use a bias. Default is ``True``.
+    """
+
+    def __init__(self, input_dims: int, output_dims: int, bias: bool = True) -> None:
+        super().__init__()
+        scale = math.sqrt(1.0 / input_dims)
+        self.weight = mx.random.uniform(
+            low=-scale,
+            high=scale,
+            shape=(output_dims, input_dims),
+        )
+        if bias:
+            self.bias = mx.random.uniform(
+                low=-scale,
+                high=scale,
+                shape=(output_dims,),
+            )
+        # Define the configuration dictionary
+        self.qgemm_configs = {
+            (3200, 8640, 1): {
+                "bm": 256,
+                "simd_n_in": 16,
+                "simd_n_out": 8,
+                "kfactor": 16,
+                "group_size": 128,
+                "lut_scales_size": 135,
+                "scales_size": 1,
+                "n_tile_num": 25
+            },
+            (8640, 3200, 1): {
+                "bm": 128,
+                "simd_n_in": 16,
+                "simd_n_out": 8,
+                "kfactor": 16,
+                "group_size": 128,
+                "lut_scales_size": 50,
+                "scales_size": 1,
+                "n_tile_num": 135
+            },
+            (3200, 3200, 1): {
+                "bm": 128,
+                "simd_n_in": 16,
+                "simd_n_out": 8,
+                "kfactor": 16,
+                "group_size": 128,
+                "lut_scales_size": 50,
+                "scales_size": 1,
+                "n_tile_num": 50
+            }
+        }
+
+    def _extra_repr(self) -> str:
+        return f"input_dims={self.weight.shape[1]}, output_dims={self.weight.shape[0]}, bias={'bias' in self}"
+
+    def __call__(self, x: mx.array) -> mx.array:
+        if "bias" in self:
+            x = mx.addmm(self["bias"], x, self["weight"].T)
+        else:
+            x = x @ self["weight"].T
+        return x
+
+    def to_quantized(self, group_size: int = 64, bits: int = 4):
+        """Return a :obj:`QuantizedLinear` layer that approximates this layer."""
+
+        # Get the configuration for the current input and output dimensions
+        config = self.qgemm_configs.get((self.weight.shape[0], self.weight.shape[1], 1))
+        if config is None:
+            raise ValueError(f"No configuration found for input dimensions {self.weight.shape[0]} and output dimensions {self.weight.shape[1]}")
+
+        # Set the configuration values
+        M, K, N = self.weight.shape[0], self.weight.shape[1], 1
+        bm = config["bm"]
+        simd_n_in = config["simd_n_in"]
+        simd_n_out = config["simd_n_out"]
+        kfactor = config["kfactor"]
+        group_size = config["group_size"]
+        lut_scales_size = config["lut_scales_size"]
+        scales_size = config["scales_size"]
+        n_tile_num = config["n_tile_num"]
+
+        return TMACQuantizedLinear.from_linear(self,
+            M, K, N,
+            group_size=group_size,
+            act_group_size=64,
+            kfactor=kfactor,
+            g=4,
+            bm=bm,
+            nbits=bits,
+            n_threads=12,
+            stream=mx.cpu,
+            bias=True)
 
 class HermesLinear(Module):
     r"""Applies an affine transformation to the input.
