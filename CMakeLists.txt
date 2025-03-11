@@ -36,6 +36,7 @@ option(MLX_BUILD_CPU "Build cpu backend" ON)
 option(MLX_METAL_DEBUG "Enhance metal debug workflow" OFF)
 option(MLX_ENABLE_X64_MAC "Enable building for x64 macOS" OFF)
 option(MLX_BUILD_GGUF "Include support for GGUF format" ON)
+option(MLX_BUILD_TVM "Include support for TVM format" ON)
 option(MLX_BUILD_SAFETENSORS "Include support for safetensors format" ON)
 option(MLX_BUILD_BLAS_FROM_SOURCE "Build OpenBLAS from source code" OFF)
 option(MLX_METAL_JIT "Use JIT compilation for Metal kernels" OFF)
@@ -259,6 +260,41 @@ if(MLX_BUILD_PYTHON_BINDINGS)
   find_package(nanobind CONFIG REQUIRED)
   add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/python/src)
 endif()
+
+if(MLX_BUILD_TVM)
+  add_compile_definitions(
+    DMLC_DISABLE_STDLOG 
+    TVM_DISABLE_DMLC_LOGGING
+    TVM_USE_LIBBACKTRACE=0  # 禁用TVM的backtrace功能
+  )
+  set(TVM_HOME "/Users/tianzijie/Baselines/ao/third_party/tvm/")
+  set(TVM_INCLUDE_DIR "/usr/local/include")
+  set(TVM_RUNTIME_LIB "/usr/local/lib/libtvm_runtime.dylib")
+
+  # 增加编译定义禁用冲突宏
+  add_compile_definitions(DMLC_DISABLE_STDLOG TVM_DISABLE_DMLC_LOGGING)
+  
+  # 调整包含顺序并添加SYSTEM标识
+  target_include_directories(mlx PRIVATE
+    ${TVM_INCLUDE_DIR}
+    ${TVM_HOME}/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/
+  )
+
+  # 将dmlc-core头文件标记为系统头文件
+  target_include_directories(mlx SYSTEM PRIVATE
+    ${TVM_HOME}/3rdparty/dmlc-core/include/
+    ${TVM_HOME}/3rdparty/dlpack/include/
+  )
+
+  # 添加链接选项抑制警告
+  target_link_options(mlx PRIVATE "LINKER:-w")
+  
+  target_link_libraries(mlx PRIVATE
+    ${TVM_RUNTIME_LIB}
+  )
+endif()
+
 
 if(MLX_BUILD_TESTS)
   include(CTest)

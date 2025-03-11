@@ -21,7 +21,7 @@ int main() {
     int act_group_size = 64;
     int kfactor = 16;
 
-    int n_threads = 24;
+    int n_threads = 12;
 
     int ngroups_per_elem = 8 / g;
     mx::array A_t = mx::random::randint(0, 255, {M / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
@@ -44,7 +44,7 @@ int main() {
 
     mx::array output = zeros({N, M}, mx::float16);
     for (int i = 0; i < 10; ++i) {
-        output = mx::tmac_gemv(
+        eval(mx::tmac_gemv(
             activation,
             A_t,
             Scales_t,
@@ -57,13 +57,12 @@ int main() {
             kfactor, g, bm, nbits,
             n_threads,
             mx::Device::cpu
-        );
-        output.eval();
+        ));
     }
 
     auto start_time = time_now();
     for (int i = 0; i < 100; ++i) {
-        output = mx::tmac_gemv(
+        eval(mx::tmac_gemv(
             activation,
             A_t,
             Scales_t,
@@ -76,8 +75,7 @@ int main() {
             kfactor, g, bm, nbits,
             n_threads,
             mx::Device::cpu
-        );
-        output.eval();
+        ));
     }
     std::cout << "output : " << output << std::endl;
     auto end_time = time_now();

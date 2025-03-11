@@ -82,6 +82,15 @@ set_source_files_properties(
 #     ${CMAKE_CURRENT_SOURCE_DIR}  # 使用SOURCE_DIR代替LIST_DIR
 # )
 
+set(TVM_HOME "/Users/tianzijie/Baselines/ao/third_party/tvm/")
+
+# 将dmlc-core头文件标记为系统头文件
+# target_include_directories(mlx SYSTEM PRIVATE
+#     ${TVM_HOME}/3rdparty/dmlc-core/include/
+#     ${TVM_HOME}/3rdparty/dlpack/include/
+#     ${TVM_HOME}/include  # 新增TVM主头文件目录
+# )
+
 #! ====================================================================================
 
 add_custom_command(

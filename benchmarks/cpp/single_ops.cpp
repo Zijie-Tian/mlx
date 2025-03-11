@@ -136,7 +136,7 @@ void time_comparisons() {
 }
 
 void time_matvec() {
-  int M = 4096, N = 4096;
+  int M = 128, N = 4096;
   auto a = mx::random::uniform({M, N});
   auto b = mx::random::uniform({N});
   auto c = mx::random::uniform({M});
@@ -256,8 +256,8 @@ void time_divmod() {
 }
 
 int main() {
-  set_default_device(mx::Device::cpu);
-  std::cout << "Benchmarks for " << mx::default_device() << std::endl;
+  // set_default_device(mx::Device::cpu);
+  // std::cout << "Benchmarks for " << mx::default_device() << std::endl;
   // time_creation_ops();
   // time_type_conversions();
   // time_unary_ops();
@@ -265,8 +265,8 @@ int main() {
   // time_strided_ops();
   // time_random_generation();
   // time_comparisons();
-  time_matvec();
-  time_matmul();
+  // time_matvec();
+  // time_matmul();
   // time_reductions();
   // time_gather_scatter();
   // time_divmod();
@@ -281,7 +281,7 @@ int main() {
   // time_random_generation();
   // time_comparisons();
   time_matvec();
-  time_matmul();
+  // time_matmul();
   // time_reductions();
   // time_gather_scatter();
   // time_divmod();

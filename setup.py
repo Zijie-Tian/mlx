@@ -65,6 +65,7 @@ class CMakeBuild(build_ext):
             "-DMLX_BUILD_BENCHMARKS=OFF",
             "-DMLX_BUILD_EXAMPLES=OFF",
             f"-DMLX_PYTHON_BINDINGS_OUTPUT_DIRECTORY={extdir}{os.sep}",
+            "-DCMAKE_CXX_FLAGS=-Wno-macro-redefined"
         ]
         # Some generators require explcitly passing config when building.
         build_args = ["--config", cfg]

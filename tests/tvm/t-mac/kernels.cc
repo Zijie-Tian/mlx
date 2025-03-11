@@ -1,4 +1,4 @@
-#include <mlx/backend/cpu/tmac/kernels.h>
+#include "t-mac/kernels.h"
 #ifndef INTRINSIC_TYPES_H
 #define INTRINSIC_TYPES_H
 

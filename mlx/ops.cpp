@@ -5021,17 +5021,18 @@ array tmac_gemv(
     const int& nbits,
     const int& n_threads,
     StreamOrDevice s /* = {} */) {
+  const std::string kcfg_path = "/Users/tianzijie/Code/mlx/mlx/backend/cpu/tmac/kcfg.ini";
+  const std::string lib_path = "/Users/tianzijie/Code/mlx/mlx/backend/cpu/tmac/kernels.dll";
   return array(
       Shape{N, M},
       float16,
       std::make_shared<TMACMatmul>(
         to_stream(s),
+        n_threads, act_group_size, kcfg_path, lib_path,
         M, K, N,
-        group_size, 
-        act_group_size,
-        kfactor, g,
-        bm, nbits, n_threads
-      ), {acivation, qweight_qvals, Scales, QLUT, LUT_Scales, LUT_Biases});
+        group_size, kfactor, 
+        g, bm, nbits
+      ), {acivation, qweight_qvals, Scales});
 }
 
 } // namespace mlx::core

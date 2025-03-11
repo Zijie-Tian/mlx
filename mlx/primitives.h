@@ -9,6 +9,7 @@
 #include "mlx/io/load.h"
 #include "mlx/stream.h"
 #include <mlx/threadpool.h>
+#include <mlx/backend/cpu/tmac_gemv.h>
 
 #define DEFINE_VMAP()                                                 \
   virtual std::pair<std::vector<array>, std::vector<int>> vmap(       \
@@ -1575,18 +1576,9 @@ class TMACMatmul : public UnaryPrimitive {
   public:
    explicit TMACMatmul(
     Stream stream, 
-    int M, int K, int N,
-    int group_size,
-    int act_group_size,
-    int kfactor, int g,
-    int bm, int nbits, 
-    int n_threads) 
-    : UnaryPrimitive(stream),
-    M_(M), K_(K), N_(N),
-    group_size_(group_size),
-    act_group_size_(act_group_size),
-    kfactor_(kfactor), g_(g),
-    bm_(bm), nbits_(nbits), pool_(n_threads) {}
+    int n_threads, int act_group_size, const std::string& kcfg_file, const std::string& library_file,
+    int M, int K, int N, int group_size, int kfactor, int g, int bm, int nbits
+  );
  
    void eval_cpu(const std::vector<array>& inputs, array& out) override;
    void eval_gpu(const std::vector<array>& inputs, array& out) override {}
@@ -1600,19 +1592,35 @@ class TMACMatmul : public UnaryPrimitive {
      return std::make_tuple(group_size_, bm_, nbits_);
    }
 
-  private:
-   int M_;
-   int K_;
-   int N_;
-   int act_group_size_;
-   int group_size_;
-   int bm_;
-   int g_;
-   int kfactor_;
-   int nbits_;
+   
+private:
+   static TVMInternals* _tvm_internals;
+   static INIReader* _reader;
+   
+    void set_num_threads(int n_threads);
+    void set_workspace(int maxK, int maxN);
+    TMACGeMMConfig get_kcfg(int M, int K, int N, int bits);
+    std::string get_template_name(_fkey key);
 
-   ThreadPool pool_;
+    // workspace ptrs
+    void* _qlut;
+    void* _lut_scales;
+    void* _lut_biases;
+    bool _allocated;
+    std::mutex _m;
+
+    int M_;
+    int K_;
+    int N_;
+    int act_group_size_;
+    int group_size_;
+    int bm_;
+    int g_;
+    int kfactor_;
+    int nbits_;
+    int _n_threads;
  };
+
 
 class GatherQMM : public UnaryPrimitive {
  public:
