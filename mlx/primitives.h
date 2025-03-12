@@ -1591,14 +1591,13 @@ class TMACMatmul : public UnaryPrimitive {
    auto state() const {
      return std::make_tuple(group_size_, bm_, nbits_);
    }
-
    
 private:
    static TVMInternals* _tvm_internals;
    static INIReader* _reader;
    
     void set_num_threads(int n_threads);
-    void set_workspace(int maxK, int maxN);
+    void set_workspace(int maxM, int maxK, int maxN);
     TMACGeMMConfig get_kcfg(int M, int K, int N, int bits);
     std::string get_template_name(_fkey key);
 
@@ -1606,6 +1605,11 @@ private:
     void* _qlut;
     void* _lut_scales;
     void* _lut_biases;
+    void* A_t;      //> qweight.
+    void* Scales_t; //> scale.
+    void* B_t;      //> activation.
+    void* C_t;      //> output.
+
     bool _allocated;
     std::mutex _m;
 

@@ -42,57 +42,61 @@ int main() {
     // std::cout << "Scales_t : " << Scales_t << std::endl;
     // std::cout << "activation : " << activation << std::endl;
 
-    mx::array output = zeros({N, M}, mx::float16);
-    for (int i = 0; i < 10; ++i) {
-        eval(mx::tmac_gemv(
-            activation,
-            A_t,
-            Scales_t,
-            QLUT,
-            LUT_Scales,
-            LUT_Biases,
-            M, K, N,
-            group_size, 
-            act_group_size,
-            kfactor, g, bm, nbits,
-            n_threads,
-            mx::Device::cpu
-        ));
-    }
+    // mx::array output = zeros({N, M}, mx::float16);
+    // for (int i = 0; i < 10; ++i) {
+    //     eval(mx::tmac_gemv(
+    //         activation,
+    //         A_t,
+    //         Scales_t,
+    //         QLUT,
+    //         LUT_Scales,
+    //         LUT_Biases,
+    //         M, K, N,
+    //         group_size, 
+    //         act_group_size,
+    //         kfactor, g, bm, nbits,
+    //         n_threads,
+    //         mx::Device::cpu
+    //     ));
+    // }
 
-    auto start_time = time_now();
-    for (int i = 0; i < 100; ++i) {
-        eval(mx::tmac_gemv(
-            activation,
-            A_t,
-            Scales_t,
-            QLUT,
-            LUT_Scales,
-            LUT_Biases,
-            M, K, N,
-            group_size, 
-            act_group_size,
-            kfactor, g, bm, nbits,
-            n_threads,
-            mx::Device::cpu
-        ));
-    }
-    std::cout << "output : " << output << std::endl;
-    auto end_time = time_now();
-    std::cout << "tmac-gemv time: " << milliseconds(end_time - start_time) / 100 << " ms" << std::endl;
+    // auto start_time = time_now();
+    // for (int i = 0; i < 100; ++i) {
+    //     eval(mx::tmac_gemv(
+    //         activation,
+    //         A_t,
+    //         Scales_t,
+    //         QLUT,
+    //         LUT_Scales,
+    //         LUT_Biases,
+    //         M, K, N,
+    //         group_size, 
+    //         act_group_size,
+    //         kfactor, g, bm, nbits,
+    //         n_threads,
+    //         mx::Device::cpu
+    //     ));
+    // }
+    // std::cout << "output : " << output << std::endl;
+    // auto end_time = time_now();
+    // std::cout << "tmac-gemv time: " << milliseconds(end_time - start_time) / 100 << " ms" << std::endl;
 
-    // TIMEM(
-    //     "tmac-gemv",
-    //     mx::tmac_gemv,
-    //     activation,
-    //     A_t,
-    //     Scales_t,
-    //     M, K, N,
-    //     group_size,
-    //     act_group_size,
-    //     kfactor, g, bm, nbits,
-    //     mx::Device::cpu
-    // );
+    TIMEM(
+        "tmac-gemv",
+        mx::tmac_gemv,
+        activation,
+        A_t,
+        Scales_t,
+        QLUT,
+        LUT_Scales,
+        LUT_Biases,
+        M, K, N,
+        group_size, 
+        act_group_size,
+        kfactor, g, bm, nbits,
+        n_threads,
+        mx::Device::cpu
+    );
 
     return 0;
 }

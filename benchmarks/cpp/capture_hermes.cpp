@@ -43,6 +43,7 @@ int main() {
     mx::array c_ref = mx::matmul(a, b);
 
     auto compiled_result = compiled_fn(inputs)[0];
+    compiled_result.eval();
 
     std::stringstream ss;
     ss << "[";

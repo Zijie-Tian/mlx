@@ -31,6 +31,11 @@ struct TVMInternals {
     const tvm::runtime::PackedFunc* _config_threadpool;
     tvm::runtime::PackedFunc pf;
     tvm::runtime::PackedFunc qf;
+
+    DLTensor* A;
+    DLTensor* Scales;
+    DLTensor* B;
+    DLTensor* C;
 };
 
 struct TMACGeMMConfig {
@@ -115,190 +120,6 @@ tvm::runtime::PackedFunc get_function(TVMInternals* _tvm_internals, std::mutex& 
         return iter->second; // Get the function from the cache
     }
 }
-template <typename T, int g>
-TMACGeMMWrapper<T, g>::TMACGeMMWrapper(int n_threads, int act_group_size, const std::string& kcfg_file, const std::string& library_file)
-    : _n_threads(0),
-      _act_group_size(act_group_size),
-      _allocated(false),
-      _reader(get_kcfg_file(kcfg_file)) {
-    _tvm_internals = new TVMInternals();
-#ifdef TMAC_USE_SYSLIB
-    _tvm_internals -> _mod_lib = (*tvm::runtime::Registry::Get("runtime.SystemLib"))();
-#else
-    LOG(INFO) << "Loading kernels from: " << get_library_file(library_file);
-    _tvm_internals -> _mod_lib = tvm::runtime::Module::LoadFromFile(get_library_file(library_file));
-#endif
-    _tvm_internals -> _config_threadpool = tvm::runtime::Registry::Get("runtime.config_threadpool");
-    set_num_threads(n_threads);
-}
-
-template <typename T, int g>
-TMACGeMMWrapper<T, g>::~TMACGeMMWrapper() {
-    if (_allocated) {
-#if defined(_WIN32)
-        _aligned_free(_qlut);
-        _aligned_free(_lut_scales);
-        _aligned_free(_lut_biases);
-#else
-        free(_qlut);
-        free(_lut_scales);
-        free(_lut_biases);
-#endif
-    }
-}
-
-template <typename T, int g>
-void TMACGeMMWrapper<T, g>::set_num_threads(int n_threads) {
-    if (n_threads != _n_threads) {
-        _n_threads = n_threads;
-        (*(_tvm_internals -> _config_threadpool))(1, _n_threads);
-        int num_threads = (*tvm::runtime::Registry::Get("runtime.NumThreads"))();
-        LOG(INFO) << "NUM_THREADS: " << num_threads;
-    }
-}
-
-// template <typename T, int g>
-// void TMACGeMMWrapper<T, g>::run(DLTensor* A, DLTensor* scales, DLTensor* B, DLTensor* C, int M, int K, int N, int bits) {
-//     assert(_allocated);
-
-//     int64_t qlut_shape[3] = {N, K / g, (1 << g)};
-//     int64_t luts_shape[3] = {N, K / _act_group_size};
-
-//     const DLDevice cpu_dev = {
-//         /* .device_type = */ kDLCPU,
-//         /* .device_id   = */ 0,
-//     };
-//     const DLDataType int_dtype = {
-//         /* .code  = */ kDLInt,
-//         /* .bits  = */ 8,
-//         /* .lanes = */ 1,
-//     };
-//     const DLDataType float_dtype = {
-//         /* .code  = */ kDLFloat,
-//         /* .bits  = */ sizeof(T) * 8,
-//         /* .lanes = */ 1,
-//     };
-
-//     DLTensor QLUTt = {
-//         /* .data   = */ _qlut,
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 3,
-//         /* .dtype  = */ int_dtype,
-//         /* .shape  = */ qlut_shape,
-//     };
-//     DLTensor LUTSt = {
-//         /* .data   = */ _lut_scales,
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 2,
-//         /* .dtype  = */ float_dtype,
-//         /* .shape  = */ luts_shape,
-//     };
-//     DLTensor LUTBt = {
-//         /* .data   = */ _lut_biases,
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 2,
-//         /* .dtype  = */ float_dtype,
-//         /* .shape  = */ luts_shape,
-//     };
-
-//     tvm::runtime::PackedFunc pf = get_function(this -> _tvm_internals, {M, K, N, bits, 0});
-//     tvm::runtime::PackedFunc qf = get_function(this -> _tvm_internals, {M, K, N, bits, 1});
-
-//     // Currently the parallelism of preprocessor is disabled due to large thread communication overhead in `benchmark.cc`.
-//     // But according to profiled results of python side, the overhead is not that large and the best NUM_THREADS should be 4.
-//     // TODO: Find out the reason for the high communication overhead in C++ side.
-//     pf(B, &LUTSt, &LUTBt, &QLUTt);
-//     qf(A, &QLUTt, scales, &LUTSt, &LUTBt, C);
-// }
-
-template <typename T, int g>
-TMACGeMMConfig TMACGeMMWrapper<T, g>::get_kcfg(int M, int K, int N, int bits)
-{
-    // TODO: find a better way to find kcfg when _n_threads is unknown
-    const std::vector<int> n_threads_hints = {1, 4, 8, 12, 16};
-    std::string section;
-    int old_n_threads = _n_threads;
-    for (int n_threads : n_threads_hints) {
-        _n_threads = n_threads;
-        section = get_template_name({M, K, N, bits, 1});
-        std::cout << "section: " << section << std::endl;
-        if (_reader.Sections().count(section) > 0) {
-        break;
-        }
-    }
-    _n_threads = old_n_threads;
-
-    return {
-        /* .bm              = */ (int)_reader.GetInteger(section, "bm", 0),
-        /* .simd_n_in       = */ (int)_reader.GetInteger(section, "simd_n_in", 0),
-        /* .simd_n_out      = */ (int)_reader.GetInteger(section, "simd_n_out", 0),
-        /* .kfactor         = */ (int)_reader.GetInteger(section, "kfactor", 0),
-        /* .group_size      = */ (int)_reader.GetInteger(section, "group_size", 0),
-        /* .lut_scales_size = */ (int)_reader.GetInteger(section, "lut_scales_size", 0),
-        /* .scales_size     = */ (int)_reader.GetInteger(section, "scales_size", 0),
-        /* .n_tile_num      = */ (int)_reader.GetInteger(section, "n_tile_num", 0),
-    };
-}
-
-// Should only be called in main thread
-template <typename T, int g>
-void TMACGeMMWrapper<T, g>::set_workspace(int maxK, int maxN)
-{
-#if defined(_WIN32)
-    _qlut = _aligned_malloc(maxN * maxK / g * (1 << g) * sizeof(int8_t), kAllocAlignment);
-    _lut_scales = _aligned_malloc(maxN * maxK / _act_group_size * sizeof(T), kAllocAlignment);
-    _lut_biases = _aligned_malloc(maxN * maxK / _act_group_size * sizeof(T), kAllocAlignment);
-#else
-    posix_memalign(&_qlut, kAllocAlignment, maxN * maxK / g * (1 << g) * sizeof(int8_t));
-    posix_memalign(&_lut_scales, kAllocAlignment, maxN * maxK / _act_group_size * sizeof(T));
-    posix_memalign(&_lut_biases, kAllocAlignment, maxN * maxK / _act_group_size * sizeof(T));
-#endif
-    _allocated = true;
-}
-    
-
-
-template <typename T, int g>
-std::string TMACGeMMWrapper<T, g>::get_template_name(_fkey key)
-{
-    if (std::get<4>(key) != 0) {
-        return
-        std::string("qgemm_lut")
-            + "_t" + std::to_string(_n_threads)
-            + "_int8"
-            + "_m" + std::to_string(std::get<0>(key) * std::get<3>(key))
-            + "_k" + std::to_string(std::get<1>(key))
-            + "_n" + std::to_string(std::get<2>(key))
-            + "_b" + std::to_string(std::get<3>(key));
-    } else {
-        return
-        std::string("preprocessor")
-            + "_t" + std::to_string(_n_threads)
-            + "_int8"
-            + "_m" + std::to_string(std::get<0>(key) * std::get<3>(key))
-            + "_k" + std::to_string(std::get<1>(key))
-            + "_n" + std::to_string(std::get<2>(key))
-            + "_b" + std::to_string(std::get<3>(key));
-    }
-}
-
-// DLTensor* MLXArrayToDLTensor(const array& arr) {
-//     DLTensor* tensor = new DLTensor;
-    
-//     // 设置设备类型
-//     tensor->device = DLDevice{kDLCPU, 0};  // 假设数据在CPU
-    
-//     // 设置形状
-//     tensor->ndim = arr.ndim();
-//     tensor->shape = new int64_t[arr.ndim()];
-//     std::copy(arr.shape().begin(), arr.shape().end(), tensor->shape);
-    
-//     // 共享数据指针
-//     tensor->data = const_cast<void*>(arr.data<void>());
-    
-//     return tensor;
-// }
-
 
 TMACMatmul::TMACMatmul(
     Stream stream, 
@@ -308,6 +129,7 @@ TMACMatmul::TMACMatmul(
     M_(M), K_(K), N_(N), act_group_size_(act_group_size), group_size_(group_size), 
     bm_(bm), g_(g), kfactor_(kfactor), nbits_(nbits), _n_threads(n_threads) {
     
+    // auto start = std::chrono::high_resolution_clock::now();
     if (TMACMatmul::_tvm_internals == nullptr) {
         TMACMatmul::_tvm_internals = new TVMInternals();
 #ifdef TMAC_USE_SYSLIB
@@ -331,14 +153,28 @@ TMACMatmul::TMACMatmul(
                 this -> get_template_name({M_, K_, N_, nbits_, 1}),
                 {M_, K_, N_, nbits_, 1}
             );
+
+            int64_t A_shape[3] = {M_ * nbits_ / bm_, K_ / g_, bm_ / 2};
+            int64_t scales_shape[3] = {M_ * nbits_ / bm_, K_ / group_size_, bm_ / nbits_};
+            int64_t B_shape[3] = {N_, K_};
+            int64_t C_shape[3] = {N_, M_};
+            TVMArrayAlloc(B_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &(_tvm_internals -> B));
+            TVMArrayAlloc(A_shape, 3, kDLUInt, 8, 1, kDLCPU, 0, &(_tvm_internals -> A));
+            TVMArrayAlloc(scales_shape, 3, kDLFloat, 16, 1, kDLCPU, 0, &(_tvm_internals -> Scales));
+            TVMArrayAlloc(C_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &(_tvm_internals -> C));
+
+            // _tvm_internals -> A = nullptr;
+            // _tvm_internals -> Scales = nullptr;
+            // _tvm_internals -> B = nullptr;
+            // _tvm_internals -> C = nullptr;
     }
 
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
     }
-
-
-    this -> set_workspace(K_, N_);
+    this -> set_workspace(M_, K_, N_);
+    // auto end = std::chrono::high_resolution_clock::now();
+    // std::cout << "TMACMatmul init time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1e6 << " ms" << std::endl;
 }
 
 /**
@@ -350,41 +186,39 @@ TMACMatmul::TMACMatmul(
  * @param outputs           (outputs[0])    输出矩阵
  */
 void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
-    output.set_data(allocator::malloc_or_wait(output.nbytes()));
-    std::memset(output.data<void>(), 0, output.nbytes());
-    if (inputs[0].shape(-1) == 0 || inputs[1].shape(-1) == 0) {
-        //! Not Allocated.
-        return;
-    }
+    // output.set_data(allocator::malloc_or_wait(output.nbytes()));
+    // std::memset(output.data<void>(), 0, output.nbytes());
+    // if (inputs[0].shape(-1) == 0 || inputs[1].shape(-1) == 0) {
+    //     //! Not Allocated.
+    //     return;
+    // }
 
     // 修正缓冲区转换方式
-    auto activations_buf = inputs[0].data<float16_t>();
-    auto qweight_buf = inputs[1].data<uint8_t>();
-    auto scales_buf = inputs[2].data<float16_t>();
-    // auto qlut_buf = QLUT.data<uint8_t>();
-    // auto lut_scales_buf = LUT_Scales.data<float16_t>();
-    // auto lut_biases_buf = LUT_Biases.data<float16_t>();
-    auto output_buf = output.data<float16_t>();
+    // auto activations_buf = inputs[0].data<float16_t>();
+    // auto qweight_buf = inputs[1].data<uint8_t>();
+    // auto scales_buf = inputs[2].data<float16_t>();
+    // // auto qlut_buf = QLUT.data<uint8_t>();
+    // // auto lut_scales_buf = LUT_Scales.data<float16_t>();
+    // // auto lut_biases_buf = LUT_Biases.data<float16_t>();
+    // auto output_buf = output.data<float16_t>();
     
-    TMACGeMMConfig _config = this -> get_kcfg(
-        this -> M_,
-        this -> K_,
-        this -> N_,
-        this -> nbits_
-    );
+    // TMACGeMMConfig _config = this -> get_kcfg(
+    //     this -> M_,
+    //     this -> K_,
+    //     this -> N_,
+    //     this -> nbits_
+    // );
 
     // std::cout << _config << std::endl;
-
-    assert(_allocated);
 
     //! =========================================================================================================================
 
     int ngroups_per_elem = 8 / g_;
 
-    // int64_t A_shape[3] = {M_ / bm_, K_, bm_ / ngroups_per_elem};
-    // int64_t Scales_shape[3] = {M_ / bm_, K_ / group_size_, bm_ / nbits_};
-    // int64_t activations_shape[2] = {N_, K_};
-    // int64_t output_shape[2] = {N_, M_};
+    int64_t A_shape[3] = {M_ / bm_, K_, bm_ / ngroups_per_elem};
+    int64_t Scales_shape[3] = {M_ / bm_, K_ / group_size_, bm_ / nbits_};
+    int64_t activations_shape[2] = {N_, K_};
+    int64_t output_shape[2] = {N_, M_};
     int64_t qlut_shape[3] = {N_, K_ / g_, (1 << g_)};
     int64_t luts_shape[3] = {N_, K_ / act_group_size_};
 
@@ -446,51 +280,74 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     //     std::cout << std::endl;
     // }
 
-    void* _qlut = nullptr;
-    void* _lut_scales = nullptr;
-    void* _lut_biases = nullptr;
+    // void* _qlut = nullptr;
+    // void* _lut_scales = nullptr;
+    // void* _lut_biases = nullptr;
 
-    posix_memalign(&_qlut, kAllocAlignment, N_ * K_ / g_ * (1 << g_) * sizeof(int8_t));
-    posix_memalign(&_lut_scales, kAllocAlignment, N_ * K_ / act_group_size_ * sizeof(float16_t));
-    posix_memalign(&_lut_biases, kAllocAlignment, N_ * K_ / act_group_size_ * sizeof(float16_t));
+    // posix_memalign(&_qlut, kAllocAlignment, N_ * K_ / g_ * (1 << g_) * sizeof(int8_t));
+    // posix_memalign(&_lut_scales, kAllocAlignment, N_ * K_ / act_group_size_ * sizeof(float16_t));
+    // posix_memalign(&_lut_biases, kAllocAlignment, N_ * K_ / act_group_size_ * sizeof(float16_t));
 
 
-    // TODO : This void* pointer should be allocated by the caller.
+    // // TODO : This void* pointer should be allocated by the caller.
+    // DLTensor A = {
+    //     /*.data   = */ this -> A_t,
+    //     /*.device = */ cpu_dev,
+    //     /*.ndim   = */ 3,
+    //     /*.dtype  = */ int_dtype,
+    //     /*.shape  = */ A_shape,
+    // };
+
+    // DLTensor Scales = {
+    //     /*.data   = */ this -> Scales_t,
+    //     /*.device = */ cpu_dev,
+    //     /*.ndim   = */ 3,
+    //     /*.dtype  = */ float_dtype,
+    //     /*.shape  = */ Scales_shape,
+    // };
+    
+    // DLTensor B = {
+    //     /*.data   = */ this -> B_t,
+    //     /*.device = */ cpu_dev,
+    //     /*.ndim   = */ 2,
+    //     /*.dtype  = */ float_dtype,
+    //     /*.shape  = */ activations_shape,
+    // };
+
+    // DLTensor C = {
+    //     /*.data   = */ this -> C_t,
+    //     /*.device = */ cpu_dev,
+    //     /*.ndim   = */ 2,
+    //     /*.dtype  = */ float_dtype,
+    //     /*.shape  = */ output_shape,
+    // };
+
     DLTensor QLUTt = {
-        /* .data   = */ _qlut,
+        /* .data   = */ this -> _qlut,
         /* .device = */ cpu_dev,
         /* .ndim   = */ 3,
         /* .dtype  = */ int_dtype,
         /* .shape  = */ qlut_shape,
     };
     DLTensor LUTSt = {
-        /* .data   = */ _lut_scales,
+        /* .data   = */ this -> _lut_scales,
         /* .device = */ cpu_dev,
         /* .ndim   = */ 2,
         /* .dtype  = */ float_dtype,
         /* .shape  = */ luts_shape,
     };
     DLTensor LUTBt = {
-        /* .data   = */ _lut_biases,
+        /* .data   = */ this -> _lut_biases,
         /* .device = */ cpu_dev,
         /* .ndim   = */ 2,
         /* .dtype  = */ float_dtype,
         /* .shape  = */ luts_shape,
     };
 
-    DLTensor* A;
-    DLTensor* Scales;
-    DLTensor* B;
-    DLTensor* C;
-  
-    int64_t A_shape[3] = {M_ * nbits_ / bm_, K_ / g_, bm_ / 2};
-    int64_t scales_shape[3] = {M_ * nbits_ / bm_, K_ / group_size_, bm_ / nbits_};
-    int64_t B_shape[3] = {N_, K_};
-    int64_t C_shape[3] = {N_, M_};
-    TVMArrayAlloc(B_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &B);
-    TVMArrayAlloc(A_shape, 3, kDLUInt, 8, 1, kDLCPU, 0, &A);
-    TVMArrayAlloc(scales_shape, 3, kDLFloat, 16, 1, kDLCPU, 0, &Scales);
-    TVMArrayAlloc(C_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &C);
+    // DLTensor* A;
+    // DLTensor* Scales;
+    // DLTensor* B;
+    // DLTensor* C;
 
     // tvm::runtime::PackedFunc pf = get_function(
     //     TMACMatmul::_tvm_internals,
@@ -508,15 +365,15 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     // Currently the parallelism of preprocessor is disabled due to large thread communication overhead in `benchmark.cc`.
     // But according to profiled results of python side, the overhead is not that large and the best NUM_THREADS should be 4.
     // TODO: Find out the reason for the high communication overhead in C++ side.
-    for (int i = 0; i < 100; i++) {
         // 修改前：
         // (_tvm_internals -> pf)(B, &LUTSt, &LUTBt, &QLUTt);
         // (_tvm_internals -> qf)(A, &QLUTt, Scales, &LUTSt, &LUTBt, C);
         
         // 修改后：
-        // (_tvm_internals -> pf)(B, &LUTSt, &LUTBt, &QLUTt);
-        // (_tvm_internals -> qf)(A, &QLUTt, Scales, &LUTSt, &LUTBt, C);
-    }
+    (_tvm_internals -> pf)(_tvm_internals -> B, &LUTSt, &LUTBt, &QLUTt);
+    (_tvm_internals -> qf)(_tvm_internals -> A, &QLUTt, _tvm_internals -> Scales, &LUTSt, &LUTBt, _tvm_internals -> C);
+    // (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
+    // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
 }
 
 std::string TMACMatmul::get_template_name(_fkey key)
@@ -570,13 +427,22 @@ TMACGeMMConfig TMACMatmul::get_kcfg(int M, int K, int N, int bits)
 }
 
 // Should only be called in main thread
-void TMACMatmul::set_workspace(int maxK, int maxN)
+void TMACMatmul::set_workspace(int maxM, int maxK, int maxN)
 {
+    int ngroups_per_elem = 8 / g_;
 #if defined(_WIN32)
+    // A_t = _aligned_malloc(maxM / bm_ * maxK / g_ * bm_ / ngroups_per_elem * sizeof(uint8_t), kAllocAlignment);
+    // Scales_t = _aligned_malloc(maxM / bm_ * maxK / group_size_ * bm_ / nbits_ * sizeof(float16_t), kAllocAlignment);
+    // B_t = _aligned_malloc(maxN * maxK * sizeof(float16_t), kAllocAlignment);
+    // C_t = _aligned_malloc(maxN * maxM * sizeof(float16_t), kAllocAlignment);
     _qlut = _aligned_malloc(maxN * maxK / g_ * (1 << g_) * sizeof(int8_t), kAllocAlignment);
     _lut_scales = _aligned_malloc(maxN * maxK / act_group_size_ * sizeof(float16_t), kAllocAlignment);
     _lut_biases = _aligned_malloc(maxN * maxK / act_group_size_ * sizeof(float16_t), kAllocAlignment);
 #else
+    // posix_memalign(&A_t, kAllocAlignment, maxM / bm_ * maxK / g_ * bm_ / ngroups_per_elem * sizeof(uint8_t));
+    // posix_memalign(&Scales_t, kAllocAlignment, maxM / bm_ * maxK / group_size_ * bm_ / nbits_ * sizeof(float16_t));
+    // posix_memalign(&B_t, kAllocAlignment, maxN * maxK * sizeof(float16_t));
+    // posix_memalign(&C_t, kAllocAlignment, maxN * maxM * sizeof(float16_t));
     posix_memalign(&_qlut, kAllocAlignment, maxN * maxK / g_ * (1 << g_) * sizeof(int8_t));
     posix_memalign(&_lut_scales, kAllocAlignment, maxN * maxK / act_group_size_ * sizeof(float16_t));
     posix_memalign(&_lut_biases, kAllocAlignment, maxN * maxK / act_group_size_ * sizeof(float16_t));
@@ -596,7 +462,7 @@ void TMACMatmul::set_num_threads(int n_threads) {
 
 // template class TMACGeMMWrapper<float, 4>;
 // 取消注释并添加half类型的实例化
-template class TMACGeMMWrapper<float16_t, 4>;
+// template class TMACGeMMWrapper<float16_t, 4>;
 // template class TMACGeMMWrapper<half, 4>;  // 新增half类型实例化
 
 // Initialize the static member variable

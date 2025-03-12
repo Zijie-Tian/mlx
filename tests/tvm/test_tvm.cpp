@@ -34,9 +34,9 @@ int main(int argc, char** argv)
   TVMArrayAlloc(scales_shape, 3, kDLFloat, 16, 1, kDLCPU, 0, &scales);
   TVMArrayAlloc(C_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &C);
 
-  // for (int i = 0; i < warmup; i++) {
-  //   gemm.run(A, scales, B, C, M, K, N, bits);
-  // }
+  for (int i = 0; i < warmup; i++) {
+    gemm.run(A, scales, B, C, M, K, N, bits);
+  }
 
   auto start = std::chrono::system_clock::now();
   for (int i = 0; i < repeat; i++) {
@@ -44,6 +44,24 @@ int main(int argc, char** argv)
   }
   auto end = std::chrono::system_clock::now();
   double lat = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()) / repeat / 1000;
+
+  LOG(INFO) << "Avg: " << lat << " ms";
+
+  DLTensor* A_e;
+  DLTensor* scales_e;
+  DLTensor* B_e;
+  DLTensor* C_e;
+  TVMArrayAlloc(B_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &B_e);
+  TVMArrayAlloc(A_shape, 3, kDLUInt, 8, 1, kDLCPU, 0, &A_e);
+  TVMArrayAlloc(scales_shape, 3, kDLFloat, 16, 1, kDLCPU, 0, &scales_e);
+  TVMArrayAlloc(C_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &C_e);
+
+  start = std::chrono::system_clock::now();
+  for (int i = 0; i < repeat; i++) {
+    gemm.run(A_e, scales_e, B_e, C_e, M, K, N, bits);
+  }
+  end = std::chrono::system_clock::now();
+  lat = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()) / repeat / 1000;
 
   // double lat = 10000;
   // for (int r = 0; r < 100; r++) {

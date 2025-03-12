@@ -14,10 +14,9 @@ namespace mx = mlx::core;
 
 int main() {
     // 创建输入数据
-    int M = 6400;
+    int M = 8640 * 2;
     int K = 3200;
     int N = 1;
-    int M_down = M / 2;
 
     // TMAC Paramter
     int nbits = 2;
@@ -70,8 +69,10 @@ int main() {
         return std::vector<mx::array>{c};
     };
 
-    mx::array a_up = mx::random::uniform({M / 2, K});
+    mx::array a_up = mx::random::uniform({1024, K});
     // mx::array a_down = mx::random::uniform({M / 2, K});
+
+    int M_down = 8640;
 
     int ngroups_per_elem = 8 / g;
     mx::array a_down_t = mx::random::randint(0, 255, {M_down / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
@@ -125,7 +126,7 @@ int main() {
 
     // 性能测试（需要调整TIME宏调用方式）
     // TODO : Fix Segmentation Fault Error when calling TIME.
-    // TIMEM("compile", compiled_fn, inputs);
+    TIMEM("compile", compiled_fn, inputs);
     auto start_time = time_now();
     for (int i = 0; i < 1000; ++i) {
         compiled_result = compiled_fn(inputs)[0];
