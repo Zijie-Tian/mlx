@@ -39,7 +39,6 @@ def quantize(
         if bool_or_params := class_predicate(path, m):
             if hasattr(m, "to_quantized"):
                 if isinstance(bool_or_params, bool):
-                    print(f"Quantizing {m}")
                     return m.to_quantized(group_size=group_size, bits=bits)
                 elif isinstance(bool_or_params, dict):
                     return m.to_quantized(**bool_or_params)
@@ -453,11 +452,9 @@ class TMACQuantizedLinear(Module):
         self.freeze(recurse=False)
 
     def _extra_repr(self):
-        out_dims, in_dims = self.weight.shape
-        in_dims *= 32 // self.bits
         return (
-            f"input_dims={in_dims}, output_dims={out_dims}, bias={'bias' in self}, "
-            f"group_size={self.group_size}, bits={self.bits}"
+            f"M={self.M}, K={self.K}, N={self.N}, n_thread={self.n_threads}, "
+            f"group_size={self.group_size}, bits={self.nbits}"
         )
 
     def dequantize(self):

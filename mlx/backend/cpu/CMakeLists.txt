@@ -134,6 +134,7 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/cholesky.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/unary.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/tmac_gemv.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/embedding.cpp
           ${CMAKE_CURRENT_BINARY_DIR}/compiled_preamble.cpp)
 
 set(MLX_BUILD_TMAC TRUE)

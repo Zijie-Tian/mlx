@@ -127,6 +127,7 @@ NO_GPU(Cholesky)
 NO_GPU_MULTI(Eigh)
 NO_GPU(View)
 NO_GPU(TMACMatmul) //Added by Zijie Tian
+NO_GPU(Embedding) //Added by Zijie Tian
 
 namespace fast {
 NO_GPU_MULTI(LayerNorm)

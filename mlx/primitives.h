@@ -1579,6 +1579,7 @@ class TMACMatmul : public UnaryPrimitive {
     int n_threads, int act_group_size, const std::string& kcfg_file, const std::string& library_file,
     int M, int K, int N, int group_size, int kfactor, int g, int bm, int nbits
   );
+  ~TMACMatmul();
  
    void eval_cpu(const std::vector<array>& inputs, array& out) override;
    void eval_gpu(const std::vector<array>& inputs, array& out) override {}
@@ -1605,10 +1606,6 @@ private:
     void* _qlut;
     void* _lut_scales;
     void* _lut_biases;
-    void* A_t;      //> qweight.
-    void* Scales_t; //> scale.
-    void* B_t;      //> activation.
-    void* C_t;      //> output.
 
     bool _allocated;
     std::mutex _m;
@@ -2436,5 +2433,36 @@ class LUF : public Primitive {
 
   DEFINE_PRINT(LUF)
 };
+
+class Embedding : public UnaryPrimitive {
+  public:
+   explicit Embedding(
+    Stream stream, 
+    int num_embeddings, int hidden_dim
+  );
+  ~Embedding();
+ 
+   void eval_cpu(const std::vector<array>& inputs, array& out) override;
+   // TODO need to implement GPU version
+   void eval_gpu(const std::vector<array>& inputs, array& out) override {}
+ 
+   DEFINE_GRADS()
+   DEFINE_VMAP()
+   DEFINE_PRINT(Embedding)
+   DEFINE_DEFAULT_IS_EQUIVALENT()
+   std::vector<Shape> output_shapes(const std::vector<array>& inputs) override;
+   auto state() const {
+     return std::make_tuple(num_embeddings, dims);
+   }
+   
+private:
+  int num_embeddings;
+  int dims;
+  bool aligned;
+
+  void neon_memcpy(float* dest, const float* src, size_t n) const;
+
+ };
+
 
 } // namespace mlx::core

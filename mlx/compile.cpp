@@ -321,7 +321,7 @@ std::pair<std::vector<array>, ParentsMap> compile_dfs(
     original_input_set.insert(original_inputs[i].id());
   }
 
-  // DFS the graph to build the tape, and log parents and scalars
+  //> DFS the graph to build the tape, and log parents and scalars
   std::unordered_set<std::uintptr_t> cache;
   recurse = [&](const array& a) {
     auto id = a.id();
@@ -341,7 +341,7 @@ std::pair<std::vector<array>, ParentsMap> compile_dfs(
       // Don't recurse on inputs (but add them to the tape for the purpose
       // of future optimizations)
       if (input_set.find(a.id()) == input_set.end()) {
-        recurse(in);
+        recurse(in); //> Call itself recursively
       }
     }
     cache.insert(id);
@@ -846,12 +846,14 @@ std::function<std::vector<array>(const std::vector<array>&)> compile(
         "[compile] Cannot compile a function without a target.");
   }
 
+  //> Here Returns function which is called as copiled_func.
   return [fun = std::move(fun),
           fun_id,
           shapeless,
           constants = std::move(constants)](const std::vector<array>& inputs) {
     // If the inputs are tracers, trace the original graph
     if (std::any_of(inputs.begin(), inputs.end(), [](auto& in) {
+          //> Check is all inputs are traced.
           return in.is_tracer();
         })) {
       return fun(inputs);
@@ -870,7 +872,7 @@ std::function<std::vector<array>(const std::vector<array>&)> compile(
       std::tie(entry.inputs, entry.outputs) =
           compile_trace(fun, inputs, shapeless);
 
-      // DFS the graph and get a tape, and a map of array id to (parent,
+      //> DFS the graph and get a tape, and a map of array id to (parent,
       // position in parent inputs)
       std::unordered_map<uintptr_t, std::vector<std::pair<array, int>>>
           parents_map;
@@ -923,6 +925,7 @@ std::function<std::vector<array>(const std::vector<array>&)> compile(
         std::function<std::vector<array>(const std::vector<array>&)>>(
         new std::function<std::vector<array>(const std::vector<array>&)>{fun},
         [](auto* p) {
+          //! Delete the function `p` and erase the cache entry
           detail::compile_erase(reinterpret_cast<std::uintptr_t>(p));
           delete p;
         });

@@ -5035,4 +5035,25 @@ array tmac_gemv(
       ), {acivation, qweight_qvals, Scales});
 }
 
+array embedding(
+    const array& indices,
+    const array& weight,
+    const int& padding_idx,
+    const bool& scale_grad_by_freq,
+    const bool& sparse,
+    StreamOrDevice s /* = {} */) {
+  int num_indices = indices.shape(0);
+  int num_embeddings = weight.shape(0);
+  int embedding_dim = weight.shape(1);
+
+  return array(
+      Shape{num_indices, embedding_dim},
+      weight.dtype(),
+      std::make_shared<Embedding>(
+        to_stream(s),
+        num_embeddings, 
+        embedding_dim
+      ), {weight, indices});
+}
+
 } // namespace mlx::core

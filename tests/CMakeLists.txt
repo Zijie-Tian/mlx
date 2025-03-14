@@ -39,3 +39,6 @@ target_sources(
 target_link_libraries(tests PRIVATE mlx doctest)
 doctest_discover_tests(tests)
 add_test(NAME tests COMMAND tests)
+
+
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/compile)

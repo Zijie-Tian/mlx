@@ -5007,6 +5007,8 @@ bool Hadamard::is_equivalent(const Primitive& other) const {
   return scale_ == h_other.scale_;
 }
 
+//! ================== Bellow implementations are NOT SECURITY ===================
+
 std::vector<array> TMACMatmul::vjp(
   const std::vector<array>& primals,
   const std::vector<array>& cotangents,
@@ -5037,6 +5039,37 @@ std::vector<Shape> TMACMatmul::output_shapes(
     const std::vector<array>& inputs) {
   Shape shape(this -> M_, this -> N_);
   return {shape};
+}
+
+std::vector<array> Embedding::vjp(
+  const std::vector<array>& primals,
+  const std::vector<array>& cotangents,
+  const std::vector<int>& argnums,
+  const std::vector<array>&) {
+  std::vector<array> vjps = {};
+  return vjps;
+}
+
+std::vector<array> Embedding::jvp(
+  const std::vector<array>& primals,
+  const std::vector<array>& tangents,
+  const std::vector<int>& argnums) {
+  if (argnums.size() > 1 || argnums[0] != 0) {
+    throw std::runtime_error(
+        "[Embedding::jvp] No JVP wrt the quantized matrix yet.");
+  }
+  return {tangents[0]};
+}
+
+std::pair<std::vector<array>, std::vector<int>> Embedding::vmap(
+  const std::vector<array>& inputs,
+  const std::vector<int>& axes) {
+  return {};
+}
+
+std::vector<Shape> Embedding::output_shapes(
+    const std::vector<array>& inputs) {
+  return {};
 }
 
 } // namespace mlx::core

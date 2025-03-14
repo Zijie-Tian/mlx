@@ -31,11 +31,6 @@ struct TVMInternals {
     const tvm::runtime::PackedFunc* _config_threadpool;
     tvm::runtime::PackedFunc pf;
     tvm::runtime::PackedFunc qf;
-
-    DLTensor* A;
-    DLTensor* Scales;
-    DLTensor* B;
-    DLTensor* C;
 };
 
 struct TMACGeMMConfig {
@@ -129,7 +124,6 @@ TMACMatmul::TMACMatmul(
     M_(M), K_(K), N_(N), act_group_size_(act_group_size), group_size_(group_size), 
     bm_(bm), g_(g), kfactor_(kfactor), nbits_(nbits), _n_threads(n_threads) {
     
-    // auto start = std::chrono::high_resolution_clock::now();
     if (TMACMatmul::_tvm_internals == nullptr) {
         TMACMatmul::_tvm_internals = new TVMInternals();
 #ifdef TMAC_USE_SYSLIB
@@ -153,28 +147,18 @@ TMACMatmul::TMACMatmul(
                 this -> get_template_name({M_, K_, N_, nbits_, 1}),
                 {M_, K_, N_, nbits_, 1}
             );
-
-            int64_t A_shape[3] = {M_ * nbits_ / bm_, K_ / g_, bm_ / 2};
-            int64_t scales_shape[3] = {M_ * nbits_ / bm_, K_ / group_size_, bm_ / nbits_};
-            int64_t B_shape[3] = {N_, K_};
-            int64_t C_shape[3] = {N_, M_};
-            TVMArrayAlloc(B_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &(_tvm_internals -> B));
-            TVMArrayAlloc(A_shape, 3, kDLUInt, 8, 1, kDLCPU, 0, &(_tvm_internals -> A));
-            TVMArrayAlloc(scales_shape, 3, kDLFloat, 16, 1, kDLCPU, 0, &(_tvm_internals -> Scales));
-            TVMArrayAlloc(C_shape, 2, kDLFloat, 16, 1, kDLCPU, 0, &(_tvm_internals -> C));
-
-            // _tvm_internals -> A = nullptr;
-            // _tvm_internals -> Scales = nullptr;
-            // _tvm_internals -> B = nullptr;
-            // _tvm_internals -> C = nullptr;
     }
 
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
     }
     this -> set_workspace(M_, K_, N_);
-    // auto end = std::chrono::high_resolution_clock::now();
-    // std::cout << "TMACMatmul init time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1e6 << " ms" << std::endl;
+}
+
+TMACMatmul::~TMACMatmul() {
+    free(this -> _qlut);
+    free(this -> _lut_scales);
+    free(this -> _lut_biases);
 }
 
 /**
@@ -186,30 +170,20 @@ TMACMatmul::TMACMatmul(
  * @param outputs           (outputs[0])    输出矩阵
  */
 void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
-    // output.set_data(allocator::malloc_or_wait(output.nbytes()));
-    // std::memset(output.data<void>(), 0, output.nbytes());
-    // if (inputs[0].shape(-1) == 0 || inputs[1].shape(-1) == 0) {
-    //     //! Not Allocated.
-    //     return;
-    // }
+    output.set_data(allocator::malloc_or_wait(output.nbytes()));
+    std::memset(output.data<void>(), 0, output.nbytes());
+    if (inputs[0].shape(-1) == 0 || inputs[1].shape(-1) == 0) {
+        //! Not Allocated.
+        return;
+    }
 
     // 修正缓冲区转换方式
-    // auto activations_buf = inputs[0].data<float16_t>();
-    // auto qweight_buf = inputs[1].data<uint8_t>();
-    // auto scales_buf = inputs[2].data<float16_t>();
-    // // auto qlut_buf = QLUT.data<uint8_t>();
-    // // auto lut_scales_buf = LUT_Scales.data<float16_t>();
-    // // auto lut_biases_buf = LUT_Biases.data<float16_t>();
-    // auto output_buf = output.data<float16_t>();
-    
-    // TMACGeMMConfig _config = this -> get_kcfg(
-    //     this -> M_,
-    //     this -> K_,
-    //     this -> N_,
-    //     this -> nbits_
-    // );
+    auto activations_buf = inputs[0].data<float16_t>();
+    auto qweight_buf = inputs[1].data<uint8_t>();
+    auto scales_buf = inputs[2].data<float16_t>();
+    auto output_buf = output.data<float16_t>();
 
-    // std::cout << _config << std::endl;
+    assert(_allocated);
 
     //! =========================================================================================================================
 
@@ -237,90 +211,37 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         /* .lanes = */ 1,
     };
 
-    // DLTensor B = {
-    //     /*.data   = */ (void *)activations_buf,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 2,
-    //     /*.dtype  = */ float_dtype,
-    //     /*.shape  = */ activations_shape,
-    // };
+    DLTensor B = {
+        /*.data   = */ (void *)activations_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 2,
+        /*.dtype  = */ float_dtype,
+        /*.shape  = */ activations_shape,
+    };
 
-    // DLTensor A = {
-    //     /*.data   = */ (void *)qweight_buf,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 3,
-    //     /*.dtype  = */ int_dtype,
-    //     /*.shape  = */ A_shape,
-    // };
+    DLTensor A = {
+        /*.data   = */ (void *)qweight_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 3,
+        /*.dtype  = */ int_dtype,
+        /*.shape  = */ A_shape,
+    };
 
-    // DLTensor Scales = {
-    //     /*.data   = */ (void *)scales_buf,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 3,
-    //     /*.dtype  = */ float_dtype,
-    //     /*.shape  = */ Scales_shape,
-    // };
+    DLTensor Scales = {
+        /*.data   = */ (void *)scales_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 3,
+        /*.dtype  = */ float_dtype,
+        /*.shape  = */ Scales_shape,
+    };
     
-    // DLTensor C = {
-    //     /*.data   = */ (void *)output_buf,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 2,
-    //     /*.dtype  = */ float_dtype,
-    //     /*.shape  = */ output_shape,
-    // };
-
-    // Print the data of tensor B
-    // std::cout << "Data of tensor B:" << std::endl;
-    // for (int i = 0; i < B.shape[0]; ++i) {
-    //     for (int j = 0; j < B.shape[1]; ++j) {
-    //         size_t index = i * B.shape[1] + j;
-    //         float16_t* data_ptr = static_cast<float16_t*>(B.data);
-    //         std::cout << static_cast<float>(data_ptr[index]) << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    // void* _qlut = nullptr;
-    // void* _lut_scales = nullptr;
-    // void* _lut_biases = nullptr;
-
-    // posix_memalign(&_qlut, kAllocAlignment, N_ * K_ / g_ * (1 << g_) * sizeof(int8_t));
-    // posix_memalign(&_lut_scales, kAllocAlignment, N_ * K_ / act_group_size_ * sizeof(float16_t));
-    // posix_memalign(&_lut_biases, kAllocAlignment, N_ * K_ / act_group_size_ * sizeof(float16_t));
-
-
-    // // TODO : This void* pointer should be allocated by the caller.
-    // DLTensor A = {
-    //     /*.data   = */ this -> A_t,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 3,
-    //     /*.dtype  = */ int_dtype,
-    //     /*.shape  = */ A_shape,
-    // };
-
-    // DLTensor Scales = {
-    //     /*.data   = */ this -> Scales_t,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 3,
-    //     /*.dtype  = */ float_dtype,
-    //     /*.shape  = */ Scales_shape,
-    // };
-    
-    // DLTensor B = {
-    //     /*.data   = */ this -> B_t,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 2,
-    //     /*.dtype  = */ float_dtype,
-    //     /*.shape  = */ activations_shape,
-    // };
-
-    // DLTensor C = {
-    //     /*.data   = */ this -> C_t,
-    //     /*.device = */ cpu_dev,
-    //     /*.ndim   = */ 2,
-    //     /*.dtype  = */ float_dtype,
-    //     /*.shape  = */ output_shape,
-    // };
+    DLTensor C = {
+        /*.data   = */ (void *)output_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 2,
+        /*.dtype  = */ float_dtype,
+        /*.shape  = */ output_shape,
+    };
 
     DLTensor QLUTt = {
         /* .data   = */ this -> _qlut,
@@ -344,36 +265,10 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         /* .shape  = */ luts_shape,
     };
 
-    // DLTensor* A;
-    // DLTensor* Scales;
-    // DLTensor* B;
-    // DLTensor* C;
-
-    // tvm::runtime::PackedFunc pf = get_function(
-    //     TMACMatmul::_tvm_internals,
-    //     this -> _m, 
-    //     this -> get_template_name({M_, K_, N_, nbits_, 0}),
-    //     {M_, K_, N_, nbits_, 0}
-    // );
-    // tvm::runtime::PackedFunc qf = get_function(
-    //     TMACMatmul::_tvm_internals, 
-    //     this -> _m, 
-    //     this -> get_template_name({M_, K_, N_, nbits_, 1}),
-    //     {M_, K_, N_, nbits_, 1}
-    // );
-
-    // Currently the parallelism of preprocessor is disabled due to large thread communication overhead in `benchmark.cc`.
-    // But according to profiled results of python side, the overhead is not that large and the best NUM_THREADS should be 4.
-    // TODO: Find out the reason for the high communication overhead in C++ side.
-        // 修改前：
-        // (_tvm_internals -> pf)(B, &LUTSt, &LUTBt, &QLUTt);
-        // (_tvm_internals -> qf)(A, &QLUTt, Scales, &LUTSt, &LUTBt, C);
-        
-        // 修改后：
-    (_tvm_internals -> pf)(_tvm_internals -> B, &LUTSt, &LUTBt, &QLUTt);
-    (_tvm_internals -> qf)(_tvm_internals -> A, &QLUTt, _tvm_internals -> Scales, &LUTSt, &LUTBt, _tvm_internals -> C);
-    // (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
-    // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
+    // (_tvm_internals -> pf)(_tvm_internals -> B, &LUTSt, &LUTBt, &QLUTt);
+    // (_tvm_internals -> qf)(_tvm_internals -> A, &QLUTt, _tvm_internals -> Scales, &LUTSt, &LUTBt, _tvm_internals -> C);
+    (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
+    (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
 }
 
 std::string TMACMatmul::get_template_name(_fkey key)
