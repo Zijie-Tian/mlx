@@ -9,3 +9,4 @@ endfunction(build_executable)
 # 调用函数来编译多个源文件
 build_executable(test_compile.cpp)
 build_executable(test_tmac_compile.cpp)
+build_executable(test_simple.cpp)

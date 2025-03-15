@@ -80,7 +80,7 @@ array eval_impl(std::vector<array> outputs, bool async) {
 
         // Ignore arrays already scheduled
         if (in.status() == array::Status::scheduled) {
-          continue;
+          continue; //! Tensor which called eval but not execute.
         }
 
         if (in.status() == array::Status::unscheduled) {
@@ -183,6 +183,7 @@ array eval_impl(std::vector<array> outputs, bool async) {
     auto arr = std::move(tape.back());
     tape.pop_back();
 
+    //! Get the stream which the array is scheduled on
     auto stream = arr.primitive().stream();
 
     // Lookup corresponding event and increment counter
@@ -199,7 +200,7 @@ array eval_impl(std::vector<array> outputs, bool async) {
     // Set the status of the array and siblings.
     arr.set_status(array::Status::scheduled);
     for (auto& s : arr.siblings()) {
-      s.set_status(array::Status::scheduled);
+      s.set_status(array::Status::scheduled); // NOTE: siblings are ONLY used for MIMO op.
     }
 
     std::vector<std::shared_future<void>> arr_deps;

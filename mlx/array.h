@@ -502,6 +502,7 @@ class array {
     void init();
   };
 
+  //! NOTE This is Tensor meta_data.
   // The ArrayDesc contains the details of the materialized array including the
   // shape, strides, the data type. It also includes
   // the primitive which knows how to compute the array's data from its inputs

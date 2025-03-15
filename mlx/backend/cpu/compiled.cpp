@@ -367,7 +367,7 @@ void Compiled::eval_cpu(
     args.push_back((void*)outputs[0].data_size());
   }
   auto fun = (void (*)(void**))fn_ptr;
-  fun(args.data());
+  fun(args.data());     //! Calling function.
 }
 
 } // namespace mlx::core

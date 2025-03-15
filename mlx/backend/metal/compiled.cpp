@@ -1,6 +1,7 @@
 // Copyright © 2023-2024 Apple Inc.
 #include <fmt/format.h>
 #include <sstream>
+#include <iostream>
 
 #include "mlx/backend/common/compiled.h"
 #include "mlx/backend/common/utils.h"
@@ -348,6 +349,7 @@ void Compiled::eval_gpu(
         /* dynamic_dims = */ true,
         /* use_big_index = */ true,
         /* work_per_thread = */ 4);
+    std::cout << kernel << std::endl;
     return kernel;
   });
 

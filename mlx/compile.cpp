@@ -298,6 +298,7 @@ std::pair<std::vector<array>, std::vector<array>> compile_trace(
   // to get compute graph
   std::vector<array> tracer_inputs;
   for (int i = 0; i < inputs.size(); ++i) {
+    //> Set some placeholder inputs. (Just have some meta data.)
     array in(inputs[i].shape(), inputs[i].dtype(), nullptr, {});
     in.set_tracer(true);
     tracer_inputs.push_back(std::move(in));
@@ -332,11 +333,12 @@ std::pair<std::vector<array>, ParentsMap> compile_dfs(
     if (cache.find(id) != cache.end()) {
       return;
     }
+    //! IF not directly connect, then recurse on the inputs.
     for (int i = 0; i < a.inputs().size(); i++) {
       auto& in = a.inputs()[i];
       parents_map[in.id()].push_back({a, i});
       for (auto& s : a.siblings()) {
-        parents_map[in.id()].push_back({s, i});
+        parents_map[in.id()].push_back({s, i}); //! Add backtrace ptr to specific node.
       }
       // Don't recurse on inputs (but add them to the tape for the purpose
       // of future optimizations)
@@ -344,14 +346,15 @@ std::pair<std::vector<array>, ParentsMap> compile_dfs(
         recurse(in); //> Call itself recursively
       }
     }
+    //! When come here, parent_map is already filled.
     cache.insert(id);
     for (auto& s : a.siblings()) {
       cache.insert(s.id());
     }
-    tape.push_back(a);
+    tape.push_back(a);  // NOTE : `a` is REAL output.
   };
   for (auto& a : outputs) {
-    recurse(a);
+    recurse(a);     //! Backtrace from array.
   }
   return {tape, parents_map};
 }
@@ -391,6 +394,7 @@ void compile_simplify(
 
   for (auto& a : tape) {
     if (is_scalar(a)) {
+      // NOTE: size -> Output array.
       scalars.insert({get_scalar_rep(a), a});
     }
   }
@@ -401,10 +405,10 @@ void compile_simplify(
       return false;
     }
     if (a.primitive_id() == b.primitive_id()) {
-      return false;
+      return false; //! If the primitive is the same, then it's not equivalent.
     }
-    const auto& pa = a.primitive();
-    const auto& pb = b.primitive();
+    const auto& pa = a.primitive(); //! Access array's desc get op.
+    const auto& pb = b.primitive(); //! Access array's desc get op.
     if (typeid(pa) != typeid(pb)) {
       return false;
     }
@@ -444,6 +448,7 @@ void compile_simplify(
     for (auto& o : outputs) {
       output_map.insert({o.id(), o});
     }
+    //! outputs on the tape.
     for (auto& arr : tape) {
       if (!arr.has_primitive() || !is_noop(arr.primitive())) {
         new_tape.push_back(std::move(arr));
@@ -470,7 +475,7 @@ void compile_simplify(
     output_set.insert(o.id());
   }
 
-  // Multi-pass merge only keeping non-orphaned arrays in the tape
+  //! Multi-pass merge only keeping non-orphaned arrays in the tape
   for (int pass = 0; pass < passes; ++pass) {
     for (auto& arr : tape) {
       // Helper to check if we can merge the parents of the
@@ -598,7 +603,7 @@ void compile_fuse(
       if (depth > 0) {
         // Guaranteed to have a parent since nested in the
         // recursion.
-        auto& parents = parents_map.at(a.id());
+        auto& parents = parents_map.at(a.id()); //! Get the parent array of the array.
         for (auto& [p, idx] : parents) {
           auto in_cache = cache.find(p.id()) != cache.end();
           if (!in_cache) {
@@ -713,6 +718,7 @@ void compile_fuse(
         constant_ids.insert(in.id());
       }
     }
+    //! compiled output.
     auto compiled_outputs = array::make_arrays(
         std::move(shapes),
         types,
@@ -869,6 +875,8 @@ std::function<std::vector<array>(const std::vector<array>&)> compile(
       // Set the constants
       entry.constants = std::move(constants);
       // Trace to build the graph
+      // NOTE : Here  `entry.inputs` are placeholders of inputs.
+      //              `inputs` are raw input of the function.
       std::tie(entry.inputs, entry.outputs) =
           compile_trace(fun, inputs, shapeless);
 
