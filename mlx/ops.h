@@ -1517,19 +1517,10 @@ array tmac_gemv(
   const array& acivation,
   const array& qweight_qvals,
   const array& Scales,
-  const array& QLUT,
-  const array& LUT_Scales,
-  const array& LUT_Biases,
   const int& M,
   const int& K,
   const int& N,
-  const int& group_size,
-  const int& act_group_size,
-  const int& kfactor,
-  const int& g,
-  const int& bm,
   const int& nbits,
-  const int& n_threads,
   StreamOrDevice s /* = {} */);
 
 

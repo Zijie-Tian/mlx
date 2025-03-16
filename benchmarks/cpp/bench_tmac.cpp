@@ -30,13 +30,11 @@ int main() {
     // mx::array A_t = mx::zeros({M / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
     // mx::array Scales_t = mx::zeros({M / bm, K / group_size, bm / nbits}, mx::float16);
     // mx::array activation = mx::zeros({N, K}, mx::float16);
-    mx::array QLUT = mx::zeros({N, K / g, 1 << g}, mx::uint8);
-    mx::array LUT_Scales = mx::zeros({N, K / act_group_size}, mx::float16);
-    mx::array LUT_Biases = mx::zeros({N, K / act_group_size}, mx::float16);
 
     A_t.eval();
     Scales_t.eval();
     activation.eval();
+
 
     TIMEM(
         "tmac-gemv",
@@ -44,26 +42,19 @@ int main() {
         activation,
         A_t,
         Scales_t,
-        QLUT,
-        LUT_Scales,
-        LUT_Biases,
-        M, K, N,
-        group_size, 
-        act_group_size,
-        kfactor, g, bm, nbits,
-        n_threads,
+        M, K, N, nbits,
         mx::Device::cpu
     );
 
-    mx::array weight = mx::ones({K, M}, mx::float16);
-    weight.eval();
+    // mx::array weight = mx::ones({K, M}, mx::float16);
+    // weight.eval();
 
-    auto matvec = [&]() { return mx::matmul(activation, weight, mx::Device::gpu); };
+    // auto matvec = [&]() { return mx::matmul(activation, weight, mx::Device::gpu); };
 
-    TIMEM(
-        "matmul",
-        matvec
-    )
+    // TIMEM(
+    //     "matmul",
+    //     matvec
+    // )
 
     return 0;
 }

@@ -1576,8 +1576,8 @@ class TMACMatmul : public UnaryPrimitive {
   public:
    explicit TMACMatmul(
     Stream stream, 
-    int n_threads, int act_group_size, const std::string& kcfg_file, const std::string& library_file,
-    int M, int K, int N, int group_size, int kfactor, int g, int bm, int nbits
+    const std::string& kcfg_file, const std::string& library_file,
+    int M, int K, int N, int bm
   );
   ~TMACMatmul();
  

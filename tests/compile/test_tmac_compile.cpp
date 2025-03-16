@@ -51,14 +51,7 @@ int main() {
             activation,
             A_t,
             Scales_t,
-            QLUT,
-            LUT_Scales,
-            LUT_Biases,
-            M, K, N,
-            group_size, 
-            act_group_size,
-            kfactor, g, bm, nbits,
-            n_threads,
+            M, K, N, nbits,
             mx::Device::cpu
         );
         c_down = mx::transpose(c_down, {1, 0});
@@ -91,14 +84,7 @@ int main() {
             activation,
             A_t,
             Scales_t,
-            QLUT,
-            LUT_Scales,
-            LUT_Biases,
-            M, K, N,
-            group_size, 
-            act_group_size,
-            kfactor, g, bm, nbits,
-            n_threads,
+            M, K, N, nbits,
             mx::Device::cpu
         );
         c_down = mx::transpose(c_down, {1, 0});

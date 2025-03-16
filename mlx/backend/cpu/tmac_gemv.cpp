@@ -134,11 +134,10 @@ tvm::runtime::PackedFunc get_function(TVMInternals* _tvm_internals, std::mutex& 
 
 TMACMatmul::TMACMatmul(
     Stream stream, 
-    int n_threads, int act_group_size, const std::string& kcfg_file, const std::string& library_file,
-    int M, int K, int N, int group_size, int kfactor, int g, int bm, int nbits)
+    const std::string& kcfg_file, const std::string& library_file,
+    int M, int K, int N, int nbits)
     : UnaryPrimitive(stream),
-    M_(M), K_(K), N_(N), act_group_size_(act_group_size), group_size_(group_size), 
-    bm_(bm), g_(g), kfactor_(kfactor), nbits_(nbits), _n_threads(n_threads) {
+    M_(M), K_(K), N_(N), nbits_(nbits), _n_threads(12) {
     
 #ifdef USE_TVM_THREADPOOL
     if (TMACMatmul::_tvm_internals == nullptr) {
@@ -170,6 +169,17 @@ TMACMatmul::TMACMatmul(
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
     }
+    TMACGeMMConfig config = get_kcfg(M_, K_, N_, nbits_);
+    if (config.bm == -1) {
+        LOG(FATAL) << "Cannot find the configuration for the given TMAC parameters";
+    }
+    // std::cout << "TMAC Configuration: " << config << std::endl;
+    this -> bm_ = config.bm;
+    this -> g_ = 4;
+    this -> group_size_ = config.group_size;
+    this -> act_group_size_ = 64;
+    this -> kfactor_ = config.kfactor;
+
     this -> set_workspace(M_, K_, N_);
 }
 
@@ -342,9 +352,9 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
             )
         );
     }
-    // for (auto& tile : bm_tiles) {
-    //     tile.wait();
-    // }
+    for (auto& tile : bm_tiles) {
+        tile.wait();
+    }
 
 #endif
 
@@ -389,7 +399,7 @@ TMACGeMMConfig TMACMatmul::get_kcfg(int M, int K, int N, int bits)
     _n_threads = old_n_threads;
 
     return {
-        /* .bm              = */ (int)_reader -> GetInteger(section, "bm", 0),
+        /* .bm              = */ (int)_reader -> GetInteger(section, "bm", -1),
         /* .simd_n_in       = */ (int)_reader -> GetInteger(section, "simd_n_in", 0),
         /* .simd_n_out      = */ (int)_reader -> GetInteger(section, "simd_n_out", 0),
         /* .kfactor         = */ (int)_reader -> GetInteger(section, "kfactor", 0),

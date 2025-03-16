@@ -55,12 +55,7 @@ int main() {
         mx::array c_up = mx::matmul(a_up, b, mx::Device::gpu);
         mx::array c_down = mx::tmac_gemv(
             a_down_t, a_down_scales_t, b,
-            QLUT, LUT_Scales, LUT_Biases,
-            M_down, K, N,
-            group_size, 
-            act_group_size,
-            kfactor, g, bm, nbits,
-            n_threads,
+            M_down, K, N, nbits,
             mx::Device::cpu
         );
         c_down = mx::transpose(c_down, {1, 0});
