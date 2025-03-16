@@ -12,7 +12,7 @@
 #include <mutex>
 
 // Inside defined INIReader.
-#include <mlx/backend/cpu/tmac/INIReader.h>
+#include <mlx/backend/cpu/t_mac/INIReader.h>
 
 namespace mlx::core {
 

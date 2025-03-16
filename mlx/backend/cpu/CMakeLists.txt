@@ -72,10 +72,10 @@ include(CheckCXXCompilerFlag)
 
 # endif()
 
-set_source_files_properties(
-  ${CMAKE_CURRENT_SOURCE_DIR}/tmac/kernels.cc
-  PROPERTIES COMPILE_OPTIONS "-mcpu=apple-m2"
-)
+# set_source_files_properties(
+#   ${CMAKE_CURRENT_SOURCE_DIR}/tmac/kernels.cc
+#   PROPERTIES COMPILE_OPTIONS "-mcpu=apple-m2"
+# )
 
 # target_include_directories(
 #     mlx PRIVATE 
@@ -137,10 +137,10 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/embedding.cpp
           ${CMAKE_CURRENT_BINARY_DIR}/compiled_preamble.cpp)
 
-set(MLX_BUILD_TMAC TRUE)
-if(MLX_BUILD_TMAC)
-  target_sources(mlx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tmac/kernels.cc)
-endif()
+# set(MLX_BUILD_TMAC TRUE)
+# if(MLX_BUILD_TMAC)
+#   target_sources(mlx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tmac/kernels.cc)
+# endif()
 
 if(MLX_BUILD_ACCELERATE)
   target_sources(mlx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gemms/bnns.cpp)

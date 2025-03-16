@@ -1,8 +1,8 @@
 	.section	__TEXT,__text,regular,pure_instructions
 	.build_version macos, 14, 0	sdk_version 15, 2
-	.globl	_qgemm_lut_t12_int8_m6400_k3200_n1_b2
+	.globl	_qgemm_lut_t12_int8_m3200_k3200_n1_b2
 	.p2align	2
-_qgemm_lut_t12_int8_m6400_k3200_n1_b2:
+_qgemm_lut_t12_int8_m3200_k3200_n1_b2:
 Lfunc_begin0:
 	.file	1 "." "IRModule.CodeGenLLVM"
 	.loc	1 0 0
@@ -162,7 +162,7 @@ Ltmp47:
 	ldr	x10, [x19, #24]
 Ltmp48:
 	ldr	w11, [x10]
-	cmp	w11, #50
+	cmp	w11, #25
 	b.ne	LBB0_117
 Ltmp49:
 	ldr	w11, [x10, #8]
@@ -404,7 +404,7 @@ Ltmp124:
 	b.ne	LBB0_156
 Ltmp125:
 	ldr	w9, [x12, #8]
-	cmp	w9, #3200
+	cmp	w9, #1600
 	b.ne	LBB0_157
 Ltmp126:
 	cbz	x11, LBB0_89
@@ -434,7 +434,7 @@ Ltmp134:
 	ldp	x22, x21, [sp, #16]
 Ltmp135:
 	ldp	x24, x23, [sp], #64
-	b	_qgemm_lut_t12_int8_m6400_k3200_n1_b2_compute_
+	b	_qgemm_lut_t12_int8_m3200_k3200_n1_b2_compute_
 Ltmp136:
 LBB0_94:
 Lloh0:
@@ -1583,7 +1583,7 @@ Lfunc_end0:
 	.cfi_endproc
 
 	.p2align	2
-_qgemm_lut_t12_int8_m6400_k3200_n1_b2_compute_:
+_qgemm_lut_t12_int8_m3200_k3200_n1_b2_compute_:
 Lfunc_begin1:
 	.loc	1 0 0
 	.cfi_startproc
@@ -1622,585 +1622,709 @@ Ltmp326:
 Lfunc_end1:
 	.cfi_endproc
 
+	.section	__TEXT,__literal16,16byte_literals
+	.p2align	4, 0x0
+lCPI2_0:
+	.long	52
+	.long	53
+	.long	54
+	.long	55
+lCPI2_1:
+	.long	48
+	.long	49
+	.long	50
+	.long	51
+lCPI2_2:
+	.long	36
+	.long	37
+	.long	38
+	.long	39
+lCPI2_3:
+	.long	32
+	.long	33
+	.long	34
+	.long	35
+lCPI2_4:
+	.long	20
+	.long	21
+	.long	22
+	.long	23
+lCPI2_5:
+	.long	16
+	.long	17
+	.long	18
+	.long	19
+lCPI2_6:
+	.long	4
+	.long	5
+	.long	6
+	.long	7
+lCPI2_7:
+	.space	4
+	.long	1
+	.long	2
+	.long	3
+lCPI2_8:
+	.long	60
+	.long	61
+	.long	62
+	.long	63
+lCPI2_9:
+	.long	56
+	.long	57
+	.long	58
+	.long	59
+lCPI2_10:
+	.long	44
+	.long	45
+	.long	46
+	.long	47
+lCPI2_11:
+	.long	40
+	.long	41
+	.long	42
+	.long	43
+lCPI2_12:
+	.long	28
+	.long	29
+	.long	30
+	.long	31
+lCPI2_13:
+	.long	24
+	.long	25
+	.long	26
+	.long	27
+lCPI2_14:
+	.long	12
+	.long	13
+	.long	14
+	.long	15
+lCPI2_15:
+	.long	8
+	.long	9
+	.long	10
+	.long	11
+	.section	__TEXT,__text,regular,pure_instructions
 	.p2align	2
 l___tvm_parallel_lambda:
 Lfunc_begin2:
 	.cfi_startproc
 	ldr	w8, [x1, #8]
-	add	w9, w8, #49
-	sdiv	w8, w9, w8
-	mul	w13, w8, w0
-	mov	w15, #50
-	cmp	w13, #50
-	csel	w14, w13, w15, lt
-	add	w8, w8, w13
-	cmp	w8, #50
-	csel	w16, w8, w15, lt
-	cmp	w14, w16
-	b.ge	LBB2_8
-	sub	sp, sp, #416
-	stp	d15, d14, [sp, #336]
-	stp	d13, d12, [sp, #352]
-	stp	d11, d10, [sp, #368]
-	stp	d9, d8, [sp, #384]
-	stp	x28, x27, [sp, #400]
-	.cfi_def_cfa_offset 416
-	.cfi_offset w27, -8
-	.cfi_offset w28, -16
-	.cfi_offset b8, -24
-	.cfi_offset b9, -32
-	.cfi_offset b10, -40
-	.cfi_offset b11, -48
-	.cfi_offset b12, -56
-	.cfi_offset b13, -64
-	.cfi_offset b14, -72
-	.cfi_offset b15, -80
-	ldp	x8, x17, [x2]
-	ldp	x9, x10, [x2, #16]
-	ldp	x11, x12, [x2, #32]
-	cmp	w13, #50
-	csel	w0, w13, w15, lt
-	sxtw	x13, w0
-	add	w15, w16, w0
-	sub	w14, w15, w14
-	mov	w15, #51200
-	smaddl	x16, w0, w15, x17
-	add	x16, x16, #128
-	add	x17, sp, #80
-	add	x17, x17, #32
-	movi.16b	v1, #15
+	add	w9, w8, #24
+	sdiv	w9, w9, w8
+	mul	w14, w9, w0
+	mov	w15, #25
+	cmp	w14, #25
+	csel	w8, w14, w15, lt
+	add	w9, w9, w14
+	cmp	w9, #25
+	csel	w9, w9, w15, lt
+	subs	w9, w9, w8
+	b.le	LBB2_10
+	stp	d15, d14, [sp, #-112]!
+	stp	d13, d12, [sp, #16]
+	stp	d11, d10, [sp, #32]
+	stp	d9, d8, [sp, #48]
+	stp	x28, x27, [sp, #64]
+	stp	x20, x19, [sp, #80]
+	stp	x29, x30, [sp, #96]
+	add	x29, sp, #96
+	sub	x0, sp, #656
+	and	sp, x0, #0xffffffffffffffc0
+	.cfi_def_cfa w29, 16
+	.cfi_offset w30, -8
+	.cfi_offset w29, -16
+	.cfi_offset w19, -24
+	.cfi_offset w20, -32
+	.cfi_offset w27, -40
+	.cfi_offset w28, -48
+	.cfi_offset b8, -56
+	.cfi_offset b9, -64
+	.cfi_offset b10, -72
+	.cfi_offset b11, -80
+	.cfi_offset b12, -88
+	.cfi_offset b13, -96
+	.cfi_offset b14, -104
+	.cfi_offset b15, -112
+	mov	w10, #0
+	ldp	x11, x16, [x2]
+	ldp	x12, x13, [x2, #16]
+	cmp	w14, #25
+	csel	w15, w14, w15, lt
+	mov	w14, #51200
+	smaddl	x15, w15, w14, x16
+	add	x15, x15, #128
+	add	x16, sp, #256
+	add	x17, x16, #32
+Lloh345:
+	adrp	x0, lCPI2_0@PAGE
+Lloh346:
+	ldr	q4, [x0, lCPI2_0@PAGEOFF]
+Lloh347:
+	adrp	x0, lCPI2_1@PAGE
+Lloh348:
+	ldr	q25, [x0, lCPI2_1@PAGEOFF]
+	movi.16b	v3, #15
+Lloh349:
+	adrp	x0, lCPI2_2@PAGE
+Lloh350:
+	ldr	q26, [x0, lCPI2_2@PAGEOFF]
+Lloh351:
+	adrp	x0, lCPI2_3@PAGE
+Lloh352:
+	ldr	q8, [x0, lCPI2_3@PAGEOFF]
+Lloh353:
+	adrp	x0, lCPI2_4@PAGE
+Lloh354:
+	ldr	q9, [x0, lCPI2_4@PAGEOFF]
+Lloh355:
+	adrp	x0, lCPI2_5@PAGE
+Lloh356:
+	ldr	q10, [x0, lCPI2_5@PAGEOFF]
+Lloh357:
+	adrp	x0, lCPI2_6@PAGE
+Lloh358:
+	ldr	q11, [x0, lCPI2_6@PAGEOFF]
+Lloh359:
+	adrp	x0, lCPI2_7@PAGE
+Lloh360:
+	ldr	q12, [x0, lCPI2_7@PAGEOFF]
+Lloh361:
+	adrp	x0, lCPI2_8@PAGE
+Lloh362:
+	ldr	q13, [x0, lCPI2_8@PAGEOFF]
+Lloh363:
+	adrp	x0, lCPI2_9@PAGE
+Lloh364:
+	ldr	q14, [x0, lCPI2_9@PAGEOFF]
+Lloh365:
+	adrp	x0, lCPI2_10@PAGE
+Lloh366:
+	ldr	q1, [x0, lCPI2_10@PAGEOFF]
+Lloh367:
+	adrp	x0, lCPI2_11@PAGE
+Lloh368:
+	ldr	q21, [x0, lCPI2_11@PAGEOFF]
+Lloh369:
+	adrp	x0, lCPI2_12@PAGE
+Lloh370:
+	ldr	q15, [x0, lCPI2_12@PAGEOFF]
+Lloh371:
+	adrp	x0, lCPI2_13@PAGE
+Lloh372:
+	ldr	q24, [x0, lCPI2_13@PAGEOFF]
+Lloh373:
+	adrp	x0, lCPI2_14@PAGE
+Lloh374:
+	ldr	q0, [x0, lCPI2_14@PAGEOFF]
+	str	q0, [sp, #16]
+Lloh375:
+	adrp	x0, lCPI2_15@PAGE
+Lloh376:
+	ldr	q0, [x0, lCPI2_15@PAGEOFF]
+	str	q0, [sp]
+	add	x0, sp, #512
+	ldp	x1, x2, [x2, #32]
+	stp	q25, q4, [sp, #176]
+	stp	q8, q26, [sp, #144]
+	stp	q10, q9, [sp, #112]
+	stp	q12, q11, [sp, #80]
+	stp	q1, q13, [sp, #224]
+	stp	q21, q14, [sp, #48]
+	str	q15, [sp, #208]
+	str	q24, [sp, #32]
 LBB2_2:
-	mov	x0, #0
+	mov	x4, #0
+	add	w3, w8, w10
+	lsl	w3, w3, #6
 	movi.2d	v0, #0000000000000000
-	stp	q0, q0, [sp, #304]
-	stp	q0, q0, [sp, #272]
-	stp	q0, q0, [sp, #240]
-	stp	q0, q0, [sp, #208]
-	stp	q0, q0, [sp, #176]
-	stp	q0, q0, [sp, #144]
-	stp	q0, q0, [sp, #112]
-	mov	x1, x16
-	stp	q0, q0, [sp, #80]
+	stp	q0, q0, [sp, #480]
+	add	x3, x2, w3, sxtw #1
+	stp	q0, q0, [sp, #448]
+	stp	q0, q0, [sp, #416]
+	stp	q0, q0, [sp, #384]
+	stp	q0, q0, [sp, #352]
+	stp	q0, q0, [sp, #320]
+	stp	q0, q0, [sp, #288]
+	mov	x5, x15
+	stp	q0, q0, [sp, #256]
 LBB2_3:
-	add	x4, x8, x0, lsl #8
-	ldp	q3, q4, [x4]
-	ldp	q5, q6, [x4, #32]
-	ldp	q7, q16, [x4, #64]
-	ldp	q17, q18, [x4, #96]
-	ldp	q19, q20, [x4, #128]
-	ldp	q21, q22, [x4, #160]
-	ldp	q23, q24, [x4, #192]
-	mov	x2, #-16
-	mov	x3, x17
-	ldp	q25, q26, [x4, #224]
-	mov	x4, x1
+	add	x19, x11, x4, lsl #8
+	ldp	q27, q28, [x19]
+	ldp	q29, q30, [x19, #32]
+	ldp	q31, q8, [x19, #64]
+	ldp	q9, q10, [x19, #96]
+	ldp	q11, q12, [x19, #128]
+	ldp	q13, q14, [x19, #160]
+	ldp	q15, q1, [x19, #192]
+	mov	x6, #-16
+	mov	x7, x17
+	ldp	q0, q2, [x19, #224]
+	mov	x19, x5
 LBB2_4:
-	ldp	q0, q29, [x4, #-128]
-	ushr.16b	v27, v0, #4
-	and.16b	v0, v0, v1
-	tbl.16b	v0, { v3 }, v0
-	tbl.16b	v27, { v3 }, v27
-	ushr.16b	v28, v29, #4
-	tbl.16b	v28, { v4 }, v28
-	and.16b	v29, v29, v1
-	tbl.16b	v31, { v4 }, v29
-	saddl.8h	v8, v31, v0
-	ldp	q29, q30, [x4, #-96]
-	and.16b	v9, v29, v1
-	tbl.16b	v9, { v5 }, v9
-	saddl2.8h	v0, v31, v0
-	and.16b	v31, v30, v1
-	tbl.16b	v10, { v6 }, v31
-	saddw.8h	v31, v8, v9
-	saddw2.8h	v0, v0, v9
-	saddw.8h	v9, v31, v10
-	ldp	q8, q31, [x4, #-64]
-	and.16b	v11, v8, v1
-	tbl.16b	v11, { v7 }, v11
-	and.16b	v12, v31, v1
-	tbl.16b	v12, { v16 }, v12
-	saddw2.8h	v0, v0, v10
-	saddw.8h	v9, v9, v11
-	saddw.8h	v9, v9, v12
-	saddw2.8h	v11, v0, v11
-	ldp	q0, q10, [x4, #-32]
-	saddw2.8h	v11, v11, v12
-	and.16b	v12, v0, v1
-	tbl.16b	v12, { v17 }, v12
-	and.16b	v13, v10, v1
-	tbl.16b	v13, { v18 }, v13
-	saddw.8h	v9, v9, v12
-	saddw.8h	v14, v9, v13
-	saddw2.8h	v12, v11, v12
-	ldp	q9, q11, [x4]
-	and.16b	v15, v9, v1
-	tbl.16b	v15, { v19 }, v15
-	saddw2.8h	v12, v12, v13
-	and.16b	v13, v11, v1
-	tbl.16b	v13, { v20 }, v13
-	saddw.8h	v14, v14, v15
-	saddw.8h	v14, v14, v13
-	saddw2.8h	v12, v12, v15
-	saddw2.8h	v15, v12, v13
-	ldp	q12, q13, [x4, #32]
-	and.16b	v2, v12, v1
-	tbl.16b	v2, { v21 }, v2
-	saddw.8h	v14, v14, v2
-	saddw2.8h	v2, v15, v2
-	saddl2.8h	v15, v28, v27
-	saddl.8h	v27, v28, v27
-	and.16b	v28, v13, v1
-	tbl.16b	v28, { v22 }, v28
-	saddw.8h	v14, v14, v28
-	saddw2.8h	v2, v2, v28
-	ushr.16b	v28, v29, #4
-	tbl.16b	v28, { v5 }, v28
-	ushr.16b	v29, v30, #4
-	tbl.16b	v29, { v6 }, v29
-	ushr.16b	v30, v8, #4
-	saddw2.8h	v8, v15, v28
-	saddw2.8h	v8, v8, v29
-	saddw.8h	v27, v27, v28
-	saddw.8h	v27, v27, v29
-	ldp	q28, q29, [x4, #64]
-	tbl.16b	v30, { v7 }, v30
-	saddw2.8h	v8, v8, v30
-	saddw.8h	v27, v27, v30
-	and.16b	v30, v28, v1
-	tbl.16b	v30, { v23 }, v30
-	saddw.8h	v14, v14, v30
-	saddw2.8h	v2, v2, v30
-	ushr.16b	v30, v31, #4
-	tbl.16b	v30, { v16 }, v30
-	saddw2.8h	v31, v8, v30
-	saddw.8h	v27, v27, v30
-	ushr.16b	v0, v0, #4
-	tbl.16b	v0, { v17 }, v0
-	saddw2.8h	v30, v31, v0
-	saddw.8h	v0, v27, v0
-	and.16b	v27, v29, v1
-	tbl.16b	v27, { v24 }, v27
-	saddw.8h	v31, v14, v27
-	saddw2.8h	v2, v2, v27
-	ushr.16b	v27, v10, #4
-	tbl.16b	v27, { v18 }, v27
-	ushr.16b	v8, v9, #4
-	tbl.16b	v8, { v19 }, v8
-	ushr.16b	v9, v11, #4
-	saddw2.8h	v30, v30, v27
-	saddw2.8h	v30, v30, v8
-	saddw.8h	v0, v0, v27
-	saddw.8h	v0, v0, v8
-	ldp	q27, q8, [x4, #96]
-	tbl.16b	v9, { v20 }, v9
-	saddw2.8h	v30, v30, v9
-	saddw.8h	v0, v0, v9
-	and.16b	v9, v27, v1
-	tbl.16b	v9, { v25 }, v9
-	saddw.8h	v31, v31, v9
-	saddw2.8h	v2, v2, v9
-	ushr.16b	v9, v12, #4
-	tbl.16b	v9, { v21 }, v9
-	saddw2.8h	v30, v30, v9
-	saddw.8h	v0, v0, v9
-	ushr.16b	v9, v13, #4
-	tbl.16b	v9, { v22 }, v9
-	saddw2.8h	v30, v30, v9
-	saddw.8h	v0, v0, v9
-	and.16b	v9, v8, v1
-	tbl.16b	v9, { v26 }, v9
-	saddw.8h	v31, v31, v9
-	saddw2.8h	v2, v2, v9
-	ushr.16b	v28, v28, #4
-	tbl.16b	v28, { v23 }, v28
-	saddw2.8h	v30, v30, v28
-	saddw.8h	v0, v0, v28
-	ushr.16b	v28, v29, #4
-	lsl	x5, x0, #1
-	tbl.16b	v28, { v24 }, v28
-	saddw2.8h	v29, v30, v28
-	saddw.8h	v0, v0, v28
-	ldr	h9, [x10, x5]
-	add	x5, x11, x5
-	ushr.16b	v27, v27, #4
-	tbl.16b	v27, { v25 }, v27
-	ushr.16b	v28, v8, #4
-	tbl.16b	v28, { v26 }, v28
-	saddw2.8h	v29, v29, v27
-	saddw2.8h	v29, v29, v28
-	saddw.8h	v0, v0, v27
-	saddw.8h	v0, v0, v28
-	ld1r.8h	{ v27 }, [x5]
-	scvtf.8h	v28, v31
-	scvtf.8h	v2, v2
-	scvtf.8h	v0, v0
-	scvtf.8h	v29, v29
-	mov.16b	v30, v27
-	fmla.8h	v30, v28, v9[0]
-	fmul.8h	v2, v2, v9[0]
-	fmla.8h	v27, v0, v9[0]
-	fmul.8h	v0, v29, v9[0]
-	ldr	h8, [x9]
-	ldp	q28, q29, [x3, #-32]
-	fmla.8h	v28, v30, v8[0]
-	fmla.8h	v29, v2, v8[0]
-	ldp	q2, q30, [x3]
-	fmla.8h	v2, v27, v8[0]
-	fmla.8h	v30, v0, v8[0]
-	stp	q28, q29, [x3, #-32]
-	stp	q2, q30, [x3], #64
-	add	x2, x2, #16
-	add	x4, x4, #256
-	cmp	x2, #48
+	ldp	q4, q6, [x19, #-128]
+	ushr.16b	v5, v4, #4
+	and.16b	v4, v4, v3
+	tbl.16b	v16, { v27 }, v4
+	tbl.16b	v4, { v27 }, v5
+	ushr.16b	v5, v6, #4
+	tbl.16b	v5, { v28 }, v5
+	and.16b	v6, v6, v3
+	tbl.16b	v17, { v28 }, v6
+	saddl.8h	v18, v17, v16
+	ldp	q6, q7, [x19, #-96]
+	and.16b	v19, v6, v3
+	tbl.16b	v19, { v29 }, v19
+	saddl2.8h	v16, v17, v16
+	and.16b	v17, v7, v3
+	tbl.16b	v20, { v30 }, v17
+	saddw.8h	v18, v18, v19
+	saddw2.8h	v19, v16, v19
+	ldp	q17, q16, [x19, #-64]
+	saddw.8h	v18, v18, v20
+	and.16b	v21, v17, v3
+	tbl.16b	v21, { v31 }, v21
+	and.16b	v22, v16, v3
+	tbl.16b	v22, { v8 }, v22
+	saddw2.8h	v19, v19, v20
+	saddw.8h	v18, v18, v21
+	saddw.8h	v20, v18, v22
+	saddw2.8h	v21, v19, v21
+	ldp	q18, q19, [x19, #-32]
+	saddw2.8h	v21, v21, v22
+	and.16b	v22, v18, v3
+	tbl.16b	v22, { v9 }, v22
+	and.16b	v23, v19, v3
+	tbl.16b	v23, { v10 }, v23
+	saddw.8h	v20, v20, v22
+	saddw.8h	v24, v20, v23
+	saddw2.8h	v22, v21, v22
+	ldp	q20, q21, [x19]
+	and.16b	v25, v20, v3
+	tbl.16b	v25, { v11 }, v25
+	saddw2.8h	v22, v22, v23
+	and.16b	v23, v21, v3
+	tbl.16b	v23, { v12 }, v23
+	saddw.8h	v24, v24, v25
+	saddw.8h	v24, v24, v23
+	saddw2.8h	v22, v22, v25
+	saddw2.8h	v25, v22, v23
+	ldp	q22, q23, [x19, #32]
+	and.16b	v26, v22, v3
+	tbl.16b	v26, { v13 }, v26
+	saddw.8h	v24, v24, v26
+	saddw2.8h	v25, v25, v26
+	saddl2.8h	v26, v5, v4
+	saddl.8h	v4, v5, v4
+	and.16b	v5, v23, v3
+	tbl.16b	v5, { v14 }, v5
+	saddw.8h	v24, v24, v5
+	saddw2.8h	v5, v25, v5
+	ushr.16b	v6, v6, #4
+	tbl.16b	v6, { v29 }, v6
+	ushr.16b	v7, v7, #4
+	tbl.16b	v7, { v30 }, v7
+	ushr.16b	v17, v17, #4
+	saddw2.8h	v25, v26, v6
+	saddw2.8h	v25, v25, v7
+	saddw.8h	v4, v4, v6
+	saddw.8h	v4, v4, v7
+	ldp	q6, q7, [x19, #64]
+	tbl.16b	v17, { v31 }, v17
+	saddw2.8h	v25, v25, v17
+	saddw.8h	v4, v4, v17
+	and.16b	v17, v6, v3
+	tbl.16b	v17, { v15 }, v17
+	saddw.8h	v24, v24, v17
+	saddw2.8h	v5, v5, v17
+	ushr.16b	v16, v16, #4
+	tbl.16b	v16, { v8 }, v16
+	saddw2.8h	v17, v25, v16
+	saddw.8h	v4, v4, v16
+	ushr.16b	v16, v18, #4
+	tbl.16b	v16, { v9 }, v16
+	saddw2.8h	v17, v17, v16
+	saddw.8h	v4, v4, v16
+	and.16b	v16, v7, v3
+	tbl.16b	v16, { v1 }, v16
+	saddw.8h	v18, v24, v16
+	saddw2.8h	v5, v5, v16
+	ushr.16b	v16, v19, #4
+	tbl.16b	v16, { v10 }, v16
+	ushr.16b	v19, v20, #4
+	tbl.16b	v19, { v11 }, v19
+	ushr.16b	v20, v21, #4
+	saddw2.8h	v17, v17, v16
+	saddw2.8h	v17, v17, v19
+	saddw.8h	v4, v4, v16
+	saddw.8h	v4, v4, v19
+	ldp	q16, q19, [x19, #96]
+	tbl.16b	v20, { v12 }, v20
+	saddw2.8h	v17, v17, v20
+	saddw.8h	v4, v4, v20
+	and.16b	v20, v16, v3
+	tbl.16b	v20, { v0 }, v20
+	saddw.8h	v18, v18, v20
+	saddw2.8h	v5, v5, v20
+	ushr.16b	v20, v22, #4
+	tbl.16b	v20, { v13 }, v20
+	saddw2.8h	v17, v17, v20
+	saddw.8h	v4, v4, v20
+	ushr.16b	v20, v23, #4
+	tbl.16b	v20, { v14 }, v20
+	saddw2.8h	v17, v17, v20
+	saddw.8h	v4, v4, v20
+	and.16b	v20, v19, v3
+	tbl.16b	v20, { v2 }, v20
+	saddw.8h	v18, v18, v20
+	saddw2.8h	v5, v5, v20
+	ushr.16b	v6, v6, #4
+	tbl.16b	v6, { v15 }, v6
+	saddw2.8h	v17, v17, v6
+	saddw.8h	v4, v4, v6
+	ushr.16b	v6, v7, #4
+	lsl	x20, x4, #1
+	tbl.16b	v6, { v1 }, v6
+	saddw2.8h	v7, v17, v6
+	saddw.8h	v4, v4, v6
+	ldr	h6, [x13, x20]
+	add	x20, x1, x20
+	ushr.16b	v16, v16, #4
+	tbl.16b	v16, { v0 }, v16
+	ushr.16b	v17, v19, #4
+	tbl.16b	v17, { v2 }, v17
+	saddw2.8h	v7, v7, v16
+	saddw2.8h	v7, v7, v17
+	saddw.8h	v4, v4, v16
+	saddw.8h	v4, v4, v17
+	ld1r.8h	{ v16 }, [x20]
+	scvtf.8h	v17, v18
+	scvtf.8h	v5, v5
+	scvtf.8h	v4, v4
+	scvtf.8h	v7, v7
+	mov.16b	v18, v16
+	fmla.8h	v18, v17, v6[0]
+	fmul.8h	v5, v5, v6[0]
+	fmla.8h	v16, v4, v6[0]
+	fmul.8h	v4, v7, v6[0]
+	ldr	h6, [x12]
+	ldp	q7, q17, [x7, #-32]
+	fmla.8h	v7, v18, v6[0]
+	fmla.8h	v17, v5, v6[0]
+	ldp	q5, q18, [x7]
+	fmla.8h	v5, v16, v6[0]
+	fmla.8h	v18, v4, v6[0]
+	stp	q7, q17, [x7, #-32]
+	stp	q5, q18, [x7], #64
+	add	x6, x6, #16
+	add	x19, x19, #256
+	cmp	x6, #48
 	b.lo	LBB2_4
-	add	x0, x0, #1
-	add	x1, x1, #1024
-	cmp	x0, #50
+	add	x4, x4, #1
+	add	x5, x5, #1024
+	cmp	x4, #50
 	b.ne	LBB2_3
-	ldr	h0, [sp, #80]
-	ldr	h2, [sp, #96]
-	fmov	h3, #0.50000000
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #76]
-	ldr	h0, [sp, #82]
-	ldr	h2, [sp, #98]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #78]
-	ldr	h0, [sp, #84]
-	ldr	h2, [sp, #100]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #74]
-	ldr	h0, [sp, #86]
-	ldr	h2, [sp, #102]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #72]
-	ldr	h0, [sp, #88]
-	ldr	h2, [sp, #104]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #70]
-	ldr	h0, [sp, #90]
-	ldr	h2, [sp, #106]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #68]
-	ldr	h0, [sp, #92]
-	ldr	h2, [sp, #108]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #66]
-	ldr	h0, [sp, #94]
-	ldr	h2, [sp, #110]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #64]
-	ldr	h0, [sp, #112]
-	ldr	h2, [sp, #128]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #62]
-	ldr	h0, [sp, #114]
-	ldr	h2, [sp, #130]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #60]
-	ldr	h0, [sp, #116]
-	ldr	h2, [sp, #132]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #58]
-	ldr	h0, [sp, #118]
-	ldr	h2, [sp, #134]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #56]
-	ldr	h0, [sp, #120]
-	ldr	h2, [sp, #136]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #54]
-	ldr	h0, [sp, #122]
-	ldr	h2, [sp, #138]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #52]
-	ldr	h0, [sp, #124]
-	ldr	h2, [sp, #140]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #50]
-	ldr	h0, [sp, #126]
-	ldr	h2, [sp, #142]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #48]
-	ldr	h0, [sp, #144]
-	ldr	h2, [sp, #160]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #46]
-	ldr	h0, [sp, #146]
-	ldr	h2, [sp, #162]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #44]
-	ldr	h0, [sp, #148]
-	ldr	h2, [sp, #164]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #42]
-	ldr	h0, [sp, #150]
-	ldr	h2, [sp, #166]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #40]
-	ldr	h0, [sp, #152]
-	ldr	h2, [sp, #168]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #38]
-	ldr	h0, [sp, #154]
-	ldr	h2, [sp, #170]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #36]
-	ldr	h0, [sp, #156]
-	ldr	h2, [sp, #172]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #34]
-	ldr	h0, [sp, #158]
-	ldr	h2, [sp, #174]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #32]
-	ldr	h0, [sp, #176]
-	ldr	h2, [sp, #192]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #30]
-	ldr	h0, [sp, #178]
-	ldr	h2, [sp, #194]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #28]
-	ldr	h0, [sp, #180]
-	ldr	h2, [sp, #196]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #26]
-	ldr	h0, [sp, #182]
-	ldr	h2, [sp, #198]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #24]
-	ldr	h0, [sp, #184]
-	ldr	h2, [sp, #200]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #22]
-	ldr	h0, [sp, #186]
-	ldr	h2, [sp, #202]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #20]
-	ldr	h0, [sp, #188]
-	ldr	h2, [sp, #204]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #18]
-	ldr	h0, [sp, #190]
-	ldr	h2, [sp, #206]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #16]
-	ldr	h0, [sp, #208]
-	ldr	h2, [sp, #224]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #14]
-	ldr	h0, [sp, #210]
-	ldr	h2, [sp, #226]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #12]
-	ldr	h0, [sp, #212]
-	ldr	h2, [sp, #228]
-	fmadd	h0, h0, h3, h2
-	str	h0, [sp, #10]
-	ldr	h0, [sp, #214]
-	ldr	h2, [sp, #230]
-	fmadd	h10, h0, h3, h2
-	ldr	h0, [sp, #216]
-	ldr	h2, [sp, #232]
-	fmadd	h8, h0, h3, h2
-	ldr	h0, [sp, #218]
-	ldr	h2, [sp, #234]
-	fmadd	h31, h0, h3, h2
-	ldr	h0, [sp, #220]
-	ldr	h2, [sp, #236]
-	fmadd	h30, h0, h3, h2
-	ldr	h0, [sp, #222]
-	ldr	h2, [sp, #238]
-	fmadd	h9, h0, h3, h2
-	ldr	h0, [sp, #240]
-	ldr	h2, [sp, #256]
-	fmadd	h11, h0, h3, h2
-	ldr	h0, [sp, #242]
-	ldr	h2, [sp, #258]
-	fmadd	h12, h0, h3, h2
-	ldr	h0, [sp, #244]
-	ldr	h2, [sp, #260]
-	fmadd	h13, h0, h3, h2
-	ldr	h0, [sp, #246]
-	ldr	h2, [sp, #262]
-	fmadd	h14, h0, h3, h2
-	ldr	h0, [sp, #248]
-	ldr	h2, [sp, #264]
-	fmadd	h15, h0, h3, h2
-	ldr	h0, [sp, #250]
-	ldr	h2, [sp, #266]
-	fmadd	h29, h0, h3, h2
-	ldr	h0, [sp, #252]
-	ldr	h2, [sp, #268]
-	fmadd	h28, h0, h3, h2
-	ldr	h0, [sp, #254]
-	ldr	h2, [sp, #270]
-	fmadd	h27, h0, h3, h2
-	ldr	h0, [sp, #272]
-	ldr	h2, [sp, #288]
-	fmadd	h26, h0, h3, h2
-	ldr	h0, [sp, #274]
-	ldr	h2, [sp, #290]
-	fmadd	h25, h0, h3, h2
-	ldr	h0, [sp, #276]
-	ldr	h2, [sp, #292]
-	fmadd	h24, h0, h3, h2
-	ldr	h0, [sp, #278]
-	ldr	h2, [sp, #294]
-	fmadd	h23, h0, h3, h2
-	ldr	h0, [sp, #280]
-	ldr	h2, [sp, #296]
-	fmadd	h22, h0, h3, h2
-	ldr	h0, [sp, #282]
-	ldr	h2, [sp, #298]
-	fmadd	h21, h0, h3, h2
-	ldr	h0, [sp, #284]
-	ldr	h2, [sp, #300]
-	fmadd	h20, h0, h3, h2
-	ldr	h0, [sp, #286]
-	ldr	h2, [sp, #302]
-	fmadd	h19, h0, h3, h2
-	ldr	h0, [sp, #304]
-	ldr	h2, [sp, #320]
-	fmadd	h18, h0, h3, h2
-	ldr	h0, [sp, #306]
-	ldr	h2, [sp, #322]
-	fmadd	h17, h0, h3, h2
-	ldr	h0, [sp, #308]
-	ldr	h2, [sp, #324]
-	fmadd	h16, h0, h3, h2
-	ldr	h0, [sp, #310]
-	ldr	h2, [sp, #326]
-	fmadd	h7, h0, h3, h2
-	ldr	h0, [sp, #312]
-	ldr	h2, [sp, #328]
-	fmadd	h6, h0, h3, h2
-	ldr	h0, [sp, #314]
-	ldr	h2, [sp, #330]
-	fmadd	h5, h0, h3, h2
-	ldr	h0, [sp, #316]
-	ldr	h2, [sp, #332]
-	fmadd	h4, h0, h3, h2
-	ldr	h0, [sp, #318]
-	ldr	h2, [sp, #334]
-	fmadd	h0, h0, h3, h2
-	lsl	w0, w13, #6
-	add	x0, x12, w0, sxtw #1
-	ldr	h2, [sp, #76]
-	str	h2, [x0]
-	sxtw	x1, w13
-	add	x1, x12, x1, lsl #7
-	ldr	h2, [sp, #78]
-	str	h2, [x1, #2]
-	ldr	h2, [sp, #74]
-	str	h2, [x0, #4]
-	ldr	h2, [sp, #72]
-	str	h2, [x0, #6]
-	ldr	h2, [sp, #70]
-	str	h2, [x0, #8]
-	ldr	h2, [sp, #68]
-	str	h2, [x0, #10]
-	ldr	h2, [sp, #66]
-	str	h2, [x0, #12]
-	ldr	h2, [sp, #64]
-	str	h2, [x0, #14]
-	ldr	h2, [sp, #62]
-	str	h2, [x0, #16]
-	ldr	h2, [sp, #60]
-	str	h2, [x0, #18]
-	ldr	h2, [sp, #58]
-	str	h2, [x0, #20]
-	ldr	h2, [sp, #56]
-	str	h2, [x0, #22]
-	ldr	h2, [sp, #54]
-	str	h2, [x0, #24]
-	ldr	h2, [sp, #52]
-	str	h2, [x0, #26]
-	ldr	h2, [sp, #50]
-	str	h2, [x0, #28]
-	ldr	h2, [sp, #48]
-	str	h2, [x0, #30]
-	ldr	h2, [sp, #46]
-	str	h2, [x0, #32]
-	ldr	h2, [sp, #44]
-	str	h2, [x0, #34]
-	ldr	h2, [sp, #42]
-	str	h2, [x0, #36]
-	ldr	h2, [sp, #40]
-	str	h2, [x0, #38]
-	ldr	h2, [sp, #38]
-	str	h2, [x0, #40]
-	ldr	h2, [sp, #36]
-	str	h2, [x0, #42]
-	ldr	h2, [sp, #34]
-	str	h2, [x0, #44]
-	ldr	h2, [sp, #32]
-	str	h2, [x0, #46]
-	ldr	h2, [sp, #30]
-	str	h2, [x0, #48]
-	ldr	h2, [sp, #28]
-	str	h2, [x0, #50]
-	ldr	h2, [sp, #26]
-	str	h2, [x0, #52]
-	ldr	h2, [sp, #24]
-	str	h2, [x0, #54]
-	ldr	h2, [sp, #22]
-	str	h2, [x0, #56]
-	ldr	h2, [sp, #20]
-	str	h2, [x0, #58]
-	ldr	h2, [sp, #18]
-	str	h2, [x0, #60]
-	ldr	h2, [sp, #16]
-	str	h2, [x0, #62]
-	ldr	h2, [sp, #14]
-	str	h2, [x0, #64]
-	ldr	h2, [sp, #12]
-	str	h2, [x0, #66]
-	ldr	h2, [sp, #10]
-	str	h2, [x0, #68]
-	str	h10, [x0, #70]
-	str	h8, [x0, #72]
-	str	h31, [x0, #74]
-	str	h30, [x0, #76]
-	str	h9, [x0, #78]
-	str	h11, [x0, #80]
-	str	h12, [x0, #82]
-	str	h13, [x0, #84]
-	str	h14, [x0, #86]
-	str	h15, [x0, #88]
-	str	h29, [x0, #90]
-	str	h28, [x0, #92]
-	str	h27, [x0, #94]
-	str	h26, [x0, #96]
-	str	h25, [x0, #98]
-	str	h24, [x0, #100]
-	str	h23, [x0, #102]
-	str	h22, [x0, #104]
-	str	h21, [x0, #106]
-	str	h20, [x0, #108]
-	str	h19, [x0, #110]
-	str	h18, [x0, #112]
-	str	h17, [x0, #114]
-	str	h16, [x0, #116]
-	str	h7, [x0, #118]
-	str	h6, [x0, #120]
-	str	h5, [x0, #122]
-	str	h4, [x0, #124]
-	str	h0, [x0, #126]
-	add	x13, x13, #1
-	add	x16, x16, x15
-	cmp	w14, w13
+	mov	x6, #0
+	mov	w4, #1
+	ldp	q25, q4, [sp, #176]
+	ldp	q8, q26, [sp, #144]
+	ldp	q10, q9, [sp, #112]
+	ldp	q12, q11, [sp, #80]
+	ldp	q21, q14, [sp, #48]
+	ldp	q15, q24, [sp, #16]
+	ldr	q22, [sp]
+	movi.8h	v23, #56, lsl #8
+LBB2_7:
+	lsl	x5, x6, #6
+	dup.4s	v28, w5
+	orr.16b	v1, v28, v8
+	lsl	x6, x6, #7
+	orr.16b	v0, v28, v10
+	ldr	h27, [x16, x6]
+	fmov	w6, s0
+	ldr	h29, [x16, w6, uxtw #1]
+	fmov	w6, s1
+	ldr	h30, [x16, w6, uxtw #1]
+	orr.16b	v2, v28, v25
+	fmov	w6, s2
+	ldr	h31, [x16, w6, uxtw #1]
+	mov.s	w6, v2[1]
+	ushll2.2d	v2, v2, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v31 }[1], [x6]
+	fmov	x6, d2
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v31 }[2], [x6]
+	mov.d	x6, v2[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v31 }[3], [x6]
+	mov.s	w6, v1[1]
+	ushll2.2d	v1, v1, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v30 }[1], [x6]
+	fmov	x6, d1
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v30 }[2], [x6]
+	mov.d	x6, v1[1]
+	orr.16b	v2, v28, v4
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v30 }[3], [x6]
+	fmov	w6, s2
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v31 }[4], [x6]
+	mov.s	w6, v0[1]
+	ushll2.2d	v0, v0, #0
+	orr.16b	v1, v28, v26
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v29 }[1], [x6]
+	fmov	w6, s1
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v30 }[4], [x6]
+	fmov	x6, d0
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v29 }[2], [x6]
+	mov.d	x6, v0[1]
+	orr.16b	v0, v28, v12
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v29 }[3], [x6]
+	mov.s	w6, v0[1]
+	add	x6, x16, w6, uxtw #1
+	ushll2.2d	v0, v0, #0
+	ld1.h	{ v27 }[1], [x6]
+	fmov	x6, d0
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v27 }[2], [x6]
+	mov.d	x6, v0[1]
+	orr.16b	v18, v28, v9
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v27 }[3], [x6]
+	fmov	w6, s18
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v29 }[4], [x6]
+	mov.s	w6, v2[1]
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v31 }[5], [x6]
+	mov.s	w6, v1[1]
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v30 }[5], [x6]
+	mov.s	w6, v18[1]
+	orr.16b	v7, v28, v11
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v29 }[5], [x6]
+	fmov	w6, s7
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v27 }[4], [x6]
+	mov.s	w6, v7[1]
+	ushll2.2d	v1, v1, #0
+	ushll2.2d	v2, v2, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v27 }[5], [x6]
+	fmov	x6, d2
+	add	x6, x16, x6, lsl #1
+	orr.16b	v20, v28, v14
+	orr.16b	v19, v28, v21
+	ld1.h	{ v31 }[6], [x6]
+	orr.16b	v16, v28, v24
+	orr.16b	v6, v28, v22
+	fmov	w6, s6
+	ldr	h0, [x16, w6, uxtw #1]
+	fmov	w6, s16
+	mov.16b	v13, v24
+	mov.16b	v24, v4
+	ldr	h4, [x16, w6, uxtw #1]
+	fmov	w6, s19
+	ldr	h5, [x16, w6, uxtw #1]
+	fmov	w6, s20
+	ldr	h17, [x16, w6, uxtw #1]
+	mov.s	w6, v20[1]
+	ushll2.2d	v20, v20, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v17 }[1], [x6]
+	fmov	x6, d1
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v30 }[6], [x6]
+	fmov	x6, d20
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v17 }[2], [x6]
+	mov.d	x6, v20[1]
+	ushll2.2d	v18, v18, #0
+	ldr	q20, [sp, #240]
+	orr.16b	v20, v28, v20
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v17 }[3], [x6]
+	fmov	w6, s20
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v17 }[4], [x6]
+	mov.s	w6, v20[1]
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v17 }[5], [x6]
+	mov.s	w6, v19[1]
+	ushll2.2d	v19, v19, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v5 }[1], [x6]
+	fmov	x6, d18
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v29 }[6], [x6]
+	fmov	x6, d19
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v5 }[2], [x6]
+	mov.d	x6, v19[1]
+	ushll2.2d	v7, v7, #0
+	ldr	q19, [sp, #224]
+	orr.16b	v19, v28, v19
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v5 }[3], [x6]
+	fmov	w6, s19
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v5 }[4], [x6]
+	mov.s	w6, v19[1]
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v5 }[5], [x6]
+	fmov	x6, d7
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v27 }[6], [x6]
+	mov.s	w6, v16[1]
+	ushll2.2d	v16, v16, #0
+	ushll2.2d	v20, v20, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v4 }[1], [x6]
+	fmov	x6, d20
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v17 }[6], [x6]
+	fmov	x6, d16
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v4 }[2], [x6]
+	mov.d	x6, v16[1]
+	ldr	q16, [sp, #208]
+	orr.16b	v16, v28, v16
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v4 }[3], [x6]
+	fmov	w6, s16
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v4 }[4], [x6]
+	mov.s	w6, v16[1]
+	ushll2.2d	v19, v19, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v4 }[5], [x6]
+	fmov	x6, d19
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v5 }[6], [x6]
+	mov.s	w6, v6[1]
+	ushll2.2d	v6, v6, #0
+	ushll2.2d	v16, v16, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v0 }[1], [x6]
+	fmov	x6, d16
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v4 }[6], [x6]
+	fmov	x6, d6
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v0 }[2], [x6]
+	mov.d	x6, v6[1]
+	orr.16b	v6, v28, v15
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v0 }[3], [x6]
+	fmov	w6, s6
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v0 }[4], [x6]
+	mov.s	w6, v6[1]
+	ushll2.2d	v6, v6, #0
+	add	x6, x16, w6, uxtw #1
+	ld1.h	{ v0 }[5], [x6]
+	fmov	x6, d6
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v0 }[6], [x6]
+	mov.d	x6, v2[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v31 }[7], [x6]
+	mov.d	x6, v1[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v30 }[7], [x6]
+	mov.d	x6, v18[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v29 }[7], [x6]
+	mov.d	x6, v7[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v27 }[7], [x6]
+	mov.d	x6, v20[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v17 }[7], [x6]
+	mov.d	x6, v19[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v5 }[7], [x6]
+	mov.d	x6, v16[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v4 }[7], [x6]
+	mov.d	x6, v6[1]
+	add	x6, x16, x6, lsl #1
+	ld1.h	{ v0 }[7], [x6]
+	mov	x7, x4
+	fmla.8h	v0, v23, v27
+	fmla.8h	v5, v23, v30
+	fmla.8h	v17, v23, v31
+	add	x4, x0, x5
+	stp	q5, q17, [x4, #32]
+	fmla.8h	v4, v23, v29
+	stp	q0, q4, [x4]
+	mov.16b	v4, v24
+	mov.16b	v24, v13
+	mov	w6, #1
+	mov	w4, #0
+	tbnz	w7, #0, LBB2_7
+	ldp	q0, q1, [sp, #576]
+	stp	q0, q1, [x3, #64]
+	ldp	q0, q1, [sp, #608]
+	stp	q0, q1, [x3, #96]
+	ldp	q0, q1, [sp, #512]
+	stp	q0, q1, [x3]
+	ldp	q0, q1, [sp, #544]
+	add	w10, w10, #1
+	add	x15, x15, x14
+	stp	q0, q1, [x3, #32]
+	cmp	w10, w9
 	b.ne	LBB2_2
-	ldp	x28, x27, [sp, #400]
-	ldp	d9, d8, [sp, #384]
-	ldp	d11, d10, [sp, #368]
-	ldp	d13, d12, [sp, #352]
-	ldp	d15, d14, [sp, #336]
-	add	sp, sp, #416
-LBB2_8:
+	sub	sp, x29, #96
+	ldp	x29, x30, [sp, #96]
+	ldp	x20, x19, [sp, #80]
+	ldp	x28, x27, [sp, #64]
+	ldp	d9, d8, [sp, #48]
+	ldp	d11, d10, [sp, #32]
+	ldp	d13, d12, [sp, #16]
+	ldp	d15, d14, [sp], #112
+LBB2_10:
 	mov	w0, #0
 	ret
+	.loh AdrpLdr	Lloh375, Lloh376
+	.loh AdrpAdrp	Lloh373, Lloh375
+	.loh AdrpLdr	Lloh373, Lloh374
+	.loh AdrpAdrp	Lloh371, Lloh373
+	.loh AdrpLdr	Lloh371, Lloh372
+	.loh AdrpAdrp	Lloh369, Lloh371
+	.loh AdrpLdr	Lloh369, Lloh370
+	.loh AdrpAdrp	Lloh367, Lloh369
+	.loh AdrpLdr	Lloh367, Lloh368
+	.loh AdrpAdrp	Lloh365, Lloh367
+	.loh AdrpLdr	Lloh365, Lloh366
+	.loh AdrpAdrp	Lloh363, Lloh365
+	.loh AdrpLdr	Lloh363, Lloh364
+	.loh AdrpAdrp	Lloh361, Lloh363
+	.loh AdrpLdr	Lloh361, Lloh362
+	.loh AdrpAdrp	Lloh359, Lloh361
+	.loh AdrpLdr	Lloh359, Lloh360
+	.loh AdrpAdrp	Lloh357, Lloh359
+	.loh AdrpLdr	Lloh357, Lloh358
+	.loh AdrpAdrp	Lloh355, Lloh357
+	.loh AdrpLdr	Lloh355, Lloh356
+	.loh AdrpAdrp	Lloh353, Lloh355
+	.loh AdrpLdr	Lloh353, Lloh354
+	.loh AdrpAdrp	Lloh351, Lloh353
+	.loh AdrpLdr	Lloh351, Lloh352
+	.loh AdrpAdrp	Lloh349, Lloh351
+	.loh AdrpLdr	Lloh349, Lloh350
+	.loh AdrpAdrp	Lloh347, Lloh349
+	.loh AdrpLdr	Lloh347, Lloh348
+	.loh AdrpAdrp	Lloh345, Lloh347
+	.loh AdrpLdr	Lloh345, Lloh346
 Lfunc_end2:
 	.cfi_endproc
 
@@ -2363,213 +2487,213 @@ ___TVMBackendParallelLaunch:
 
 	.section	__TEXT,__const
 l_.str:
-	.asciz	"Assert fail: num_args == 6, qgemm_lut_t12_int8_m6400_k3200_n1_b2: num_args should be 6"
+	.asciz	"Assert fail: num_args == 6, qgemm_lut_t12_int8_m3200_k3200_n1_b2: num_args should be 6"
 
 l_.str.1:
-	.asciz	"Assert fail: not T.isnullptr(args), qgemm_lut_t12_int8_m6400_k3200_n1_b2: TVMValue* arg pointer was NULL"
+	.asciz	"Assert fail: not T.isnullptr(args), qgemm_lut_t12_int8_m3200_k3200_n1_b2: TVMValue* arg pointer was NULL"
 
 l_.str.2:
-	.asciz	"Assert fail: not T.isnullptr(arg_type_ids), qgemm_lut_t12_int8_m6400_k3200_n1_b2: int* type_codes was NULL"
+	.asciz	"Assert fail: not T.isnullptr(arg_type_ids), qgemm_lut_t12_int8_m3200_k3200_n1_b2: int* type_codes was NULL"
 
 l_.str.3:
-	.asciz	"Assert fail: A_code == 3 or A_code == 13 or A_code == 7 or A_code == 4, qgemm_lut_t12_int8_m6400_k3200_n1_b2: Expect arg[0] to be pointer"
+	.asciz	"Assert fail: A_code == 3 or A_code == 13 or A_code == 7 or A_code == 4, qgemm_lut_t12_int8_m3200_k3200_n1_b2: Expect arg[0] to be pointer"
 
 l_.str.4:
-	.asciz	"Assert fail: LUT_code == 3 or LUT_code == 13 or LUT_code == 7 or LUT_code == 4, qgemm_lut_t12_int8_m6400_k3200_n1_b2: Expect arg[1] to be pointer"
+	.asciz	"Assert fail: LUT_code == 3 or LUT_code == 13 or LUT_code == 7 or LUT_code == 4, qgemm_lut_t12_int8_m3200_k3200_n1_b2: Expect arg[1] to be pointer"
 
 l_.str.5:
-	.asciz	"Assert fail: Scales_code == 3 or Scales_code == 13 or Scales_code == 7 or Scales_code == 4, qgemm_lut_t12_int8_m6400_k3200_n1_b2: Expect arg[2] to be pointer"
+	.asciz	"Assert fail: Scales_code == 3 or Scales_code == 13 or Scales_code == 7 or Scales_code == 4, qgemm_lut_t12_int8_m3200_k3200_n1_b2: Expect arg[2] to be pointer"
 
 l_.str.6:
-	.asciz	"Assert fail: LUT_Scales_code == 3 or LUT_Scales_code == 13 or LUT_Scales_code == 7 or LUT_Scales_code == 4, qgemm_lut_t12_int8_m6400_k3200_n1_b2: Expect arg[3] to be pointer"
+	.asciz	"Assert fail: LUT_Scales_code == 3 or LUT_Scales_code == 13 or LUT_Scales_code == 7 or LUT_Scales_code == 4, qgemm_lut_t12_int8_m3200_k3200_n1_b2: Expect arg[3] to be pointer"
 
 l_.str.7:
-	.asciz	"Assert fail: LUT_Biases_code == 3 or LUT_Biases_code == 13 or LUT_Biases_code == 7 or LUT_Biases_code == 4, qgemm_lut_t12_int8_m6400_k3200_n1_b2: Expect arg[4] to be pointer"
+	.asciz	"Assert fail: LUT_Biases_code == 3 or LUT_Biases_code == 13 or LUT_Biases_code == 7 or LUT_Biases_code == 4, qgemm_lut_t12_int8_m3200_k3200_n1_b2: Expect arg[4] to be pointer"
 
 l_.str.8:
-	.asciz	"Assert fail: C_code == 3 or C_code == 13 or C_code == 7 or C_code == 4, qgemm_lut_t12_int8_m6400_k3200_n1_b2: Expect arg[5] to be pointer"
+	.asciz	"Assert fail: C_code == 3 or C_code == 13 or C_code == 7 or C_code == 4, qgemm_lut_t12_int8_m3200_k3200_n1_b2: Expect arg[5] to be pointer"
 
 l_.str.9:
-	.asciz	"Assert fail: not T.isnullptr(A), qgemm_lut_t12_int8_m6400_k3200_n1_b2.A is expected to have non-NULL DLTensor* pointer"
+	.asciz	"Assert fail: not T.isnullptr(A), qgemm_lut_t12_int8_m3200_k3200_n1_b2.A is expected to have non-NULL DLTensor* pointer"
 
 l_.str.10:
-	.asciz	"Assert fail: 3 == T.tvm_struct_get(A, 0, 4, \"int32\"), qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.ndim is expected to equal 3"
+	.asciz	"Assert fail: 3 == T.tvm_struct_get(A, 0, 4, \"int32\"), qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.ndim is expected to equal 3"
 
 l_.str.11:
-	.asciz	"Assert fail: not T.isnullptr(LUT), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT is expected to have non-NULL DLTensor* pointer"
+	.asciz	"Assert fail: not T.isnullptr(LUT), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT is expected to have non-NULL DLTensor* pointer"
 
 l_.str.12:
-	.asciz	"Assert fail: 3 == T.tvm_struct_get(LUT, 0, 4, \"int32\"), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.ndim is expected to equal 3"
+	.asciz	"Assert fail: 3 == T.tvm_struct_get(LUT, 0, 4, \"int32\"), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.ndim is expected to equal 3"
 
 l_.str.13:
-	.asciz	"Assert fail: not T.isnullptr(Scales), qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales is expected to have non-NULL DLTensor* pointer"
+	.asciz	"Assert fail: not T.isnullptr(Scales), qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales is expected to have non-NULL DLTensor* pointer"
 
 l_.str.14:
-	.asciz	"Assert fail: 1 == T.tvm_struct_get(Scales, 0, 4, \"int32\"), qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.ndim is expected to equal 1"
+	.asciz	"Assert fail: 1 == T.tvm_struct_get(Scales, 0, 4, \"int32\"), qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.ndim is expected to equal 1"
 
 l_.str.15:
-	.asciz	"Assert fail: not T.isnullptr(LUT_Scales), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales is expected to have non-NULL DLTensor* pointer"
+	.asciz	"Assert fail: not T.isnullptr(LUT_Scales), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales is expected to have non-NULL DLTensor* pointer"
 
 l_.str.16:
-	.asciz	"Assert fail: 2 == T.tvm_struct_get(LUT_Scales, 0, 4, \"int32\"), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.ndim is expected to equal 2"
+	.asciz	"Assert fail: 2 == T.tvm_struct_get(LUT_Scales, 0, 4, \"int32\"), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.ndim is expected to equal 2"
 
 l_.str.17:
-	.asciz	"Assert fail: not T.isnullptr(LUT_Biases), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases is expected to have non-NULL DLTensor* pointer"
+	.asciz	"Assert fail: not T.isnullptr(LUT_Biases), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases is expected to have non-NULL DLTensor* pointer"
 
 l_.str.18:
-	.asciz	"Assert fail: 2 == T.tvm_struct_get(LUT_Biases, 0, 4, \"int32\"), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.ndim is expected to equal 2"
+	.asciz	"Assert fail: 2 == T.tvm_struct_get(LUT_Biases, 0, 4, \"int32\"), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.ndim is expected to equal 2"
 
 l_.str.19:
-	.asciz	"Assert fail: not T.isnullptr(C), qgemm_lut_t12_int8_m6400_k3200_n1_b2.C is expected to have non-NULL DLTensor* pointer"
+	.asciz	"Assert fail: not T.isnullptr(C), qgemm_lut_t12_int8_m3200_k3200_n1_b2.C is expected to have non-NULL DLTensor* pointer"
 
 l_.str.20:
-	.asciz	"Assert fail: 2 == T.tvm_struct_get(C, 0, 4, \"int32\"), qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.ndim is expected to equal 2"
+	.asciz	"Assert fail: 2 == T.tvm_struct_get(C, 0, 4, \"int32\"), qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.ndim is expected to equal 2"
 
 l_.str.21:
-	.asciz	"Assert fail: T.tvm_struct_get(A, 0, 5, \"uint8\") == T.uint8(1) and T.tvm_struct_get(A, 0, 6, \"uint8\") == T.uint8(8) and T.tvm_struct_get(A, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.dtype is expected to be uint8"
+	.asciz	"Assert fail: T.tvm_struct_get(A, 0, 5, \"uint8\") == T.uint8(1) and T.tvm_struct_get(A, 0, 6, \"uint8\") == T.uint8(8) and T.tvm_struct_get(A, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.dtype is expected to be uint8"
 
 l_.str.22:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_shape[0]) == 50, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.shape[0] has an unsatisfied constraint: 50 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_shape[0])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_shape[0]) == 25, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.shape[0] has an unsatisfied constraint: 25 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_shape[0])"
 
 l_.str.23:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_shape[1]) == 800, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.shape[1] has an unsatisfied constraint: 800 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_shape[1])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_shape[1]) == 800, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.shape[1] has an unsatisfied constraint: 800 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_shape[1])"
 
 l_.str.24:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_shape[2]) == 64, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.shape[2] has an unsatisfied constraint: 64 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_shape[2])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_shape[2]) == 64, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.shape[2] has an unsatisfied constraint: 64 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_shape[2])"
 
 l_.str.25:
-	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_strides[2]) and 64 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_strides[1]) and 51200 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_A_strides[0]), qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.strides: expected to be compact array"
+	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_strides[2]) and 64 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_strides[1]) and 51200 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_A_strides[0]), qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.strides: expected to be compact array"
 
 l_.str.26:
-	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(A, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(A, 0, 8, \"uint64\")"
+	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(A, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(A, 0, 8, \"uint64\")"
 
 l_.str.27:
-	.asciz	"Assert fail: T.tvm_struct_get(A, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(A, 0, 10, \"int32\")"
+	.asciz	"Assert fail: T.tvm_struct_get(A, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(A, 0, 10, \"int32\")"
 
 l_.str.28:
-	.asciz	"Assert fail: not T.isnullptr(A), qgemm_lut_t12_int8_m6400_k3200_n1_b2.A is expected to have non-NULL data pointer"
+	.asciz	"Assert fail: not T.isnullptr(A), qgemm_lut_t12_int8_m3200_k3200_n1_b2.A is expected to have non-NULL data pointer"
 
 l_.str.29:
-	.asciz	"Assert fail: T.tvm_struct_get(LUT, 0, 5, \"uint8\") == T.uint8(0) and T.tvm_struct_get(LUT, 0, 6, \"uint8\") == T.uint8(8) and T.tvm_struct_get(LUT, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.dtype is expected to be int8"
+	.asciz	"Assert fail: T.tvm_struct_get(LUT, 0, 5, \"uint8\") == T.uint8(0) and T.tvm_struct_get(LUT, 0, 6, \"uint8\") == T.uint8(8) and T.tvm_struct_get(LUT, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.dtype is expected to be int8"
 
 l_.str.30:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_shape[0]) == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_shape[0])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_shape[0]) == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_shape[0])"
 
 l_.str.31:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_shape[1]) == 800, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.shape[1] has an unsatisfied constraint: 800 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_shape[1])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_shape[1]) == 800, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.shape[1] has an unsatisfied constraint: 800 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_shape[1])"
 
 l_.str.32:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_shape[2]) == 16, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.shape[2] has an unsatisfied constraint: 16 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_shape[2])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_shape[2]) == 16, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.shape[2] has an unsatisfied constraint: 16 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_shape[2])"
 
 l_.str.33:
-	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_strides[2]) and 16 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_strides[1]), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.strides: expected to be compact array"
+	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_strides[2]) and 16 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_strides[1]), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.strides: expected to be compact array"
 
 l_.str.34:
-	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT, 0, 8, \"uint64\")"
+	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT, 0, 8, \"uint64\")"
 
 l_.str.35:
-	.asciz	"Assert fail: T.tvm_struct_get(LUT, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT, 0, 10, \"int32\")"
+	.asciz	"Assert fail: T.tvm_struct_get(LUT, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT, 0, 10, \"int32\")"
 
 l_.str.36:
-	.asciz	"Assert fail: dev_id == T.tvm_struct_get(LUT, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT, 0, 9, \"int32\")"
+	.asciz	"Assert fail: dev_id == T.tvm_struct_get(LUT, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT, 0, 9, \"int32\")"
 
 l_.str.37:
-	.asciz	"Assert fail: not T.isnullptr(LUT), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT is expected to have non-NULL data pointer"
+	.asciz	"Assert fail: not T.isnullptr(LUT), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT is expected to have non-NULL data pointer"
 
 l_.str.38:
-	.asciz	"Assert fail: T.tvm_struct_get(Scales, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(Scales, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(Scales, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.dtype is expected to be float16"
+	.asciz	"Assert fail: T.tvm_struct_get(Scales, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(Scales, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(Scales, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.dtype is expected to be float16"
 
 l_.str.39:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_Scales_shape[0]) == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_Scales_shape[0])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_Scales_shape[0]) == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_Scales_shape[0])"
 
 l_.str.41:
-	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(Scales, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(Scales, 0, 8, \"uint64\")"
+	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(Scales, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(Scales, 0, 8, \"uint64\")"
 
 l_.str.42:
-	.asciz	"Assert fail: T.tvm_struct_get(Scales, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(Scales, 0, 10, \"int32\")"
+	.asciz	"Assert fail: T.tvm_struct_get(Scales, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(Scales, 0, 10, \"int32\")"
 
 l_.str.43:
-	.asciz	"Assert fail: dev_id == T.tvm_struct_get(Scales, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(Scales, 0, 9, \"int32\")"
+	.asciz	"Assert fail: dev_id == T.tvm_struct_get(Scales, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(Scales, 0, 9, \"int32\")"
 
 l_.str.44:
-	.asciz	"Assert fail: not T.isnullptr(Scales), qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales is expected to have non-NULL data pointer"
+	.asciz	"Assert fail: not T.isnullptr(Scales), qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales is expected to have non-NULL data pointer"
 
 l_.str.45:
-	.asciz	"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(LUT_Scales, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(LUT_Scales, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.dtype is expected to be float16"
+	.asciz	"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(LUT_Scales, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(LUT_Scales, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.dtype is expected to be float16"
 
 l_.str.46:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Scales_shape[0]) == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Scales_shape[0])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Scales_shape[0]) == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Scales_shape[0])"
 
 l_.str.47:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Scales_shape[1]) == 50, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.shape[1] has an unsatisfied constraint: 50 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Scales_shape[1])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Scales_shape[1]) == 50, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.shape[1] has an unsatisfied constraint: 50 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Scales_shape[1])"
 
 l_.str.48:
-	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Scales_strides[1]), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.strides: expected to be compact array"
+	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Scales_strides[1]), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.strides: expected to be compact array"
 
 l_.str.49:
-	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \"uint64\")"
+	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \"uint64\")"
 
 l_.str.50:
-	.asciz	"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Scales, 0, 10, \"int32\")"
+	.asciz	"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Scales, 0, 10, \"int32\")"
 
 l_.str.51:
-	.asciz	"Assert fail: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \"int32\")"
+	.asciz	"Assert fail: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \"int32\")"
 
 l_.str.52:
-	.asciz	"Assert fail: not T.isnullptr(LUT_Scales), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales is expected to have non-NULL data pointer"
+	.asciz	"Assert fail: not T.isnullptr(LUT_Scales), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales is expected to have non-NULL data pointer"
 
 l_.str.53:
-	.asciz	"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(LUT_Biases, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(LUT_Biases, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.dtype is expected to be float16"
+	.asciz	"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(LUT_Biases, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(LUT_Biases, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.dtype is expected to be float16"
 
 l_.str.54:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Biases_shape[0]) == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Biases_shape[0])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Biases_shape[0]) == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Biases_shape[0])"
 
 l_.str.55:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Biases_shape[1]) == 50, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.shape[1] has an unsatisfied constraint: 50 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Biases_shape[1])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Biases_shape[1]) == 50, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.shape[1] has an unsatisfied constraint: 50 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Biases_shape[1])"
 
 l_.str.56:
-	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_LUT_Biases_strides[1]), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.strides: expected to be compact array"
+	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_LUT_Biases_strides[1]), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.strides: expected to be compact array"
 
 l_.str.57:
-	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \"uint64\")"
+	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \"uint64\")"
 
 l_.str.58:
-	.asciz	"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Biases, 0, 10, \"int32\")"
+	.asciz	"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Biases, 0, 10, \"int32\")"
 
 l_.str.59:
-	.asciz	"Assert fail: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \"int32\")"
+	.asciz	"Assert fail: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \"int32\")"
 
 l_.str.60:
-	.asciz	"Assert fail: not T.isnullptr(LUT_Biases), qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases is expected to have non-NULL data pointer"
+	.asciz	"Assert fail: not T.isnullptr(LUT_Biases), qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases is expected to have non-NULL data pointer"
 
 l_.str.61:
-	.asciz	"Assert fail: T.tvm_struct_get(C, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(C, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(C, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.dtype is expected to be float16"
+	.asciz	"Assert fail: T.tvm_struct_get(C, 0, 5, \"uint8\") == T.uint8(2) and T.tvm_struct_get(C, 0, 6, \"uint8\") == T.uint8(16) and T.tvm_struct_get(C, 0, 7, \"uint16\") == T.uint16(1), qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.dtype is expected to be float16"
 
 l_.str.62:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_C_shape[0]) == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_C_shape[0])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_C_shape[0]) == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.shape[0] has an unsatisfied constraint: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_C_shape[0])"
 
 l_.str.63:
-	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_C_shape[1]) == 3200, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.shape[1] has an unsatisfied constraint: 3200 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_C_shape[1])"
+	.asciz	"Assert fail: T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_C_shape[1]) == 1600, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.shape[1] has an unsatisfied constraint: 1600 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_C_shape[1])"
 
 l_.str.64:
-	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m6400_k3200_n1_b2_C_strides[1]), qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.strides: expected to be compact array"
+	.asciz	"Assert fail: 1 == T.Cast(\"int32\", qgemm_lut_t12_int8_m3200_k3200_n1_b2_C_strides[1]), qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.strides: expected to be compact array"
 
 l_.str.65:
-	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(C, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(C, 0, 8, \"uint64\")"
+	.asciz	"Assert fail: T.uint64(0) == T.tvm_struct_get(C, 0, 8, \"uint64\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(C, 0, 8, \"uint64\")"
 
 l_.str.66:
-	.asciz	"Assert fail: T.tvm_struct_get(C, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(C, 0, 10, \"int32\")"
+	.asciz	"Assert fail: T.tvm_struct_get(C, 0, 10, \"int32\") == 1, Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(C, 0, 10, \"int32\")"
 
 l_.str.67:
-	.asciz	"Assert fail: dev_id == T.tvm_struct_get(C, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(C, 0, 9, \"int32\")"
+	.asciz	"Assert fail: dev_id == T.tvm_struct_get(C, 0, 9, \"int32\"), Argument qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(C, 0, 9, \"int32\")"
 
 l_.str.68:
-	.asciz	"Assert fail: not T.isnullptr(C), qgemm_lut_t12_int8_m6400_k3200_n1_b2.C is expected to have non-NULL data pointer"
+	.asciz	"Assert fail: not T.isnullptr(C), qgemm_lut_t12_int8_m3200_k3200_n1_b2.C is expected to have non-NULL data pointer"
 
 	.globl	___tvm_main__
 	.weak_definition	___tvm_main__
 ___tvm_main__:
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2"
 
 	.section	__DWARF,__debug_loc,regular,debug
 Lsection_debug_loc:
@@ -4681,8 +4805,8 @@ Linfo_string:
 	.asciz	"TVM"
 	.asciz	"IRModule.CodeGenLLVM"
 	.asciz	"."
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2_compute_"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2_compute_"
 	.asciz	"int32"
 	.asciz	"args"
 	.asciz	"arg_type_ids"
@@ -4704,20 +4828,20 @@ Linfo_string:
 	.asciz	"A"
 	.asciz	"uint8"
 	.asciz	"dev_id"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.strides"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.strides"
 	.asciz	"int64"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.A.shape"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.A.shape"
 	.asciz	"int8"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.strides"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT.shape"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.strides"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT.shape"
 	.asciz	"float16"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.Scales.shape"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.strides"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Scales.shape"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.strides"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.LUT_Biases.shape"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.shape"
-	.asciz	"qgemm_lut_t12_int8_m6400_k3200_n1_b2.C.strides"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.Scales.shape"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.strides"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Scales.shape"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.strides"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.LUT_Biases.shape"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.shape"
+	.asciz	"qgemm_lut_t12_int8_m3200_k3200_n1_b2.C.strides"
 	.section	__DWARF,__apple_names,regular,debug
 Lnames_begin:
 	.long	1212240712
@@ -4732,21 +4856,21 @@ Lnames_begin:
 	.short	6
 	.long	0
 	.long	1
-	.long	-1032257698
-	.long	175893337
-.set Lset505, LNames0-Lnames_begin
+	.long	1751123092
+	.long	1464513081
+.set Lset505, LNames1-Lnames_begin
 	.long	Lset505
-.set Lset506, LNames1-Lnames_begin
+.set Lset506, LNames0-Lnames_begin
 	.long	Lset506
-LNames0:
-	.long	27
-	.long	1
-	.long	46
-	.long	0
 LNames1:
 	.long	64
 	.long	1
 	.long	545
+	.long	0
+LNames0:
+	.long	27
+	.long	1
+	.long	46
 	.long	0
 	.section	__DWARF,__apple_objc,regular,debug
 Lobjc_begin:

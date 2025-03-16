@@ -10,12 +10,12 @@ namespace mx = mlx::core;
 
 int main() {
     // 创建输入数据
-    int M = 8640;
+    int M = 8640 / 2;
     int K = 3200;
     int N = 1;
 
     int nbits = 2;
-    int bm = 128;
+    int bm = 320;
     int g = 4;
     int group_size = 128;
     int act_group_size = 64;

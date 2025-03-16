@@ -385,8 +385,8 @@ void Device::end_encoding(int index) {
 CommandEncoder& Device::get_command_encoder(int index) {
   auto& stream = get_stream_(index);
   if (stream.encoder == nullptr) {
-    stream.encoder = std::make_unique<CommandEncoder>(stream);
-    stream.fence = std::make_shared<Fence>(device_->newFence());
+    stream.encoder = std::make_unique<CommandEncoder>(stream);    // NOTE: Unique to one stream.
+    stream.fence = std::make_shared<Fence>(device_->newFence());  // NOTE: Shared to all streams.
   }
   return *stream.encoder;
 }
