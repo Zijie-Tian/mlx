@@ -10,12 +10,12 @@ namespace mx = mlx::core;
 
 int main() {
     // 创建输入数据
-    int M = 8640 / 2;
+    int M = 1600;  // 原值为8640/2，调整为可被bm整除的值
     int K = 3200;
     int N = 1;
 
     int nbits = 2;
-    int bm = 320;
+    int bm = 160;  // 调整为M的因数 (8640 ÷ 480 = 18)
     int g = 4;
     int group_size = 128;
     int act_group_size = 64;
@@ -38,49 +38,6 @@ int main() {
     Scales_t.eval();
     activation.eval();
 
-    // std::cout << "A_t : " << A_t << std::endl;
-    // std::cout << "Scales_t : " << Scales_t << std::endl;
-    // std::cout << "activation : " << activation << std::endl;
-
-    // mx::array output = zeros({N, M}, mx::float16);
-    // for (int i = 0; i < 10; ++i) {
-    //     eval(mx::tmac_gemv(
-    //         activation,
-    //         A_t,
-    //         Scales_t,
-    //         QLUT,
-    //         LUT_Scales,
-    //         LUT_Biases,
-    //         M, K, N,
-    //         group_size, 
-    //         act_group_size,
-    //         kfactor, g, bm, nbits,
-    //         n_threads,
-    //         mx::Device::cpu
-    //     ));
-    // }
-
-    // auto start_time = time_now();
-    // for (int i = 0; i < 100; ++i) {
-    //     eval(mx::tmac_gemv(
-    //         activation,
-    //         A_t,
-    //         Scales_t,
-    //         QLUT,
-    //         LUT_Scales,
-    //         LUT_Biases,
-    //         M, K, N,
-    //         group_size, 
-    //         act_group_size,
-    //         kfactor, g, bm, nbits,
-    //         n_threads,
-    //         mx::Device::cpu
-    //     ));
-    // }
-    // std::cout << "output : " << output << std::endl;
-    // auto end_time = time_now();
-    // std::cout << "tmac-gemv time: " << milliseconds(end_time - start_time) / 100 << " ms" << std::endl;
-
     TIMEM(
         "tmac-gemv",
         mx::tmac_gemv,
@@ -97,6 +54,16 @@ int main() {
         n_threads,
         mx::Device::cpu
     );
+
+    mx::array weight = mx::ones({K, M}, mx::float16);
+    weight.eval();
+
+    auto matvec = [&]() { return mx::matmul(activation, weight, mx::Device::gpu); };
+
+    TIMEM(
+        "matmul",
+        matvec
+    )
 
     return 0;
 }

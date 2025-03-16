@@ -86,14 +86,10 @@ def compile(
             params.append((param.name, dtype))
         return params
     
-    # 存储所有匹配的函数参数组合
-    dispatch_cases = []
     def make_call_from_IRModule(mod: tvm.IRModule) -> bool:
-        # 遍历 IRModule 中的函数
         for gvar, func in mod.functions.items():
             func_name = gvar.name_hint
             
-            # 通过正则表达式解析函数名中的参数
             pattern = r"(\w+)_t(\d+)_int8_m(\d+)_k(\d+)_n(\d+)_b(\d+)$"  # 匹配形如 _m128_k3200_n1_b2 的结尾
             match = re.search(pattern, func_name)
             
@@ -285,7 +281,7 @@ def compile(
                             wrapper_func_defs["preprocessor"] + " {\n" + wrapper_func_calls["preprocessor"] + "\n    return -1;\n}\n")
             f.write('#include "stdint.h"\n' + mod[0] + wrapper_func)
         with open(os.path.join(FLAGS.out_path, "kernels.cc"), "w") as f:
-            f.write('#include "t-mac/kernels.h"\n' + qgemm_lut.extra_cc_header + preprocessor.extra_cc_header + body_code + mod[1])
+            f.write('#include <mlx/backend/cpu/tmac/kernels.h>\n' + qgemm_lut.extra_cc_header + preprocessor.extra_cc_header + body_code + mod[1])
 
     with open(os.path.join(FLAGS.out_path, "kcfg.ini"), "w") as f:
         config.write(f)

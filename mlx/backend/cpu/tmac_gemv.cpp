@@ -25,6 +25,7 @@
 
 namespace mlx::core {
 
+#ifdef USE_TVM_THREADPOOL
 struct TVMInternals {
     tvm::runtime::Module _mod_lib;
     std::map<_fkey, tvm::runtime::PackedFunc> _fcache;
@@ -32,6 +33,17 @@ struct TVMInternals {
     tvm::runtime::PackedFunc pf;
     tvm::runtime::PackedFunc qf;
 };
+#else
+// TODO : Add sync thread to this pool.
+ThreadPool TMACMatmul::_thread_pool{12};
+
+#endif
+
+// Initialize the static member variable
+#ifdef USE_TVM_THREADPOOL
+TVMInternals* TMACMatmul::_tvm_internals = nullptr;
+#endif
+INIReader* TMACMatmul::_reader = nullptr;
 
 struct TMACGeMMConfig {
     int bm;
@@ -80,6 +92,7 @@ inline std::string get_kcfg_file(const std::string& kcfg_file)
   }
 }
 
+#ifdef USE_TVM_THREADPOOL
 inline std::string get_library_file(const std::string& library_file)
 {
   if (library_file.empty()) {
@@ -97,10 +110,12 @@ inline std::string get_library_file(const std::string& library_file)
     return library_file;
   }
 }
+#endif
 
 #undef STR
 #undef QUOTE
 
+#ifdef USE_TVM_THREADPOOL
 tvm::runtime::PackedFunc get_function(TVMInternals* _tvm_internals, std::mutex& _m, const std::string& func_name, _fkey key) {
     std::lock_guard<std::mutex> lock(_m);
     auto iter = _tvm_internals -> _fcache.find(key);
@@ -115,6 +130,7 @@ tvm::runtime::PackedFunc get_function(TVMInternals* _tvm_internals, std::mutex& 
         return iter->second; // Get the function from the cache
     }
 }
+#endif
 
 TMACMatmul::TMACMatmul(
     Stream stream, 
@@ -124,6 +140,7 @@ TMACMatmul::TMACMatmul(
     M_(M), K_(K), N_(N), act_group_size_(act_group_size), group_size_(group_size), 
     bm_(bm), g_(g), kfactor_(kfactor), nbits_(nbits), _n_threads(n_threads) {
     
+#ifdef USE_TVM_THREADPOOL
     if (TMACMatmul::_tvm_internals == nullptr) {
         TMACMatmul::_tvm_internals = new TVMInternals();
 #ifdef TMAC_USE_SYSLIB
@@ -148,6 +165,7 @@ TMACMatmul::TMACMatmul(
                 {M_, K_, N_, nbits_, 1}
             );
     }
+#endif
 
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
@@ -177,15 +195,16 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         return;
     }
 
+    assert(_allocated);
+
+#ifdef USE_TVM_THREADPOOL
+    //! =========================================================================================================================
+
     // 修正缓冲区转换方式
     auto activations_buf = inputs[0].data<float16_t>();
     auto qweight_buf = inputs[1].data<uint8_t>();
     auto scales_buf = inputs[2].data<float16_t>();
     auto output_buf = output.data<float16_t>();
-
-    assert(_allocated);
-
-    //! =========================================================================================================================
 
     int ngroups_per_elem = 8 / g_;
 
@@ -269,6 +288,66 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     // (_tvm_internals -> qf)(_tvm_internals -> A, &QLUTt, _tvm_internals -> Scales, &LUTSt, &LUTBt, _tvm_internals -> C);
     (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
     (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
+#else
+    //! ============= Turn to void pointer. =============
+    // 修正缓冲区转换方式
+    auto activations_buf = inputs[0].data<float16_t>();
+    auto qweight_buf = inputs[1].data<uint8_t>();
+    auto scales_buf = inputs[2].data<float16_t>();
+    auto output_buf = output.data<float16_t>();
+
+    // 修正函数调用参数
+    int err_no = preprocessor_int8(
+        this->M_ * this->nbits_,
+        this->K_,
+        this->N_,
+        this->nbits_,
+        (void*)activations_buf,
+        (void*)this->_lut_scales,
+        (void*)this->_lut_biases,
+        (void*)this->_qlut
+    );
+    if (err_no != 0) {
+        std::cout << "preprocessor_int8 failed with Parameters : " <<
+            "m = " << this->bm_ <<
+            ", k = " << this->K_ <<
+            ", n = " << this->N_ <<
+            ", b = " << this->nbits_ << std::endl;
+        return;   
+    }
+
+    // std::cout << "preprocessor_int8 done!" << std::endl;
+    // std::cout << "QLUT: " << QLUT << "shape : " << QLUT.shape() << std::endl;
+    // std::cout << "LUT_Scales: " << LUT_Scales << "shape : " << LUT_Scales.shape() << std::endl;
+    // std::cout << "LUT_Biases: " << LUT_Biases << "shape : " << LUT_Biases.shape() << std::endl;
+    // std::cout << "qgemm_output: " << qgemm_output << "shape : " << qgemm_output.shape() << std::endl;
+    // std::cout << "Scales :" << inputs[2] << "shape : " << inputs[2].shape() << std::endl;
+
+    std::vector<std::future<int>> bm_tiles;
+    int ngroups_per_elem = 8 / this->g_;
+    for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
+        bm_tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(std::bind(
+                    &qgemm_lut_int8,
+                    this->bm_,
+                    this->K_,
+                    this->N_,
+                    this->nbits_,
+                    (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
+                    (void *)this->_qlut,
+                    (void *)scales_buf,
+                    (void *)this->_lut_scales,
+                    (void *)this->_lut_biases, 
+                    (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
+                )
+            )
+        );
+    }
+    // for (auto& tile : bm_tiles) {
+    //     tile.wait();
+    // }
+
+#endif
+
 }
 
 std::string TMACMatmul::get_template_name(_fkey key)
@@ -346,23 +425,15 @@ void TMACMatmul::set_workspace(int maxM, int maxK, int maxN)
 }
 
 void TMACMatmul::set_num_threads(int n_threads) {
+#ifdef USE_TVM_THREADPOOL
     if (n_threads != _n_threads) {
         _n_threads = n_threads;
         (*(_tvm_internals -> _config_threadpool))(1, _n_threads);
         int num_threads = (*tvm::runtime::Registry::Get("runtime.NumThreads"))();
         LOG(INFO) << "NUM_THREADS: " << num_threads;
     }
+#endif
 }
-
-
-// template class TMACGeMMWrapper<float, 4>;
-// 取消注释并添加half类型的实例化
-// template class TMACGeMMWrapper<float16_t, 4>;
-// template class TMACGeMMWrapper<half, 4>;  // 新增half类型实例化
-
-// Initialize the static member variable
-TVMInternals* TMACMatmul::_tvm_internals = nullptr;
-INIReader* TMACMatmul::_reader = nullptr;
 
 } // namespace mlx::core
 

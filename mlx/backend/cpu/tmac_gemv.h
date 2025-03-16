@@ -1,8 +1,5 @@
 #pragma once
 
-#define TMAC_USE_TVM_THREADPOOL
-
-
 // 修改后（使用尖括号包含系统头文件）
 #include <assert.h>
 #include <chrono>
