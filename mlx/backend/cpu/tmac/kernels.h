@@ -10,7 +10,7 @@ extern "C"
 #ifdef __cplusplus
 extern "C" 
 #endif
- int32_t qgemm_lut_t1_int8_m320_k3200_n1_b2(void* A, void* LUT, void* Scales, void* LUT_Scales, void* LUT_Biases, void* C);
+ int32_t qgemm_lut_t1_int8_m256_k3200_n1_b2(void* A, void* LUT, void* Scales, void* LUT_Scales, void* LUT_Biases, void* C);
 #ifdef __cplusplus
 extern "C" 
 #endif
@@ -19,7 +19,7 @@ inline int qgemm_lut_int8(int m, int k, int n, int b, void* A, void* LUT, void* 
 
     if (m == 640 && k == 3200 && n == 1 && b == 2) return qgemm_lut_t1_int8_m640_k3200_n1_b2(A, LUT, Scales, LUT_Scales, LUT_Biases, C);
 
-    if (m == 320 && k == 3200 && n == 1 && b == 2) return qgemm_lut_t1_int8_m320_k3200_n1_b2(A, LUT, Scales, LUT_Scales, LUT_Biases, C);
+    if (m == 256 && k == 3200 && n == 1 && b == 2) return qgemm_lut_t1_int8_m256_k3200_n1_b2(A, LUT, Scales, LUT_Scales, LUT_Biases, C);
 
     return -1;
 }

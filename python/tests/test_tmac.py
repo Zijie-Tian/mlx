@@ -129,7 +129,7 @@ def compute_error(x, y):
 
 def test_tmac_gemv():
     # 参数配置
-    M, K, N = 3200, 3200, 1
+    M, K, N = 1600, 3200, 1
     group_size = 128    # 量化分组大小
     #! Attention : This BM should be the same as the one used in TVM schedule
     bm = 160            # 块大小参数

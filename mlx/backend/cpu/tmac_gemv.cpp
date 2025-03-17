@@ -444,8 +444,8 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     std::vector<std::future<int>> bm_tiles;
 #ifdef USE_TVM_LIB
     for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_); m_tile_idx++) {
+    // for(int m_tile_idx = 0; m_tile_idx < 1; m_tile_idx++) {
         // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
-        
         bm_tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(
             [this, &A_tiles, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx]() -> int {
                 (_tvm_internals -> qf)(&A_tiles[m_tile_idx], &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[m_tile_idx]);

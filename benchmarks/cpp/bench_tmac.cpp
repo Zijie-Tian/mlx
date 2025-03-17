@@ -15,7 +15,7 @@ int main() {
     int N = 1;
 
     int nbits = 2;
-    int bm = 160;  // 调整为M的因数 (8640 ÷ 480 = 18)
+    int bm = 128;  // 调整为M的因数 (8640 ÷ 480 = 18)
     int g = 4;
     int group_size = 128;
     int act_group_size = 64;
