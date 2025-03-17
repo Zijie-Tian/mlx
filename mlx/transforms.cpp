@@ -200,7 +200,8 @@ array eval_impl(std::vector<array> outputs, bool async) {
     // Set the status of the array and siblings.
     arr.set_status(array::Status::scheduled);
     for (auto& s : arr.siblings()) {
-      s.set_status(array::Status::scheduled); // NOTE: siblings are ONLY used for MIMO op.
+      s.set_status(array::Status::scheduled); // NOTE: siblings are ONLY used
+                                              // for MIMO op.
     }
 
     std::vector<std::shared_future<void>> arr_deps;

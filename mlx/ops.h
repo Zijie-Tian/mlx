@@ -1514,14 +1514,15 @@ array contiguous(
 
 //> Zijie Tian : This is for TMAC
 array tmac_gemv(
-  const array& acivation,
-  const array& qweight_qvals,
-  const array& Scales,
-  const int& M,
-  const int& K,
-  const int& N,
-  const int& nbits,
-  StreamOrDevice s /* = {} */);
+    const array& acivation,
+    const array& qweight_qvals,
+    const array& Scales,
+    const int& M,
+    const int& K,
+    const int& N,
+    const int& nbits,
+    StreamOrDevice s /* = {} */);
 
+array hermes_gemv();
 
 } // namespace mlx::core
