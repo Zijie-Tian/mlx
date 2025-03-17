@@ -131,7 +131,8 @@ def test_tmac_gemv():
     # 参数配置
     M, K, N = 3200, 3200, 1
     group_size = 128    # 量化分组大小
-    bm = 128            # 块大小参数
+    #! Attention : This BM should be the same as the one used in TVM schedule
+    bm = 160            # 块大小参数
     nbits = 2           # 2-bit量化
     g = 4               # 分组大小
     kfactor = 16        # 块大小参数
@@ -140,6 +141,8 @@ def test_tmac_gemv():
 
     activation = np.random.randn(N, K).astype(out_dtype)
     weight = np.random.randn(M, K)
+    # activation = np.ones((N, K), dtype=out_dtype) * 1.0  # 测试用例
+    # weight = np.ones((M, K), dtype=np.float32) * 1.0  # 测试用例
 
     # 量化权重
     qweight, scale = weight_quant(weight, group_size, force_per_tensor=True)
@@ -155,6 +158,7 @@ def test_tmac_gemv():
         Adq = Adq - Zref.T
     Adq = Adq.transpose(1, 0, 2).reshape(K, M).astype(out_dtype)
 
+    #! Attention : bm will affect this preprocess step
     A_t, Scales_t = preprocess_weights(Aref, Sref, Zref, bits=nbits, g=g, bm=bm, kfactor=kfactor)
 
     mx_weight = mx.array(weight)
@@ -186,19 +190,10 @@ def test_tmac_gemv():
         mx_activation,
         mx_A_t,
         mx_Scales_t,
-        mx_QLUT,
-        mx_LUT_Scales,
-        mx_LUT_Biases,
         M=M,
         K=K,
         N=N,
-        group_size=group_size,
-        act_group_size=act_group_size,
-        kfactor=kfactor,
-        g=g,
-        bm=bm,
         nbits=nbits,
-        n_threads=12,
         stream=mx.cpu
     )
     mx.eval(mx_output)

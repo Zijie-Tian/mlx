@@ -25,7 +25,7 @@
 
 namespace mlx::core {
 
-#ifdef USE_TVM_THREADPOOL
+#if defined(USE_TVM_THREADPOOL) || defined(USE_TVM_LIB)
 struct TVMInternals {
     tvm::runtime::Module _mod_lib;
     std::map<_fkey, tvm::runtime::PackedFunc> _fcache;
@@ -33,14 +33,13 @@ struct TVMInternals {
     tvm::runtime::PackedFunc pf;
     tvm::runtime::PackedFunc qf;
 };
-#else
+#endif
+
 // TODO : Add sync thread to this pool.
 ThreadPool TMACMatmul::_thread_pool{12};
 
-#endif
-
 // Initialize the static member variable
-#ifdef USE_TVM_THREADPOOL
+#if defined(USE_TVM_THREADPOOL) || defined(USE_TVM_LIB)
 TVMInternals* TMACMatmul::_tvm_internals = nullptr;
 #endif
 INIReader* TMACMatmul::_reader = nullptr;
@@ -92,7 +91,7 @@ inline std::string get_kcfg_file(const std::string& kcfg_file)
   }
 }
 
-#ifdef USE_TVM_THREADPOOL
+#if defined(USE_TVM_THREADPOOL) || defined(USE_TVM_LIB)
 inline std::string get_library_file(const std::string& library_file)
 {
   if (library_file.empty()) {
@@ -115,7 +114,7 @@ inline std::string get_library_file(const std::string& library_file)
 #undef STR
 #undef QUOTE
 
-#ifdef USE_TVM_THREADPOOL
+#if defined(USE_TVM_THREADPOOL) || defined(USE_TVM_LIB)
 tvm::runtime::PackedFunc get_function(TVMInternals* _tvm_internals, std::mutex& _m, const std::string& func_name, _fkey key) {
     std::lock_guard<std::mutex> lock(_m);
     auto iter = _tvm_internals -> _fcache.find(key);
@@ -139,33 +138,6 @@ TMACMatmul::TMACMatmul(
     : UnaryPrimitive(stream),
     M_(M), K_(K), N_(N), nbits_(nbits), _n_threads(12) {
     
-#ifdef USE_TVM_THREADPOOL
-    if (TMACMatmul::_tvm_internals == nullptr) {
-        TMACMatmul::_tvm_internals = new TVMInternals();
-#ifdef TMAC_USE_SYSLIB
-            _tvm_internals -> _mod_lib = (*tvm::runtime::Registry::Get("runtime.SystemLib"))();
-#else
-            LOG(INFO) << "Loading kernels from: " << get_library_file(library_file);
-            _tvm_internals -> _mod_lib = tvm::runtime::Module::LoadFromFile(get_library_file(library_file));
-#endif
-            _tvm_internals -> _config_threadpool = tvm::runtime::Registry::Get("runtime.config_threadpool");
-            set_num_threads(n_threads);
-
-            _tvm_internals -> pf = get_function(
-                TMACMatmul::_tvm_internals,
-                this -> _m, 
-                this -> get_template_name({M_, K_, N_, nbits_, 0}),
-                {M_, K_, N_, nbits_, 0}
-            );
-            _tvm_internals -> qf = get_function(
-                TMACMatmul::_tvm_internals, 
-                this -> _m, 
-                this -> get_template_name({M_, K_, N_, nbits_, 1}),
-                {M_, K_, N_, nbits_, 1}
-            );
-    }
-#endif
-
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
     }
@@ -179,6 +151,42 @@ TMACMatmul::TMACMatmul(
     this -> group_size_ = config.group_size;
     this -> act_group_size_ = 64;
     this -> kfactor_ = config.kfactor;
+
+#ifdef USE_TVM_LIB
+    if (TMACMatmul::_tvm_internals == nullptr) {
+        TMACMatmul::_tvm_internals = new TVMInternals();
+#ifdef TMAC_USE_SYSLIB
+            _tvm_internals -> _mod_lib = (*tvm::runtime::Registry::Get("runtime.SystemLib"))();
+#else
+            LOG(INFO) << "Loading kernels from: " << get_library_file(library_file);
+            _tvm_internals -> _mod_lib = tvm::runtime::Module::LoadFromFile(get_library_file(library_file));
+#endif
+
+#ifdef USE_TVM_THREADPOOL
+            _tvm_internals -> _config_threadpool = tvm::runtime::Registry::Get("runtime.config_threadpool");
+            set_num_threads(_n_threads);
+#else
+
+#endif
+            _tvm_internals -> pf = get_function(
+                TMACMatmul::_tvm_internals,
+                this -> _m, 
+                this -> get_template_name({M_, K_, N_, nbits_, 0}),
+                {M_, K_, N_, nbits_, 0}
+            );
+            _tvm_internals -> qf = get_function(
+                TMACMatmul::_tvm_internals, 
+                this -> _m, 
+#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
+                //! This `bm_ /  nbits_` is for name valid.
+                this -> get_template_name({bm_, K_, N_, nbits_, 1}),
+#else
+                this -> get_template_name({M_, K_, N_, nbits_, 1}),
+#endif
+                {M_, K_, N_, nbits_, 1}
+            );
+    }
+#endif
 
     this -> set_workspace(M_, K_, N_);
 }
@@ -207,6 +215,8 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
 
     assert(_allocated);
 
+    int ngroups_per_elem = 8 / this->g_;
+
 #ifdef USE_TVM_THREADPOOL
     //! =========================================================================================================================
 
@@ -215,8 +225,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     auto qweight_buf = inputs[1].data<uint8_t>();
     auto scales_buf = inputs[2].data<float16_t>();
     auto output_buf = output.data<float16_t>();
-
-    int ngroups_per_elem = 8 / g_;
 
     int64_t A_shape[3] = {M_ / bm_, K_, bm_ / ngroups_per_elem};
     int64_t Scales_shape[3] = {M_ / bm_, K_ / group_size_, bm_ / nbits_};
@@ -294,8 +302,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         /* .shape  = */ luts_shape,
     };
 
-    // (_tvm_internals -> pf)(_tvm_internals -> B, &LUTSt, &LUTBt, &QLUTt);
-    // (_tvm_internals -> qf)(_tvm_internals -> A, &QLUTt, _tvm_internals -> Scales, &LUTSt, &LUTBt, _tvm_internals -> C);
     (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
     (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
 #else
@@ -306,6 +312,107 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     auto scales_buf = inputs[2].data<float16_t>();
     auto output_buf = output.data<float16_t>();
 
+#ifdef USE_TVM_LIB
+    int64_t A_shape[3] = {M_ / bm_, K_, bm_ / ngroups_per_elem};
+    int64_t Scales_shape[3] = {M_ / bm_, K_ / group_size_, bm_ / nbits_};
+    int64_t activations_shape[2] = {N_, K_};
+    int64_t output_shape[2] = {N_, M_};
+    int64_t qlut_shape[3] = {N_, K_ / g_, (1 << g_)};
+    int64_t luts_shape[3] = {N_, K_ / act_group_size_};
+
+    int64_t A_tile_shape[3] = {nbits_, K_ / g_, bm_ / ngroups_per_elem};
+    int64_t C_tile_shape[2] = {N_, bm_};
+
+    const DLDevice cpu_dev = {
+        /* .device_type = */ kDLCPU,
+        /* .device_id   = */ 0,
+    };
+    const DLDataType int_dtype = {
+        /* .code  = */ kDLInt,
+        /* .bits  = */ 8,
+        /* .lanes = */ 1,
+    };
+    const DLDataType float_dtype = {
+        /* .code  = */ kDLFloat,
+        /* .bits  = */ sizeof(float16_t) * 8,
+        /* .lanes = */ 1,
+    };
+
+    DLTensor B = {
+        /*.data   = */ (void *)activations_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 2,
+        /*.dtype  = */ float_dtype,
+        /*.shape  = */ activations_shape,
+    };
+    DLTensor A = {
+        /*.data   = */ (void *)qweight_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 3,
+        /*.dtype  = */ int_dtype,
+        /*.shape  = */ A_shape,
+    };
+    DLTensor Scales = {
+        /*.data   = */ (void *)scales_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 3,
+        /*.dtype  = */ float_dtype,
+        /*.shape  = */ Scales_shape,
+    };
+    DLTensor C = {
+        /*.data   = */ (void *)output_buf,
+        /*.device = */ cpu_dev,
+        /*.ndim   = */ 2,
+        /*.dtype  = */ float_dtype,
+        /*.shape  = */ output_shape,
+    };
+    DLTensor QLUTt = {
+        /* .data   = */ this -> _qlut,
+        /* .device = */ cpu_dev,
+        /* .ndim   = */ 3,
+        /* .dtype  = */ int_dtype,
+        /* .shape  = */ qlut_shape,
+    };
+    DLTensor LUTSt = {
+        /* .data   = */ this -> _lut_scales,
+        /* .device = */ cpu_dev,
+        /* .ndim   = */ 2,
+        /* .dtype  = */ float_dtype,
+        /* .shape  = */ luts_shape,
+    };
+    DLTensor LUTBt = {
+        /* .data   = */ this -> _lut_biases,
+        /* .device = */ cpu_dev,
+        /* .ndim   = */ 2,
+        /* .dtype  = */ float_dtype,
+        /* .shape  = */ luts_shape,
+    };
+
+    (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
+
+    std::vector<DLTensor> C_tiles;
+    std::vector<DLTensor> A_tiles;
+    for (int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
+        DLTensor C_tile = {
+            /* .data   = */ (void *)(output_buf + m_tile_idx * this->bm_),
+            /* .device = */ cpu_dev,
+            /* .ndim   = */ 2,
+            /* .dtype  = */ float_dtype,
+            /* .shape  = */ C_tile_shape
+        };
+        C_tiles.push_back(C_tile);
+
+        DLTensor A_tile = {
+            /* .data   = */ (void *)(qweight_buf + nbits_ * (K_ / g_) * m_tile_idx * bm_ / ngroups_per_elem),
+            /* .device = */ cpu_dev,
+            /* .ndim   = */ 3,
+            /* .dtype  = */ int_dtype,
+            /* .shape  = */ A_tile_shape
+        };
+        A_tiles.push_back(A_tile);
+    }
+
+#else
     // 修正函数调用参数
     int err_no = preprocessor_int8(
         this->M_ * this->nbits_,
@@ -319,12 +426,13 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     );
     if (err_no != 0) {
         std::cout << "preprocessor_int8 failed with Parameters : " <<
-            "m = " << this->bm_ <<
-            ", k = " << this->K_ <<
-            ", n = " << this->N_ <<
-            ", b = " << this->nbits_ << std::endl;
+        "m = " << this->bm_ <<
+        ", k = " << this->K_ <<
+        ", n = " << this->N_ <<
+        ", b = " << this->nbits_ << std::endl;
         return;   
     }
+#endif
 
     // std::cout << "preprocessor_int8 done!" << std::endl;
     // std::cout << "QLUT: " << QLUT << "shape : " << QLUT.shape() << std::endl;
@@ -334,24 +442,37 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     // std::cout << "Scales :" << inputs[2] << "shape : " << inputs[2].shape() << std::endl;
 
     std::vector<std::future<int>> bm_tiles;
-    int ngroups_per_elem = 8 / this->g_;
-    for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-        bm_tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(std::bind(
-                    &qgemm_lut_int8,
-                    this->bm_,
-                    this->K_,
-                    this->N_,
-                    this->nbits_,
-                    (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
-                    (void *)this->_qlut,
-                    (void *)scales_buf,
-                    (void *)this->_lut_scales,
-                    (void *)this->_lut_biases, 
-                    (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
-                )
-            )
-        );
+#ifdef USE_TVM_LIB
+    for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_); m_tile_idx++) {
+        // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
+        
+        bm_tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(
+            [this, &A_tiles, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx]() -> int {
+                (_tvm_internals -> qf)(&A_tiles[m_tile_idx], &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[m_tile_idx]);
+                return 0;
+            }
+        ));
     }
+#else
+    for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
+        bm_tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(
+            std::bind(
+                &qgemm_lut_int8,
+                this->bm_,
+                this->K_,
+                this->N_,
+                this->nbits_,
+                (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
+                (void *)this->_qlut,
+                (void *)scales_buf,
+                (void *)this->_lut_scales,
+                (void *)this->_lut_biases, 
+                (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
+            )
+        ));
+    }
+#endif
+
     for (auto& tile : bm_tiles) {
         tile.wait();
     }
@@ -365,7 +486,11 @@ std::string TMACMatmul::get_template_name(_fkey key)
     if (std::get<4>(key) != 0) {
         return
         std::string("qgemm_lut")
+#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
+            + "_t" + std::to_string(1)
+#else
             + "_t" + std::to_string(_n_threads)
+#endif
             + "_int8"
             + "_m" + std::to_string(std::get<0>(key) * std::get<3>(key))
             + "_k" + std::to_string(std::get<1>(key))
@@ -374,7 +499,11 @@ std::string TMACMatmul::get_template_name(_fkey key)
     } else {
         return
         std::string("preprocessor")
+#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
+            + "_t" + std::to_string(1)
+#else
             + "_t" + std::to_string(_n_threads)
+#endif
             + "_int8"
             + "_m" + std::to_string(std::get<0>(key) * std::get<3>(key))
             + "_k" + std::to_string(std::get<1>(key))
@@ -446,84 +575,4 @@ void TMACMatmul::set_num_threads(int n_threads) {
 }
 
 } // namespace mlx::core
-
-
-//! ====================================================================================================
-
-//! =============      Allocate vars.   =============
-// array QLUT = inputs[3];
-// array LUT_Scales = inputs[4];
-// array LUT_Biases = inputs[5];
-// QLUT.set_data(allocator::malloc_or_wait(QLUT.nbytes()));
-// LUT_Scales.set_data(allocator::malloc_or_wait(LUT_Scales.nbytes()));
-// LUT_Biases.set_data(allocator::malloc_or_wait(LUT_Biases.nbytes()));
-// array QLUT = zeros({this -> N_, this -> K_ / this -> g_, 1 << this -> g_}, int8);
-// array LUT_Scales = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
-// array LUT_Biases = zeros({this -> N_, this -> K_ / this -> act_group_size_}, float16);
-// QLUT.eval();
-// LUT_Scales.eval();
-// LUT_Biases.eval();
-
-// //! ============= Turn to void pointer. =============
-// // 修正缓冲区转换方式
-// auto activations_buf = inputs[0].data<float16_t>();
-// auto qweight_buf = inputs[1].data<uint8_t>();
-// auto scales_buf = inputs[2].data<float16_t>();
-// auto qlut_buf = QLUT.data<uint8_t>();
-// auto lut_scales_buf = LUT_Scales.data<float16_t>();
-// auto lut_biases_buf = LUT_Biases.data<float16_t>();
-// auto output_buf = output.data<float16_t>();
-
-// // 修正函数调用参数
-// int err_no = preprocessor_int8(
-//     this->M_ * this->nbits_,
-//     this->K_,
-//     this->N_,
-//     this->nbits_,
-//     (void*)activations_buf,
-//     (void*)lut_scales_buf,
-//     (void*)lut_biases_buf,
-//     (void*)qlut_buf
-// );
-// if (err_no != 0) {
-//     std::cout << "preprocessor_int8 failed with Parameters : " <<
-//         "m = " << this->bm_ <<
-//         ", k = " << this->K_ <<
-//         ", n = " << this->N_ <<
-//         ", b = " << this->nbits_ << std::endl;
-//     return;   
-// }
-
-// std::cout << "preprocessor_int8 done!" << std::endl;
-// std::cout << "QLUT: " << QLUT << "shape : " << QLUT.shape() << std::endl;
-// std::cout << "LUT_Scales: " << LUT_Scales << "shape : " << LUT_Scales.shape() << std::endl;
-// std::cout << "LUT_Biases: " << LUT_Biases << "shape : " << LUT_Biases.shape() << std::endl;
-// std::cout << "qgemm_output: " << qgemm_output << "shape : " << qgemm_output.shape() << std::endl;
-// std::cout << "Scales :" << inputs[2] << "shape : " << inputs[2].shape() << std::endl;
-
-// std::vector<std::future<int>> bm_tiles;
-// int ngroups_per_elem = 8 / this->g_;
-// for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-//     bm_tiles.emplace_back(this->pool_.enqueue(std::bind(
-//                 &qgemm_lut_int8,
-//                 this->bm_,
-//                 this->K_,
-//                 this->N_,
-//                 this->nbits_,
-//                 (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
-//                 (void *)qlut_buf,
-//                 (void *)scales_buf,
-//                 (void *)lut_scales_buf,
-//                 (void *)lut_biases_buf, 
-//                 (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
-//             )
-//         )
-//     );
-// }
-// for (auto& tile : bm_tiles) {
-//     tile.wait();
-// }
-
-
-
 

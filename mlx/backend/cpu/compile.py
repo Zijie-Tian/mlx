@@ -205,8 +205,9 @@ def compile(
             # Reuse tuned configs set by the complete M, N, K
             # The section name in kcfg.ini will be the same as the complete M, N, K
             # The kernel name will be constructed from tiled m, n, k
+            #! Zijie 3-17 : I change this to `qgemm_lut.bm * bits`
             qgemm_mod = qgemm_lut.compile(
-                qgemm_lut.bm, N, K,
+                qgemm_lut.bm * bits, N, K,
                 thread_affinity=FLAGS.thread_affinity,
                 return_type=return_type,
                 preserve_cfg=True,

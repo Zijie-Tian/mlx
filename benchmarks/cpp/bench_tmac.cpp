@@ -10,7 +10,7 @@ namespace mx = mlx::core;
 
 int main() {
     // 创建输入数据
-    int M = 1600;  // 原值为8640/2，调整为可被bm整除的值
+    int M = 3200;  // 原值为8640/2，调整为可被bm整除的值
     int K = 3200;
     int N = 1;
 
@@ -24,8 +24,8 @@ int main() {
     int n_threads = 12;
 
     int ngroups_per_elem = 8 / g;
-    mx::array A_t = mx::random::randint(0, 255, {M / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
-    mx::array Scales_t = mx::random::uniform({M / bm, K / group_size, bm / nbits}, mx::float16);
+    mx::array A_t = mx::random::randint(0, 255, {M * nbits / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
+    mx::array Scales_t = mx::random::uniform({M * nbits / bm, K / group_size, bm / nbits}, mx::float16);
     mx::array activation = mx::random::uniform({N, K}, mx::float16);
     // mx::array A_t = mx::zeros({M / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
     // mx::array Scales_t = mx::zeros({M / bm, K / group_size, bm / nbits}, mx::float16);
@@ -35,6 +35,23 @@ int main() {
     Scales_t.eval();
     activation.eval();
 
+    std::cout << "A_t shape: [";
+    for (auto dim : A_t.shape()) {
+        std::cout << dim << ", ";
+    }
+    std::cout << "]." << std::endl;
+
+    std::cout << "Scales_t shape: [";
+    for (auto dim : Scales_t.shape()) {
+        std::cout << dim << " ";
+    }
+    std::cout << "]." << std::endl;
+
+    std::cout << "activation shape: [";
+    for (auto dim : activation.shape()) {
+        std::cout << dim << ", ";
+    }
+    std::cout << "]." << std::endl;
 
     TIMEM(
         "tmac-gemv",

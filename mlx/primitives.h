@@ -1594,12 +1594,9 @@ class TMACMatmul : public UnaryPrimitive {
    }
    
 private:
-#ifdef USE_TVM_THREADPOOL
-   static TVMInternals* _tvm_internals;
-#else
-   static ThreadPool _thread_pool;
-#endif
-   static INIReader* _reader;
+    static ThreadPool _thread_pool;
+    static INIReader* _reader;
+    static TVMInternals* _tvm_internals;
    
     void set_num_threads(int n_threads);
     void set_workspace(int maxM, int maxK, int maxN);

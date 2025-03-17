@@ -100,7 +100,7 @@ class QGeMMLUTBitsCodegen(OpCodegen):
         if self.bits == 3:
             bms = [192, 384, 576, 768]
         else:
-            bms = [128, 256, 512, 1024, 160, 320, 640, 1600]
+            bms = [128, 256, 512, 1024, 160, 320, 640]
         bns = [8, 16, 32, 64]
         kfactors = [8, 16]
 

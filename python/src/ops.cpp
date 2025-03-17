@@ -5130,19 +5130,10 @@ void init_ops(nb::module_& m) {
       nb::arg("activation"),
       nb::arg("qweight_qvals"),
       nb::arg("scales"),
-      nb::arg("QLUT"),
-      nb::arg("LUT_Scales"),
-      nb::arg("LUT_Biases"),
       "M"_a,
       "K"_a,
       "N"_a,
-      "group_size"_a,
-      "act_group_size"_a,
-      "kfactor"_a,
-      "g"_a,
-      "bm"_a,
       "nbits"_a,
-      "n_threads"_a,
       nb::kw_only(),
       "stream"_a = nb::none(),
       nb::sig("def tmac_gemv(activation: array, qweight_qvals: array, scales: array, /, M: int, K: int, N: int, group_size: int, bm: int, nbits: int, *, stream: Union[None, Stream, Device] = None) -> array"),
@@ -5156,8 +5147,6 @@ void init_ops(nb::module_& m) {
               M (int): 输出矩阵行数
               K (int): 输入矩阵列数/输出矩阵列数
               N (int): 输出矩阵列数
-              group_size (int): 量化分组大小
-              bm (int): 块大小参数
               nbits (int): 量化位宽
   
           Returns:
