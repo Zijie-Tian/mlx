@@ -472,7 +472,7 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         ));
     }
 #endif
-
+    // TODO : This is too SLOW, change it to sync thread.
     for (auto& tile : bm_tiles) {
         tile.wait();
     }

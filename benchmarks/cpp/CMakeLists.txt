@@ -47,6 +47,8 @@ build_benchmark(autograd.cpp)
 build_benchmark(bench_hermes.cpp)
 build_benchmark(capture_hermes.cpp)
 build_benchmark(bench_tmac.cpp)
+build_benchmark(bench_tree.cpp)
+build_benchmark(bench_seq.cpp)
 
 #! TVM benchmarks
 build_tvm_benchmark(bench_tvm.cpp)

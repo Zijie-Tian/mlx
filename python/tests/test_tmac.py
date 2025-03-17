@@ -132,7 +132,7 @@ def test_tmac_gemv():
     M, K, N = 1600, 3200, 1
     group_size = 128    # 量化分组大小
     #! Attention : This BM should be the same as the one used in TVM schedule
-    bm = 160            # 块大小参数
+    bm = 320            # 块大小参数
     nbits = 2           # 2-bit量化
     g = 4               # 分组大小
     kfactor = 16        # 块大小参数
