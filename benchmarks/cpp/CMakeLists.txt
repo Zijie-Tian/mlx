@@ -50,6 +50,8 @@ build_benchmark(bench_tmac.cpp)
 build_benchmark(bench_tree.cpp)
 build_benchmark(bench_seq.cpp)
 build_benchmark(bench_qmm.cpp)
+build_benchmark(bench_decode.cpp)
+build_benchmark(bench_prefill.cpp)
 
 #! TVM benchmarks
 build_tvm_benchmark(bench_tvm.cpp)

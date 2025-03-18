@@ -136,7 +136,7 @@ void time_comparisons() {
 }
 
 void time_matvec() {
-  int M = 8640, N = 3200;
+  int M = 3200, N = 3200;
   auto a = mx::random::uniform({M, N});
   auto b = mx::random::uniform({N});
   auto c = mx::random::uniform({M});
