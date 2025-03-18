@@ -478,7 +478,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
             return;   
         }
 #endif
-
         // std::cout << "preprocessor_int8 done!" << std::endl;
         // std::cout << "QLUT: " << QLUT << "shape : " << QLUT.shape() << std::endl;
         // std::cout << "LUT_Scales: " << LUT_Scales << "shape : " << LUT_Scales.shape() << std::endl;

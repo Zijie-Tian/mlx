@@ -1787,7 +1787,6 @@ Lloh346:
 	adrp	x26, lCPI2_13@PAGE
 	adrp	x27, lCPI2_14@PAGE
 	adrp	x28, lCPI2_15@PAGE
-	fmov	s9, #-3.00000000
 LBB2_2:
 	ldr	x8, [x8]
 	mov	w0, #1
@@ -1830,6 +1829,7 @@ LBB2_5:
 	bl	_bzero
 	mov	x8, #0
 	ldr	x9, [sp, #48]
+	movi.16b	v15, #15
 	ldp	w2, w1, [sp, #24]
 	ldr	x3, [sp, #16]
 LBB2_6:
@@ -1853,142 +1853,161 @@ LBB2_7:
 	mov	x16, x12
 	ldp	q22, q23, [x17, #224]
 	mov	x17, x9
-	movi.16b	v8, #15
 LBB2_8:
-	lsl	x0, x14, #1
-	ldr	h24, [x23, x0]
-	fmov	h25, #16.00000000
-	fmul	h10, h24, h25
-	ldr	h24, [x20, x0]
-	fcvt	s24, h24
-	fcvt	s25, h10
-	ldp	q26, q27, [x17, #-128]
-	ushr.16b	v28, v26, #4
-	and.16b	v26, v26, v8
-	tbl.16b	v26, { v0 }, v26
-	tbl.16b	v28, { v0 }, v28
-	ushr.16b	v29, v27, #4
-	and.16b	v27, v27, v8
-	tbl.16b	v27, { v1 }, v27
-	tbl.16b	v29, { v1 }, v29
-	srhadd.16b	v26, v26, v27
-	ldp	q30, q27, [x17, #-96]
-	ushr.16b	v31, v30, #4
-	and.16b	v30, v30, v8
-	tbl.16b	v30, { v2 }, v30
+	ldp	q24, q26, [x17, #-128]
+	ushr.16b	v25, v24, #4
+	and.16b	v24, v24, v15
+	tbl.16b	v28, { v0 }, v24
+	tbl.16b	v24, { v0 }, v25
+	ushr.16b	v25, v26, #4
+	tbl.16b	v25, { v1 }, v25
+	and.16b	v26, v26, v15
+	tbl.16b	v29, { v1 }, v26
+	saddl.8h	v30, v29, v28
+	ldp	q26, q27, [x17, #-96]
+	and.16b	v31, v26, v15
 	tbl.16b	v31, { v2 }, v31
-	srhadd.16b	v28, v28, v29
-	ushr.16b	v29, v27, #4
-	and.16b	v27, v27, v8
-	tbl.16b	v27, { v3 }, v27
-	tbl.16b	v29, { v3 }, v29
-	srhadd.16b	v27, v30, v27
-	ldp	q11, q30, [x17, #-64]
-	ushr.16b	v12, v11, #4
-	and.16b	v11, v11, v8
-	tbl.16b	v11, { v4 }, v11
-	tbl.16b	v12, { v4 }, v12
-	srhadd.16b	v29, v31, v29
-	ushr.16b	v31, v30, #4
-	and.16b	v30, v30, v8
-	tbl.16b	v30, { v5 }, v30
-	tbl.16b	v31, { v5 }, v31
-	srhadd.16b	v30, v11, v30
-	ldp	q13, q11, [x17, #-32]
-	ushr.16b	v14, v13, #4
-	and.16b	v13, v13, v8
-	tbl.16b	v13, { v6 }, v13
-	tbl.16b	v14, { v6 }, v14
-	srhadd.16b	v31, v12, v31
-	ushr.16b	v12, v11, #4
-	and.16b	v11, v11, v8
+	saddl2.8h	v28, v29, v28
+	and.16b	v29, v27, v15
+	tbl.16b	v8, { v3 }, v29
+	saddw.8h	v30, v30, v31
+	saddw2.8h	v31, v28, v31
+	ldp	q29, q28, [x17, #-64]
+	saddw.8h	v30, v30, v8
+	and.16b	v9, v29, v15
+	tbl.16b	v9, { v4 }, v9
+	and.16b	v10, v28, v15
+	tbl.16b	v10, { v5 }, v10
+	saddw2.8h	v31, v31, v8
+	saddw.8h	v30, v30, v9
+	saddw.8h	v8, v30, v10
+	saddw2.8h	v9, v31, v9
+	ldp	q30, q31, [x17, #-32]
+	saddw2.8h	v9, v9, v10
+	and.16b	v10, v30, v15
+	tbl.16b	v10, { v6 }, v10
+	and.16b	v11, v31, v15
 	tbl.16b	v11, { v7 }, v11
-	tbl.16b	v12, { v7 }, v12
-	srhadd.16b	v11, v13, v11
-	srhadd.16b	v12, v14, v12
-	ldp	q13, q14, [x17]
-	ushr.16b	v15, v13, #4
-	and.16b	v13, v13, v8
+	saddw.8h	v8, v8, v10
+	saddw.8h	v12, v8, v11
+	saddw2.8h	v10, v9, v10
+	ldp	q8, q9, [x17]
+	and.16b	v13, v8, v15
 	tbl.16b	v13, { v16 }, v13
-	srhadd.16b	v26, v26, v27
-	tbl.16b	v27, { v16 }, v15
-	ushr.16b	v15, v14, #4
-	and.16b	v14, v14, v8
-	tbl.16b	v14, { v17 }, v14
-	tbl.16b	v15, { v17 }, v15
-	srhadd.16b	v28, v28, v29
-	srhadd.16b	v29, v13, v14
-	srhadd.16b	v27, v27, v15
-	ldp	q13, q14, [x17, #32]
-	ushr.16b	v15, v13, #4
-	srhadd.16b	v30, v30, v11
-	and.16b	v11, v13, v8
-	tbl.16b	v11, { v18 }, v11
-	tbl.16b	v13, { v18 }, v15
-	ushr.16b	v15, v14, #4
-	and.16b	v14, v14, v8
-	srhadd.16b	v31, v31, v12
-	tbl.16b	v12, { v19 }, v14
-	tbl.16b	v14, { v19 }, v15
-	srhadd.16b	v11, v11, v12
-	srhadd.16b	v12, v13, v14
-	srhadd.16b	v29, v29, v11
-	ldp	q13, q11, [x17, #64]
-	ushr.16b	v14, v13, #4
-	and.16b	v13, v13, v8
-	tbl.16b	v13, { v20 }, v13
-	tbl.16b	v14, { v20 }, v14
-	srhadd.16b	v27, v27, v12
-	ushr.16b	v12, v11, #4
-	and.16b	v11, v11, v8
-	tbl.16b	v11, { v21 }, v11
-	tbl.16b	v12, { v21 }, v12
-	srhadd.16b	v11, v13, v11
-	fmadd	s24, s25, s9, s24
-	srhadd.16b	v25, v14, v12
-	ldp	q12, q13, [x17, #96]
-	ushr.16b	v14, v12, #4
-	and.16b	v12, v12, v8
-	srhadd.16b	v26, v26, v30
-	tbl.16b	v30, { v22 }, v12
-	tbl.16b	v12, { v22 }, v14
-	ushr.16b	v14, v13, #4
-	and.16b	v13, v13, v8
-	tbl.16b	v13, { v23 }, v13
-	srhadd.16b	v28, v28, v31
-	tbl.16b	v31, { v23 }, v14
-	srhadd.16b	v31, v12, v31
-	srhadd.16b	v25, v25, v31
-	srhadd.16b	v25, v27, v25
-	srhadd.16b	v25, v28, v25
-	fcvt	h24, s24
-	srhadd.16b	v27, v30, v13
-	srhadd.16b	v27, v11, v27
-	srhadd.16b	v27, v29, v27
-	dup.8h	v24, v24[0]
-	srhadd.16b	v26, v26, v27
-	sshll.8h	v27, v26, #0
-	scvtf.8h	v27, v27
-	sshll2.8h	v26, v26, #0
-	ldr	h11, [x24]
-	sshll.8h	v28, v25, #0
-	scvtf.8h	v26, v26
-	scvtf.8h	v28, v28
-	ldp	q29, q30, [x16, #-32]
-	sshll2.8h	v25, v25, #0
+	saddw2.8h	v10, v10, v11
+	and.16b	v11, v9, v15
+	tbl.16b	v11, { v17 }, v11
+	saddw.8h	v12, v12, v13
+	saddw.8h	v12, v12, v11
+	saddw2.8h	v10, v10, v13
+	saddw2.8h	v13, v10, v11
+	ldp	q10, q11, [x17, #32]
+	and.16b	v14, v10, v15
+	tbl.16b	v14, { v18 }, v14
+	saddw.8h	v12, v12, v14
+	saddw2.8h	v13, v13, v14
+	saddl2.8h	v14, v25, v24
+	saddl.8h	v24, v25, v24
+	and.16b	v25, v11, v15
+	tbl.16b	v25, { v19 }, v25
+	saddw.8h	v12, v12, v25
+	saddw2.8h	v25, v13, v25
+	ushr.16b	v26, v26, #4
+	tbl.16b	v26, { v2 }, v26
+	ushr.16b	v27, v27, #4
+	tbl.16b	v27, { v3 }, v27
+	ushr.16b	v29, v29, #4
+	saddw2.8h	v13, v14, v26
+	saddw2.8h	v13, v13, v27
+	saddw.8h	v24, v24, v26
+	saddw.8h	v24, v24, v27
+	ldp	q26, q27, [x17, #64]
+	tbl.16b	v29, { v4 }, v29
+	saddw2.8h	v13, v13, v29
+	saddw.8h	v24, v24, v29
+	and.16b	v29, v26, v15
+	tbl.16b	v29, { v20 }, v29
+	saddw.8h	v12, v12, v29
+	saddw2.8h	v25, v25, v29
+	ushr.16b	v28, v28, #4
+	tbl.16b	v28, { v5 }, v28
+	saddw2.8h	v29, v13, v28
+	saddw.8h	v24, v24, v28
+	ushr.16b	v28, v30, #4
+	tbl.16b	v28, { v6 }, v28
+	saddw2.8h	v29, v29, v28
+	saddw.8h	v24, v24, v28
+	and.16b	v28, v27, v15
+	tbl.16b	v28, { v21 }, v28
+	saddw.8h	v30, v12, v28
+	saddw2.8h	v25, v25, v28
+	ushr.16b	v28, v31, #4
+	tbl.16b	v28, { v7 }, v28
+	ushr.16b	v31, v8, #4
+	tbl.16b	v31, { v16 }, v31
+	ushr.16b	v8, v9, #4
+	saddw2.8h	v29, v29, v28
+	saddw2.8h	v29, v29, v31
+	saddw.8h	v24, v24, v28
+	saddw.8h	v24, v24, v31
+	ldp	q28, q31, [x17, #96]
+	tbl.16b	v8, { v17 }, v8
+	saddw2.8h	v29, v29, v8
+	saddw.8h	v24, v24, v8
+	and.16b	v8, v28, v15
+	tbl.16b	v8, { v22 }, v8
+	saddw.8h	v30, v30, v8
+	saddw2.8h	v25, v25, v8
+	ushr.16b	v8, v10, #4
+	tbl.16b	v8, { v18 }, v8
+	saddw2.8h	v29, v29, v8
+	saddw.8h	v24, v24, v8
+	ushr.16b	v8, v11, #4
+	tbl.16b	v8, { v19 }, v8
+	saddw2.8h	v29, v29, v8
+	saddw.8h	v24, v24, v8
+	and.16b	v8, v31, v15
+	tbl.16b	v8, { v23 }, v8
+	saddw.8h	v30, v30, v8
+	saddw2.8h	v25, v25, v8
+	ushr.16b	v26, v26, #4
+	tbl.16b	v26, { v20 }, v26
+	saddw2.8h	v29, v29, v26
+	saddw.8h	v24, v24, v26
+	ushr.16b	v26, v27, #4
+	lsl	x0, x14, #1
+	tbl.16b	v26, { v21 }, v26
+	saddw2.8h	v27, v29, v26
+	saddw.8h	v24, v24, v26
+	ldr	h8, [x23, x0]
+	add	x0, x20, x0
+	ushr.16b	v26, v28, #4
+	tbl.16b	v26, { v22 }, v26
+	ushr.16b	v28, v31, #4
+	tbl.16b	v28, { v23 }, v28
+	saddw2.8h	v27, v27, v26
+	saddw2.8h	v27, v27, v28
+	saddw.8h	v24, v24, v26
+	saddw.8h	v24, v24, v28
+	ld1r.8h	{ v26 }, [x0]
+	scvtf.8h	v28, v30
 	scvtf.8h	v25, v25
-	mov.16b	v31, v24
-	fmul.8h	v26, v26, v10[0]
-	ldp	q12, q13, [x16]
-	fmla.8h	v24, v28, v10[0]
-	fmul.8h	v25, v25, v10[0]
-	fmla.8h	v31, v27, v10[0]
-	fmla.8h	v29, v31, v11[0]
-	fmla.8h	v30, v26, v11[0]
-	fmla.8h	v12, v24, v11[0]
-	fmla.8h	v13, v25, v11[0]
-	stp	q29, q30, [x16, #-32]
-	stp	q12, q13, [x16], #64
+	scvtf.8h	v24, v24
+	scvtf.8h	v27, v27
+	mov.16b	v29, v26
+	fmla.8h	v29, v28, v8[0]
+	fmul.8h	v25, v25, v8[0]
+	fmla.8h	v26, v24, v8[0]
+	fmul.8h	v24, v27, v8[0]
+	ldr	h8, [x24]
+	ldp	q27, q28, [x16, #-32]
+	fmla.8h	v27, v29, v8[0]
+	fmla.8h	v28, v25, v8[0]
+	ldp	q25, q29, [x16]
+	fmla.8h	v25, v26, v8[0]
+	fmla.8h	v29, v24, v8[0]
+	stp	q27, q28, [x16, #-32]
+	stp	q25, q29, [x16], #64
 	add	x15, x15, #16
 	add	x17, x17, #256
 	cmp	x15, #112

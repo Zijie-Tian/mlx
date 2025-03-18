@@ -25,7 +25,7 @@ if [ "$arch" == "aarch64" ]; then
 elif [ "$arch" == "arm64" ]; then
     echo "Detected architecture: arm64 (M-Series Chip Mac)"
     # python compile.py -o $tmac_dir -da -nt $num_threads -tb -d m2 -ags 64 -gs 128 --tune --verbose -m benchmark
-    python compile.py -o $tmac_dir -da -nt $num_threads -fa -d m2 -ags 64 -gs 128 --tune --verbose -m benchmark
+    python compile.py -o $tmac_dir -da -nt $num_threads -d m2 -ags 64 -gs 128 --tune --verbose -m benchmark
     # python compile.py -o $tmac_dir -da -nt $num_threads -tb -d m2 -gc -ags 64 -gs 128 --tune -m benchmark
 else
     echo "Unsupported architecture: $arch"

@@ -1223,8 +1223,8 @@ for_begin_n.preheader:                            ; preds = %for_begin_n.init.pr
   %66 = add i32 %65, %23
   br label %for_body_n, !dbg !246
 
-for_body_n:                                       ; preds = %for_begin_n.preheader, %tbl_g4_int8_float_update_strue_k16_b2_ak16_fatrue_zfalse_ostrue.exit
-  %indvars.iv = phi i64 [ 0, %for_begin_n.preheader ], [ %indvars.iv.next, %tbl_g4_int8_float_update_strue_k16_b2_ak16_fatrue_zfalse_ostrue.exit ]
+for_body_n:                                       ; preds = %for_begin_n.preheader, %tbl_g4_int8_float_update_strue_k16_b2_ak16_fafalse_zfalse_ostrue.exit
+  %indvars.iv = phi i64 [ 0, %for_begin_n.preheader ], [ %indvars.iv.next, %tbl_g4_int8_float_update_strue_k16_b2_ak16_fafalse_zfalse_ostrue.exit ]
   call void @llvm.dbg.declare(metadata i64 %indvars.iv, metadata !255, metadata !DIExpression()), !dbg !246
   %indvars.iv.tr = trunc i64 %indvars.iv to i32, !dbg !246
   %67 = shl i32 %indvars.iv.tr, 6, !dbg !246
@@ -1275,427 +1275,575 @@ for_body_n:                                       ; preds = %for_begin_n.prehead
   br label %108, !dbg !246
 
 108:                                              ; preds = %108, %for_body_n
-  %109 = phi i64 [ 0, %for_body_n ], [ %277, %108 ], !dbg !246
+  %109 = phi i64 [ 0, %for_body_n ], [ %425, %108 ], !dbg !246
   %110 = shl nuw nsw i64 %109, 4, !dbg !246
   %111 = getelementptr inbounds i8, ptr %62, i64 %110, !dbg !246
   %112 = load half, ptr %75, align 2, !dbg !246, !tbaa !257
   %113 = load half, ptr %76, align 2, !dbg !246, !tbaa !257
-  %114 = fmul half %112, 0xH4C00, !dbg !246
-  %115 = fpext half %114 to float, !dbg !246
-  %116 = fpext half %113 to float, !dbg !246
-  %117 = fneg float %115, !dbg !246
-  %118 = tail call float @llvm.fmuladd.f32(float %117, float 3.000000e+00, float %116), !dbg !246
-  %119 = fptrunc float %118 to half, !dbg !246
-  %120 = insertelement <8 x half> poison, half %114, i64 0, !dbg !246
-  %121 = insertelement <8 x half> poison, half %119, i64 0, !dbg !246
-  %122 = load <16 x i8>, ptr %111, align 1, !dbg !246
+  %114 = insertelement <8 x half> poison, half %112, i64 0, !dbg !246
+  %115 = insertelement <8 x half> poison, half %113, i64 0, !dbg !246
+  %116 = load <16 x i8>, ptr %111, align 1, !dbg !246
+  %117 = lshr <16 x i8> %116, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %118 = and <16 x i8> %116, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %119 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %77, <16 x i8> %118), !dbg !246
+  %120 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %77, <16 x i8> %117), !dbg !246
+  %121 = getelementptr inbounds i8, ptr %111, i64 16, !dbg !246
+  %122 = load <16 x i8>, ptr %121, align 1, !dbg !246
   %123 = lshr <16 x i8> %122, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %124 = and <16 x i8> %122, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %125 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %77, <16 x i8> %124), !dbg !246
-  %126 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %77, <16 x i8> %123), !dbg !246
-  %127 = getelementptr inbounds i8, ptr %111, i64 16, !dbg !246
-  %128 = load <16 x i8>, ptr %127, align 1, !dbg !246
-  %129 = lshr <16 x i8> %128, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %130 = and <16 x i8> %128, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %131 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %79, <16 x i8> %130), !dbg !246
-  %132 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %79, <16 x i8> %129), !dbg !246
-  %133 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %125, <16 x i8> %131), !dbg !246
-  %134 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %126, <16 x i8> %132), !dbg !246
-  %135 = getelementptr inbounds i8, ptr %111, i64 32, !dbg !246
-  %136 = load <16 x i8>, ptr %135, align 1, !dbg !246
-  %137 = lshr <16 x i8> %136, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %138 = and <16 x i8> %136, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %139 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %81, <16 x i8> %138), !dbg !246
-  %140 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %81, <16 x i8> %137), !dbg !246
-  %141 = getelementptr inbounds i8, ptr %111, i64 48, !dbg !246
-  %142 = load <16 x i8>, ptr %141, align 1, !dbg !246
-  %143 = lshr <16 x i8> %142, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %144 = and <16 x i8> %142, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %145 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %83, <16 x i8> %144), !dbg !246
-  %146 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %83, <16 x i8> %143), !dbg !246
-  %147 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %139, <16 x i8> %145), !dbg !246
-  %148 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %133, <16 x i8> %147), !dbg !246
-  %149 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %140, <16 x i8> %146), !dbg !246
-  %150 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %134, <16 x i8> %149), !dbg !246
-  %151 = getelementptr inbounds i8, ptr %111, i64 64, !dbg !246
+  %124 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %79, <16 x i8> %123), !dbg !246
+  %125 = and <16 x i8> %122, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %126 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %79, <16 x i8> %125), !dbg !246
+  %127 = shufflevector <16 x i8> %119, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %128 = shufflevector <16 x i8> %126, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %129 = sext <8 x i8> %127 to <8 x i16>, !dbg !246
+  %130 = sext <8 x i8> %128 to <8 x i16>, !dbg !246
+  %131 = shufflevector <16 x i8> %119, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %132 = sext <8 x i8> %131 to <8 x i16>, !dbg !246
+  %133 = shufflevector <16 x i8> %126, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %134 = sext <8 x i8> %133 to <8 x i16>, !dbg !246
+  %135 = add nsw <8 x i16> %130, %129, !dbg !246
+  %136 = add nsw <8 x i16> %134, %132, !dbg !246
+  %137 = shufflevector <16 x i8> %120, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %138 = shufflevector <16 x i8> %124, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %139 = sext <8 x i8> %137 to <8 x i16>, !dbg !246
+  %140 = sext <8 x i8> %138 to <8 x i16>, !dbg !246
+  %141 = shufflevector <16 x i8> %120, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %142 = sext <8 x i8> %141 to <8 x i16>, !dbg !246
+  %143 = shufflevector <16 x i8> %124, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %144 = sext <8 x i8> %143 to <8 x i16>, !dbg !246
+  %145 = getelementptr inbounds i8, ptr %111, i64 32, !dbg !246
+  %146 = load <16 x i8>, ptr %145, align 1, !dbg !246
+  %147 = lshr <16 x i8> %146, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %148 = and <16 x i8> %146, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %149 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %81, <16 x i8> %148), !dbg !246
+  %150 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %81, <16 x i8> %147), !dbg !246
+  %151 = getelementptr inbounds i8, ptr %111, i64 48, !dbg !246
   %152 = load <16 x i8>, ptr %151, align 1, !dbg !246
-  %153 = lshr <16 x i8> %152, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %154 = and <16 x i8> %152, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %155 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %85, <16 x i8> %154), !dbg !246
-  %156 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %85, <16 x i8> %153), !dbg !246
-  %157 = getelementptr inbounds i8, ptr %111, i64 80, !dbg !246
-  %158 = load <16 x i8>, ptr %157, align 1, !dbg !246
-  %159 = lshr <16 x i8> %158, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %160 = and <16 x i8> %158, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %161 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %87, <16 x i8> %160), !dbg !246
-  %162 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %87, <16 x i8> %159), !dbg !246
-  %163 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %155, <16 x i8> %161), !dbg !246
-  %164 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %156, <16 x i8> %162), !dbg !246
-  %165 = getelementptr inbounds i8, ptr %111, i64 96, !dbg !246
-  %166 = load <16 x i8>, ptr %165, align 1, !dbg !246
-  %167 = lshr <16 x i8> %166, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %168 = and <16 x i8> %166, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %169 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %89, <16 x i8> %168), !dbg !246
-  %170 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %89, <16 x i8> %167), !dbg !246
-  %171 = getelementptr inbounds i8, ptr %111, i64 112, !dbg !246
-  %172 = load <16 x i8>, ptr %171, align 1, !dbg !246
-  %173 = lshr <16 x i8> %172, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %174 = and <16 x i8> %172, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %175 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %91, <16 x i8> %174), !dbg !246
-  %176 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %91, <16 x i8> %173), !dbg !246
-  %177 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %169, <16 x i8> %175), !dbg !246
-  %178 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %163, <16 x i8> %177), !dbg !246
-  %179 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %148, <16 x i8> %178), !dbg !246
-  %180 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %170, <16 x i8> %176), !dbg !246
-  %181 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %164, <16 x i8> %180), !dbg !246
-  %182 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %150, <16 x i8> %181), !dbg !246
-  %183 = getelementptr inbounds i8, ptr %111, i64 128, !dbg !246
+  %153 = and <16 x i8> %152, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %154 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %83, <16 x i8> %153), !dbg !246
+  %155 = shufflevector <16 x i8> %149, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %156 = shufflevector <16 x i8> %154, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %157 = sext <8 x i8> %155 to <8 x i16>, !dbg !246
+  %158 = sext <8 x i8> %156 to <8 x i16>, !dbg !246
+  %159 = shufflevector <16 x i8> %149, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %160 = sext <8 x i8> %159 to <8 x i16>, !dbg !246
+  %161 = shufflevector <16 x i8> %154, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %162 = sext <8 x i8> %161 to <8 x i16>, !dbg !246
+  %163 = add nsw <8 x i16> %135, %157, !dbg !246
+  %164 = add nsw <8 x i16> %163, %158, !dbg !246
+  %165 = add nsw <8 x i16> %136, %160, !dbg !246
+  %166 = add nsw <8 x i16> %165, %162, !dbg !246
+  %167 = lshr <16 x i8> %152, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %168 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %83, <16 x i8> %167), !dbg !246
+  %169 = shufflevector <16 x i8> %168, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %170 = sext <8 x i8> %169 to <8 x i16>, !dbg !246
+  %171 = shufflevector <16 x i8> %150, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %172 = sext <8 x i8> %171 to <8 x i16>, !dbg !246
+  %173 = shufflevector <16 x i8> %168, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %174 = sext <8 x i8> %173 to <8 x i16>, !dbg !246
+  %175 = shufflevector <16 x i8> %150, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %176 = sext <8 x i8> %175 to <8 x i16>, !dbg !246
+  %177 = getelementptr inbounds i8, ptr %111, i64 64, !dbg !246
+  %178 = load <16 x i8>, ptr %177, align 1, !dbg !246
+  %179 = lshr <16 x i8> %178, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %180 = and <16 x i8> %178, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %181 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %85, <16 x i8> %180), !dbg !246
+  %182 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %85, <16 x i8> %179), !dbg !246
+  %183 = getelementptr inbounds i8, ptr %111, i64 80, !dbg !246
   %184 = load <16 x i8>, ptr %183, align 1, !dbg !246
-  %185 = lshr <16 x i8> %184, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %186 = and <16 x i8> %184, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %187 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %93, <16 x i8> %186), !dbg !246
-  %188 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %93, <16 x i8> %185), !dbg !246
-  %189 = getelementptr inbounds i8, ptr %111, i64 144, !dbg !246
-  %190 = load <16 x i8>, ptr %189, align 1, !dbg !246
-  %191 = lshr <16 x i8> %190, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %192 = and <16 x i8> %190, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %193 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %95, <16 x i8> %192), !dbg !246
-  %194 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %95, <16 x i8> %191), !dbg !246
-  %195 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %187, <16 x i8> %193), !dbg !246
-  %196 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %188, <16 x i8> %194), !dbg !246
-  %197 = getelementptr inbounds i8, ptr %111, i64 160, !dbg !246
-  %198 = load <16 x i8>, ptr %197, align 1, !dbg !246
-  %199 = lshr <16 x i8> %198, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %200 = and <16 x i8> %198, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %201 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %97, <16 x i8> %200), !dbg !246
-  %202 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %97, <16 x i8> %199), !dbg !246
-  %203 = getelementptr inbounds i8, ptr %111, i64 176, !dbg !246
-  %204 = load <16 x i8>, ptr %203, align 1, !dbg !246
-  %205 = lshr <16 x i8> %204, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %206 = and <16 x i8> %204, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %207 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %99, <16 x i8> %206), !dbg !246
-  %208 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %99, <16 x i8> %205), !dbg !246
-  %209 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %201, <16 x i8> %207), !dbg !246
-  %210 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %195, <16 x i8> %209), !dbg !246
-  %211 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %202, <16 x i8> %208), !dbg !246
-  %212 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %196, <16 x i8> %211), !dbg !246
-  %213 = getelementptr inbounds i8, ptr %111, i64 192, !dbg !246
-  %214 = load <16 x i8>, ptr %213, align 1, !dbg !246
-  %215 = lshr <16 x i8> %214, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %216 = and <16 x i8> %214, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %217 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %101, <16 x i8> %216), !dbg !246
-  %218 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %101, <16 x i8> %215), !dbg !246
-  %219 = getelementptr inbounds i8, ptr %111, i64 208, !dbg !246
-  %220 = load <16 x i8>, ptr %219, align 1, !dbg !246
-  %221 = lshr <16 x i8> %220, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %222 = and <16 x i8> %220, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %223 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %103, <16 x i8> %222), !dbg !246
-  %224 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %103, <16 x i8> %221), !dbg !246
-  %225 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %217, <16 x i8> %223), !dbg !246
-  %226 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %218, <16 x i8> %224), !dbg !246
-  %227 = getelementptr inbounds i8, ptr %111, i64 224, !dbg !246
-  %228 = load <16 x i8>, ptr %227, align 1, !dbg !246
-  %229 = lshr <16 x i8> %228, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %230 = and <16 x i8> %228, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %231 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %105, <16 x i8> %230), !dbg !246
-  %232 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %105, <16 x i8> %229), !dbg !246
-  %233 = getelementptr inbounds i8, ptr %111, i64 240, !dbg !246
-  %234 = load <16 x i8>, ptr %233, align 1, !dbg !246
-  %235 = lshr <16 x i8> %234, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
-  %236 = and <16 x i8> %234, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
-  %237 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %107, <16 x i8> %236), !dbg !246
-  %238 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %107, <16 x i8> %235), !dbg !246
-  %239 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %232, <16 x i8> %238), !dbg !246
-  %240 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %226, <16 x i8> %239), !dbg !246
-  %241 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %212, <16 x i8> %240), !dbg !246
-  %242 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %182, <16 x i8> %241), !dbg !246
-  %243 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %231, <16 x i8> %237), !dbg !246
-  %244 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %225, <16 x i8> %243), !dbg !246
-  %245 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %210, <16 x i8> %244), !dbg !246
-  %246 = tail call <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8> %179, <16 x i8> %245), !dbg !246
-  %247 = shufflevector <8 x half> %120, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !246
-  %248 = shufflevector <8 x half> %121, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !246
-  %249 = shufflevector <16 x i8> %246, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
-  %250 = sitofp <8 x i8> %249 to <8 x half>, !dbg !246
-  %251 = shufflevector <16 x i8> %246, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
-  %252 = sitofp <8 x i8> %251 to <8 x half>, !dbg !246
-  %253 = shufflevector <16 x i8> %242, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
-  %254 = sitofp <8 x i8> %253 to <8 x half>, !dbg !246
-  %255 = shufflevector <16 x i8> %242, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
-  %256 = sitofp <8 x i8> %255 to <8 x half>, !dbg !246
-  %257 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %250, <8 x half> %247, <8 x half> %248), !dbg !246
-  %258 = fmul <8 x half> %247, %252, !dbg !246
-  %259 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %254, <8 x half> %247, <8 x half> %248), !dbg !246
-  %260 = fmul <8 x half> %247, %256, !dbg !246
-  %261 = load half, ptr %Scales, align 2, !dbg !246, !tbaa !257
-  %262 = shl nuw nsw i64 %109, 1, !dbg !246
-  %263 = getelementptr inbounds half, ptr %69, i64 %262, !dbg !246
-  %264 = load <8 x half>, ptr %263, align 64, !dbg !246
-  %265 = insertelement <8 x half> poison, half %261, i64 0, !dbg !246
-  %266 = shufflevector <8 x half> %265, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !246
-  %267 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %257, <8 x half> %266, <8 x half> %264), !dbg !246
-  store <8 x half> %267, ptr %263, align 64, !dbg !246
-  %268 = getelementptr inbounds half, ptr %263, i64 8, !dbg !246
-  %269 = load <8 x half>, ptr %268, align 16, !dbg !246
-  %270 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %258, <8 x half> %266, <8 x half> %269), !dbg !246
-  store <8 x half> %270, ptr %268, align 16, !dbg !246
-  %271 = getelementptr inbounds half, ptr %263, i64 16, !dbg !246
-  %272 = load <8 x half>, ptr %271, align 32, !dbg !246
-  %273 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %259, <8 x half> %266, <8 x half> %272), !dbg !246
-  store <8 x half> %273, ptr %271, align 32, !dbg !246
-  %274 = getelementptr inbounds half, ptr %263, i64 24, !dbg !246
-  %275 = load <8 x half>, ptr %274, align 16, !dbg !246
-  %276 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %260, <8 x half> %266, <8 x half> %275), !dbg !246
-  store <8 x half> %276, ptr %274, align 16, !dbg !246
-  %277 = add nuw nsw i64 %109, 16, !dbg !246
-  %278 = icmp ult i64 %109, 112, !dbg !246
-  br i1 %278, label %108, label %tbl_g4_int8_float_update_strue_k16_b2_ak16_fatrue_zfalse_ostrue.exit, !dbg !246, !llvm.loop !261
+  %185 = and <16 x i8> %184, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %186 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %87, <16 x i8> %185), !dbg !246
+  %187 = shufflevector <16 x i8> %181, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %188 = shufflevector <16 x i8> %186, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %189 = sext <8 x i8> %187 to <8 x i16>, !dbg !246
+  %190 = sext <8 x i8> %188 to <8 x i16>, !dbg !246
+  %191 = shufflevector <16 x i8> %181, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %192 = sext <8 x i8> %191 to <8 x i16>, !dbg !246
+  %193 = shufflevector <16 x i8> %186, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %194 = sext <8 x i8> %193 to <8 x i16>, !dbg !246
+  %195 = add nsw <8 x i16> %164, %189, !dbg !246
+  %196 = add nsw <8 x i16> %195, %190, !dbg !246
+  %197 = add nsw <8 x i16> %166, %192, !dbg !246
+  %198 = add nsw <8 x i16> %197, %194, !dbg !246
+  %199 = lshr <16 x i8> %184, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %200 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %87, <16 x i8> %199), !dbg !246
+  %201 = shufflevector <16 x i8> %200, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %202 = sext <8 x i8> %201 to <8 x i16>, !dbg !246
+  %203 = shufflevector <16 x i8> %182, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %204 = sext <8 x i8> %203 to <8 x i16>, !dbg !246
+  %205 = shufflevector <16 x i8> %200, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %206 = sext <8 x i8> %205 to <8 x i16>, !dbg !246
+  %207 = shufflevector <16 x i8> %182, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %208 = sext <8 x i8> %207 to <8 x i16>, !dbg !246
+  %209 = getelementptr inbounds i8, ptr %111, i64 96, !dbg !246
+  %210 = load <16 x i8>, ptr %209, align 1, !dbg !246
+  %211 = lshr <16 x i8> %210, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %212 = and <16 x i8> %210, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %213 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %89, <16 x i8> %212), !dbg !246
+  %214 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %89, <16 x i8> %211), !dbg !246
+  %215 = getelementptr inbounds i8, ptr %111, i64 112, !dbg !246
+  %216 = load <16 x i8>, ptr %215, align 1, !dbg !246
+  %217 = and <16 x i8> %216, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %218 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %91, <16 x i8> %217), !dbg !246
+  %219 = shufflevector <16 x i8> %213, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %220 = shufflevector <16 x i8> %218, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %221 = sext <8 x i8> %219 to <8 x i16>, !dbg !246
+  %222 = sext <8 x i8> %220 to <8 x i16>, !dbg !246
+  %223 = shufflevector <16 x i8> %213, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %224 = sext <8 x i8> %223 to <8 x i16>, !dbg !246
+  %225 = shufflevector <16 x i8> %218, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %226 = sext <8 x i8> %225 to <8 x i16>, !dbg !246
+  %227 = add nsw <8 x i16> %196, %221, !dbg !246
+  %228 = add <8 x i16> %227, %222, !dbg !246
+  %229 = add nsw <8 x i16> %198, %224, !dbg !246
+  %230 = add <8 x i16> %229, %226, !dbg !246
+  %231 = lshr <16 x i8> %216, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %232 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %91, <16 x i8> %231), !dbg !246
+  %233 = shufflevector <16 x i8> %232, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %234 = sext <8 x i8> %233 to <8 x i16>, !dbg !246
+  %235 = shufflevector <16 x i8> %214, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %236 = sext <8 x i8> %235 to <8 x i16>, !dbg !246
+  %237 = shufflevector <16 x i8> %232, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %238 = sext <8 x i8> %237 to <8 x i16>, !dbg !246
+  %239 = shufflevector <16 x i8> %214, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %240 = sext <8 x i8> %239 to <8 x i16>, !dbg !246
+  %241 = getelementptr inbounds i8, ptr %111, i64 128, !dbg !246
+  %242 = load <16 x i8>, ptr %241, align 1, !dbg !246
+  %243 = lshr <16 x i8> %242, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %244 = and <16 x i8> %242, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %245 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %93, <16 x i8> %244), !dbg !246
+  %246 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %93, <16 x i8> %243), !dbg !246
+  %247 = getelementptr inbounds i8, ptr %111, i64 144, !dbg !246
+  %248 = load <16 x i8>, ptr %247, align 1, !dbg !246
+  %249 = and <16 x i8> %248, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %250 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %95, <16 x i8> %249), !dbg !246
+  %251 = shufflevector <16 x i8> %245, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %252 = shufflevector <16 x i8> %250, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %253 = sext <8 x i8> %251 to <8 x i16>, !dbg !246
+  %254 = sext <8 x i8> %252 to <8 x i16>, !dbg !246
+  %255 = shufflevector <16 x i8> %245, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %256 = sext <8 x i8> %255 to <8 x i16>, !dbg !246
+  %257 = shufflevector <16 x i8> %250, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %258 = sext <8 x i8> %257 to <8 x i16>, !dbg !246
+  %259 = add <8 x i16> %228, %253, !dbg !246
+  %260 = add <8 x i16> %259, %254, !dbg !246
+  %261 = add <8 x i16> %230, %256, !dbg !246
+  %262 = add <8 x i16> %261, %258, !dbg !246
+  %263 = lshr <16 x i8> %248, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %264 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %95, <16 x i8> %263), !dbg !246
+  %265 = shufflevector <16 x i8> %264, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %266 = sext <8 x i8> %265 to <8 x i16>, !dbg !246
+  %267 = shufflevector <16 x i8> %246, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %268 = sext <8 x i8> %267 to <8 x i16>, !dbg !246
+  %269 = shufflevector <16 x i8> %264, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %270 = sext <8 x i8> %269 to <8 x i16>, !dbg !246
+  %271 = shufflevector <16 x i8> %246, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %272 = sext <8 x i8> %271 to <8 x i16>, !dbg !246
+  %273 = getelementptr inbounds i8, ptr %111, i64 160, !dbg !246
+  %274 = load <16 x i8>, ptr %273, align 1, !dbg !246
+  %275 = lshr <16 x i8> %274, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %276 = and <16 x i8> %274, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %277 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %97, <16 x i8> %276), !dbg !246
+  %278 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %97, <16 x i8> %275), !dbg !246
+  %279 = getelementptr inbounds i8, ptr %111, i64 176, !dbg !246
+  %280 = load <16 x i8>, ptr %279, align 1, !dbg !246
+  %281 = and <16 x i8> %280, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %282 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %99, <16 x i8> %281), !dbg !246
+  %283 = shufflevector <16 x i8> %277, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %284 = shufflevector <16 x i8> %282, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %285 = sext <8 x i8> %283 to <8 x i16>, !dbg !246
+  %286 = sext <8 x i8> %284 to <8 x i16>, !dbg !246
+  %287 = shufflevector <16 x i8> %277, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %288 = sext <8 x i8> %287 to <8 x i16>, !dbg !246
+  %289 = shufflevector <16 x i8> %282, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %290 = sext <8 x i8> %289 to <8 x i16>, !dbg !246
+  %291 = add <8 x i16> %260, %285, !dbg !246
+  %292 = add <8 x i16> %291, %286, !dbg !246
+  %293 = add <8 x i16> %262, %288, !dbg !246
+  %294 = add <8 x i16> %293, %290, !dbg !246
+  %295 = lshr <16 x i8> %280, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %296 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %99, <16 x i8> %295), !dbg !246
+  %297 = shufflevector <16 x i8> %296, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %298 = sext <8 x i8> %297 to <8 x i16>, !dbg !246
+  %299 = shufflevector <16 x i8> %278, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %300 = sext <8 x i8> %299 to <8 x i16>, !dbg !246
+  %301 = shufflevector <16 x i8> %296, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %302 = sext <8 x i8> %301 to <8 x i16>, !dbg !246
+  %303 = shufflevector <16 x i8> %278, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %304 = sext <8 x i8> %303 to <8 x i16>, !dbg !246
+  %305 = getelementptr inbounds i8, ptr %111, i64 192, !dbg !246
+  %306 = load <16 x i8>, ptr %305, align 1, !dbg !246
+  %307 = lshr <16 x i8> %306, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %308 = and <16 x i8> %306, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %309 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %101, <16 x i8> %308), !dbg !246
+  %310 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %101, <16 x i8> %307), !dbg !246
+  %311 = getelementptr inbounds i8, ptr %111, i64 208, !dbg !246
+  %312 = load <16 x i8>, ptr %311, align 1, !dbg !246
+  %313 = and <16 x i8> %312, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %314 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %103, <16 x i8> %313), !dbg !246
+  %315 = shufflevector <16 x i8> %309, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %316 = shufflevector <16 x i8> %314, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %317 = sext <8 x i8> %315 to <8 x i16>, !dbg !246
+  %318 = sext <8 x i8> %316 to <8 x i16>, !dbg !246
+  %319 = shufflevector <16 x i8> %309, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %320 = sext <8 x i8> %319 to <8 x i16>, !dbg !246
+  %321 = shufflevector <16 x i8> %314, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %322 = sext <8 x i8> %321 to <8 x i16>, !dbg !246
+  %323 = add <8 x i16> %292, %317, !dbg !246
+  %324 = add <8 x i16> %323, %318, !dbg !246
+  %325 = add <8 x i16> %294, %320, !dbg !246
+  %326 = add <8 x i16> %325, %322, !dbg !246
+  %327 = lshr <16 x i8> %312, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %328 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %103, <16 x i8> %327), !dbg !246
+  %329 = shufflevector <16 x i8> %328, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %330 = sext <8 x i8> %329 to <8 x i16>, !dbg !246
+  %331 = shufflevector <16 x i8> %310, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %332 = sext <8 x i8> %331 to <8 x i16>, !dbg !246
+  %333 = shufflevector <16 x i8> %328, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %334 = sext <8 x i8> %333 to <8 x i16>, !dbg !246
+  %335 = shufflevector <16 x i8> %310, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %336 = sext <8 x i8> %335 to <8 x i16>, !dbg !246
+  %337 = getelementptr inbounds i8, ptr %111, i64 224, !dbg !246
+  %338 = load <16 x i8>, ptr %337, align 1, !dbg !246
+  %339 = lshr <16 x i8> %338, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %340 = and <16 x i8> %338, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %341 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %105, <16 x i8> %340), !dbg !246
+  %342 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %105, <16 x i8> %339), !dbg !246
+  %343 = getelementptr inbounds i8, ptr %111, i64 240, !dbg !246
+  %344 = load <16 x i8>, ptr %343, align 1, !dbg !246
+  %345 = and <16 x i8> %344, <i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15, i8 15>, !dbg !246
+  %346 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %107, <16 x i8> %345), !dbg !246
+  %347 = shufflevector <16 x i8> %341, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %348 = shufflevector <16 x i8> %346, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %349 = sext <8 x i8> %347 to <8 x i16>, !dbg !246
+  %350 = sext <8 x i8> %348 to <8 x i16>, !dbg !246
+  %351 = shufflevector <16 x i8> %341, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %352 = sext <8 x i8> %351 to <8 x i16>, !dbg !246
+  %353 = shufflevector <16 x i8> %346, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %354 = sext <8 x i8> %353 to <8 x i16>, !dbg !246
+  %355 = add <8 x i16> %324, %349, !dbg !246
+  %356 = add <8 x i16> %355, %350, !dbg !246
+  %357 = add <8 x i16> %326, %352, !dbg !246
+  %358 = add <8 x i16> %357, %354, !dbg !246
+  %359 = lshr <16 x i8> %344, <i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4>, !dbg !246
+  %360 = tail call <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8> %107, <16 x i8> %359), !dbg !246
+  %361 = shufflevector <16 x i8> %360, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %362 = sext <8 x i8> %361 to <8 x i16>, !dbg !246
+  %363 = shufflevector <16 x i8> %342, <16 x i8> poison, <8 x i32> <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15>, !dbg !246
+  %364 = sext <8 x i8> %363 to <8 x i16>, !dbg !246
+  %365 = add nsw <8 x i16> %144, %142, !dbg !246
+  %366 = add nsw <8 x i16> %365, %172, !dbg !246
+  %367 = add nsw <8 x i16> %366, %170, !dbg !246
+  %368 = add nsw <8 x i16> %367, %204, !dbg !246
+  %369 = add nsw <8 x i16> %368, %202, !dbg !246
+  %370 = add nsw <8 x i16> %369, %236, !dbg !246
+  %371 = add <8 x i16> %370, %234, !dbg !246
+  %372 = add <8 x i16> %371, %268, !dbg !246
+  %373 = add <8 x i16> %372, %266, !dbg !246
+  %374 = add <8 x i16> %373, %300, !dbg !246
+  %375 = add <8 x i16> %374, %298, !dbg !246
+  %376 = add <8 x i16> %375, %332, !dbg !246
+  %377 = add <8 x i16> %376, %330, !dbg !246
+  %378 = add <8 x i16> %377, %364, !dbg !246
+  %379 = add <8 x i16> %378, %362, !dbg !246
+  %380 = shufflevector <16 x i8> %360, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %381 = sext <8 x i8> %380 to <8 x i16>, !dbg !246
+  %382 = shufflevector <16 x i8> %342, <16 x i8> poison, <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7>, !dbg !246
+  %383 = sext <8 x i8> %382 to <8 x i16>, !dbg !246
+  %384 = add nsw <8 x i16> %140, %139, !dbg !246
+  %385 = add nsw <8 x i16> %384, %176, !dbg !246
+  %386 = add nsw <8 x i16> %385, %174, !dbg !246
+  %387 = add nsw <8 x i16> %386, %208, !dbg !246
+  %388 = add nsw <8 x i16> %387, %206, !dbg !246
+  %389 = add nsw <8 x i16> %388, %240, !dbg !246
+  %390 = add <8 x i16> %389, %238, !dbg !246
+  %391 = add <8 x i16> %390, %272, !dbg !246
+  %392 = add <8 x i16> %391, %270, !dbg !246
+  %393 = add <8 x i16> %392, %304, !dbg !246
+  %394 = add <8 x i16> %393, %302, !dbg !246
+  %395 = add <8 x i16> %394, %336, !dbg !246
+  %396 = add <8 x i16> %395, %334, !dbg !246
+  %397 = add <8 x i16> %396, %383, !dbg !246
+  %398 = add <8 x i16> %397, %381, !dbg !246
+  %399 = shufflevector <8 x half> %114, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !246
+  %400 = shufflevector <8 x half> %115, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !246
+  %401 = sitofp <8 x i16> %356 to <8 x half>, !dbg !246
+  %402 = sitofp <8 x i16> %358 to <8 x half>, !dbg !246
+  %403 = sitofp <8 x i16> %398 to <8 x half>, !dbg !246
+  %404 = sitofp <8 x i16> %379 to <8 x half>, !dbg !246
+  %405 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %401, <8 x half> %399, <8 x half> %400), !dbg !246
+  %406 = fmul <8 x half> %399, %402, !dbg !246
+  %407 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %403, <8 x half> %399, <8 x half> %400), !dbg !246
+  %408 = fmul <8 x half> %399, %404, !dbg !246
+  %409 = load half, ptr %Scales, align 2, !dbg !246, !tbaa !257
+  %410 = shl nuw nsw i64 %109, 1, !dbg !246
+  %411 = getelementptr inbounds half, ptr %69, i64 %410, !dbg !246
+  %412 = load <8 x half>, ptr %411, align 64, !dbg !246
+  %413 = insertelement <8 x half> poison, half %409, i64 0, !dbg !246
+  %414 = shufflevector <8 x half> %413, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !246
+  %415 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %405, <8 x half> %414, <8 x half> %412), !dbg !246
+  store <8 x half> %415, ptr %411, align 64, !dbg !246
+  %416 = getelementptr inbounds half, ptr %411, i64 8, !dbg !246
+  %417 = load <8 x half>, ptr %416, align 16, !dbg !246
+  %418 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %406, <8 x half> %414, <8 x half> %417), !dbg !246
+  store <8 x half> %418, ptr %416, align 16, !dbg !246
+  %419 = getelementptr inbounds half, ptr %411, i64 16, !dbg !246
+  %420 = load <8 x half>, ptr %419, align 32, !dbg !246
+  %421 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %407, <8 x half> %414, <8 x half> %420), !dbg !246
+  store <8 x half> %421, ptr %419, align 32, !dbg !246
+  %422 = getelementptr inbounds half, ptr %411, i64 24, !dbg !246
+  %423 = load <8 x half>, ptr %422, align 16, !dbg !246
+  %424 = tail call <8 x half> @llvm.fmuladd.v8f16(<8 x half> %408, <8 x half> %414, <8 x half> %423), !dbg !246
+  store <8 x half> %424, ptr %422, align 16, !dbg !246
+  %425 = add nuw nsw i64 %109, 16, !dbg !246
+  %426 = icmp ult i64 %109, 112, !dbg !246
+  br i1 %426, label %108, label %tbl_g4_int8_float_update_strue_k16_b2_ak16_fafalse_zfalse_ostrue.exit, !dbg !246, !llvm.loop !261
 
-tbl_g4_int8_float_update_strue_k16_b2_ak16_fatrue_zfalse_ostrue.exit: ; preds = %108
+tbl_g4_int8_float_update_strue_k16_b2_ak16_fafalse_zfalse_ostrue.exit: ; preds = %108
   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !246
   call void @llvm.dbg.declare(metadata i64 %indvars.iv.next, metadata !255, metadata !DIExpression()), !dbg !246
   %exitcond.not = icmp eq i64 %indvars.iv.next, 8, !dbg !246
   br i1 %exitcond.not, label %for_end_n, label %for_body_n, !dbg !246, !prof !29
 
-for_end_n:                                        ; preds = %tbl_g4_int8_float_update_strue_k16_b2_ak16_fatrue_zfalse_ostrue.exit
+for_end_n:                                        ; preds = %tbl_g4_int8_float_update_strue_k16_b2_ak16_fafalse_zfalse_ostrue.exit
   %indvars.iv.next27 = add nuw nsw i64 %indvars.iv26, 1, !dbg !246
   call void @llvm.dbg.declare(metadata i64 %indvars.iv.next27, metadata !254, metadata !DIExpression()), !dbg !246
   %exitcond29.not = icmp eq i64 %indvars.iv.next27, 64, !dbg !246
   br i1 %exitcond29.not, label %for_begin_m.c.outer.preheader, label %for_begin_n.preheader, !dbg !246, !prof !29
 
 for_begin_n.inner.preheader:                      ; preds = %for_end_m.c.outer
-  %279 = shl nsw i64 %indvars.iv49, 7
-  %280 = add nuw nsw i64 %279, %26
+  %427 = shl nsw i64 %indvars.iv49, 7
+  %428 = add nuw nsw i64 %427, %26
   call void @llvm.dbg.declare(metadata i32 0, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %sext = shl i64 %280, 32, !dbg !246
-  %281 = ashr exact i64 %sext, 32, !dbg !246
+  %sext = shl i64 %428, 32, !dbg !246
+  %429 = ashr exact i64 %sext, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %282 = load <32 x half>, ptr %C.global, align 64, !dbg !246, !tbaa !265
-  %283 = getelementptr inbounds half, ptr %C, i64 %281, !dbg !246
-  store <32 x half> %282, ptr %283, align 64, !dbg !246, !tbaa !267
+  %430 = load <32 x half>, ptr %C.global, align 64, !dbg !246, !tbaa !265
+  %431 = getelementptr inbounds half, ptr %C, i64 %429, !dbg !246
+  store <32 x half> %430, ptr %431, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %284 = load <32 x half>, ptr %27, align 64, !dbg !246, !tbaa !265
-  %285 = or i64 %281, 32, !dbg !246
-  %286 = getelementptr inbounds half, ptr %C, i64 %285, !dbg !246
-  store <32 x half> %284, ptr %286, align 64, !dbg !246, !tbaa !267
+  %432 = load <32 x half>, ptr %27, align 64, !dbg !246, !tbaa !265
+  %433 = or i64 %429, 32, !dbg !246
+  %434 = getelementptr inbounds half, ptr %C, i64 %433, !dbg !246
+  store <32 x half> %432, ptr %434, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %287 = load <32 x half>, ptr %28, align 64, !dbg !246, !tbaa !265
-  %288 = or i64 %281, 64, !dbg !246
-  %289 = getelementptr inbounds half, ptr %C, i64 %288, !dbg !246
-  store <32 x half> %287, ptr %289, align 64, !dbg !246, !tbaa !267
+  %435 = load <32 x half>, ptr %28, align 64, !dbg !246, !tbaa !265
+  %436 = or i64 %429, 64, !dbg !246
+  %437 = getelementptr inbounds half, ptr %C, i64 %436, !dbg !246
+  store <32 x half> %435, ptr %437, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %290 = load <32 x half>, ptr %29, align 64, !dbg !246, !tbaa !265
-  %291 = or i64 %281, 96, !dbg !246
-  %292 = getelementptr inbounds half, ptr %C, i64 %291, !dbg !246
-  store <32 x half> %290, ptr %292, align 64, !dbg !246, !tbaa !267
+  %438 = load <32 x half>, ptr %29, align 64, !dbg !246, !tbaa !265
+  %439 = or i64 %429, 96, !dbg !246
+  %440 = getelementptr inbounds half, ptr %C, i64 %439, !dbg !246
+  store <32 x half> %438, ptr %440, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %293 = shl i64 %280, 32, !dbg !246
-  %sext55 = add i64 %293, 8796093022208, !dbg !246
-  %294 = ashr exact i64 %sext55, 32, !dbg !246
+  %441 = shl i64 %428, 32, !dbg !246
+  %sext55 = add i64 %441, 8796093022208, !dbg !246
+  %442 = ashr exact i64 %sext55, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %295 = load <32 x half>, ptr %30, align 64, !dbg !246, !tbaa !265
-  %296 = getelementptr inbounds half, ptr %C, i64 %294, !dbg !246
-  store <32 x half> %295, ptr %296, align 64, !dbg !246, !tbaa !267
+  %443 = load <32 x half>, ptr %30, align 64, !dbg !246, !tbaa !265
+  %444 = getelementptr inbounds half, ptr %C, i64 %442, !dbg !246
+  store <32 x half> %443, ptr %444, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %297 = load <32 x half>, ptr %31, align 64, !dbg !246, !tbaa !265
-  %298 = or i64 %294, 32, !dbg !246
-  %299 = getelementptr inbounds half, ptr %C, i64 %298, !dbg !246
-  store <32 x half> %297, ptr %299, align 64, !dbg !246, !tbaa !267
+  %445 = load <32 x half>, ptr %31, align 64, !dbg !246, !tbaa !265
+  %446 = or i64 %442, 32, !dbg !246
+  %447 = getelementptr inbounds half, ptr %C, i64 %446, !dbg !246
+  store <32 x half> %445, ptr %447, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %300 = load <32 x half>, ptr %32, align 64, !dbg !246, !tbaa !265
-  %301 = or i64 %294, 64, !dbg !246
-  %302 = getelementptr inbounds half, ptr %C, i64 %301, !dbg !246
-  store <32 x half> %300, ptr %302, align 64, !dbg !246, !tbaa !267
+  %448 = load <32 x half>, ptr %32, align 64, !dbg !246, !tbaa !265
+  %449 = or i64 %442, 64, !dbg !246
+  %450 = getelementptr inbounds half, ptr %C, i64 %449, !dbg !246
+  store <32 x half> %448, ptr %450, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %303 = load <32 x half>, ptr %33, align 64, !dbg !246, !tbaa !265
-  %304 = or i64 %294, 96, !dbg !246
-  %305 = getelementptr inbounds half, ptr %C, i64 %304, !dbg !246
-  store <32 x half> %303, ptr %305, align 64, !dbg !246, !tbaa !267
+  %451 = load <32 x half>, ptr %33, align 64, !dbg !246, !tbaa !265
+  %452 = or i64 %442, 96, !dbg !246
+  %453 = getelementptr inbounds half, ptr %C, i64 %452, !dbg !246
+  store <32 x half> %451, ptr %453, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %306 = shl i64 %280, 32, !dbg !246
-  %sext56 = add i64 %306, 17592186044416, !dbg !246
-  %307 = ashr exact i64 %sext56, 32, !dbg !246
+  %454 = shl i64 %428, 32, !dbg !246
+  %sext56 = add i64 %454, 17592186044416, !dbg !246
+  %455 = ashr exact i64 %sext56, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %308 = load <32 x half>, ptr %34, align 64, !dbg !246, !tbaa !265
-  %309 = getelementptr inbounds half, ptr %C, i64 %307, !dbg !246
-  store <32 x half> %308, ptr %309, align 64, !dbg !246, !tbaa !267
+  %456 = load <32 x half>, ptr %34, align 64, !dbg !246, !tbaa !265
+  %457 = getelementptr inbounds half, ptr %C, i64 %455, !dbg !246
+  store <32 x half> %456, ptr %457, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %310 = load <32 x half>, ptr %35, align 64, !dbg !246, !tbaa !265
-  %311 = or i64 %307, 32, !dbg !246
-  %312 = getelementptr inbounds half, ptr %C, i64 %311, !dbg !246
-  store <32 x half> %310, ptr %312, align 64, !dbg !246, !tbaa !267
+  %458 = load <32 x half>, ptr %35, align 64, !dbg !246, !tbaa !265
+  %459 = or i64 %455, 32, !dbg !246
+  %460 = getelementptr inbounds half, ptr %C, i64 %459, !dbg !246
+  store <32 x half> %458, ptr %460, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %313 = load <32 x half>, ptr %36, align 64, !dbg !246, !tbaa !265
-  %314 = or i64 %307, 64, !dbg !246
-  %315 = getelementptr inbounds half, ptr %C, i64 %314, !dbg !246
-  store <32 x half> %313, ptr %315, align 64, !dbg !246, !tbaa !267
+  %461 = load <32 x half>, ptr %36, align 64, !dbg !246, !tbaa !265
+  %462 = or i64 %455, 64, !dbg !246
+  %463 = getelementptr inbounds half, ptr %C, i64 %462, !dbg !246
+  store <32 x half> %461, ptr %463, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %316 = load <32 x half>, ptr %37, align 64, !dbg !246, !tbaa !265
-  %317 = or i64 %307, 96, !dbg !246
-  %318 = getelementptr inbounds half, ptr %C, i64 %317, !dbg !246
-  store <32 x half> %316, ptr %318, align 64, !dbg !246, !tbaa !267
+  %464 = load <32 x half>, ptr %37, align 64, !dbg !246, !tbaa !265
+  %465 = or i64 %455, 96, !dbg !246
+  %466 = getelementptr inbounds half, ptr %C, i64 %465, !dbg !246
+  store <32 x half> %464, ptr %466, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %319 = shl i64 %280, 32, !dbg !246
-  %sext57 = add i64 %319, 26388279066624, !dbg !246
-  %320 = ashr exact i64 %sext57, 32, !dbg !246
+  %467 = shl i64 %428, 32, !dbg !246
+  %sext57 = add i64 %467, 26388279066624, !dbg !246
+  %468 = ashr exact i64 %sext57, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %321 = load <32 x half>, ptr %38, align 64, !dbg !246, !tbaa !265
-  %322 = getelementptr inbounds half, ptr %C, i64 %320, !dbg !246
-  store <32 x half> %321, ptr %322, align 64, !dbg !246, !tbaa !267
+  %469 = load <32 x half>, ptr %38, align 64, !dbg !246, !tbaa !265
+  %470 = getelementptr inbounds half, ptr %C, i64 %468, !dbg !246
+  store <32 x half> %469, ptr %470, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %323 = load <32 x half>, ptr %39, align 64, !dbg !246, !tbaa !265
-  %324 = or i64 %320, 32, !dbg !246
-  %325 = getelementptr inbounds half, ptr %C, i64 %324, !dbg !246
-  store <32 x half> %323, ptr %325, align 64, !dbg !246, !tbaa !267
+  %471 = load <32 x half>, ptr %39, align 64, !dbg !246, !tbaa !265
+  %472 = or i64 %468, 32, !dbg !246
+  %473 = getelementptr inbounds half, ptr %C, i64 %472, !dbg !246
+  store <32 x half> %471, ptr %473, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %326 = load <32 x half>, ptr %40, align 64, !dbg !246, !tbaa !265
-  %327 = or i64 %320, 64, !dbg !246
-  %328 = getelementptr inbounds half, ptr %C, i64 %327, !dbg !246
-  store <32 x half> %326, ptr %328, align 64, !dbg !246, !tbaa !267
+  %474 = load <32 x half>, ptr %40, align 64, !dbg !246, !tbaa !265
+  %475 = or i64 %468, 64, !dbg !246
+  %476 = getelementptr inbounds half, ptr %C, i64 %475, !dbg !246
+  store <32 x half> %474, ptr %476, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %329 = load <32 x half>, ptr %41, align 64, !dbg !246, !tbaa !265
-  %330 = or i64 %320, 96, !dbg !246
-  %331 = getelementptr inbounds half, ptr %C, i64 %330, !dbg !246
-  store <32 x half> %329, ptr %331, align 64, !dbg !246, !tbaa !267
+  %477 = load <32 x half>, ptr %41, align 64, !dbg !246, !tbaa !265
+  %478 = or i64 %468, 96, !dbg !246
+  %479 = getelementptr inbounds half, ptr %C, i64 %478, !dbg !246
+  store <32 x half> %477, ptr %479, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 4, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 4, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %332 = shl i64 %280, 32, !dbg !246
-  %sext58 = add i64 %332, 35184372088832, !dbg !246
-  %333 = ashr exact i64 %sext58, 32, !dbg !246
+  %480 = shl i64 %428, 32, !dbg !246
+  %sext58 = add i64 %480, 35184372088832, !dbg !246
+  %481 = ashr exact i64 %sext58, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %334 = load <32 x half>, ptr %42, align 64, !dbg !246, !tbaa !265
-  %335 = getelementptr inbounds half, ptr %C, i64 %333, !dbg !246
-  store <32 x half> %334, ptr %335, align 64, !dbg !246, !tbaa !267
+  %482 = load <32 x half>, ptr %42, align 64, !dbg !246, !tbaa !265
+  %483 = getelementptr inbounds half, ptr %C, i64 %481, !dbg !246
+  store <32 x half> %482, ptr %483, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %336 = load <32 x half>, ptr %43, align 64, !dbg !246, !tbaa !265
-  %337 = or i64 %333, 32, !dbg !246
-  %338 = getelementptr inbounds half, ptr %C, i64 %337, !dbg !246
-  store <32 x half> %336, ptr %338, align 64, !dbg !246, !tbaa !267
+  %484 = load <32 x half>, ptr %43, align 64, !dbg !246, !tbaa !265
+  %485 = or i64 %481, 32, !dbg !246
+  %486 = getelementptr inbounds half, ptr %C, i64 %485, !dbg !246
+  store <32 x half> %484, ptr %486, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %339 = load <32 x half>, ptr %44, align 64, !dbg !246, !tbaa !265
-  %340 = or i64 %333, 64, !dbg !246
-  %341 = getelementptr inbounds half, ptr %C, i64 %340, !dbg !246
-  store <32 x half> %339, ptr %341, align 64, !dbg !246, !tbaa !267
+  %487 = load <32 x half>, ptr %44, align 64, !dbg !246, !tbaa !265
+  %488 = or i64 %481, 64, !dbg !246
+  %489 = getelementptr inbounds half, ptr %C, i64 %488, !dbg !246
+  store <32 x half> %487, ptr %489, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %342 = load <32 x half>, ptr %45, align 64, !dbg !246, !tbaa !265
-  %343 = or i64 %333, 96, !dbg !246
-  %344 = getelementptr inbounds half, ptr %C, i64 %343, !dbg !246
-  store <32 x half> %342, ptr %344, align 64, !dbg !246, !tbaa !267
+  %490 = load <32 x half>, ptr %45, align 64, !dbg !246, !tbaa !265
+  %491 = or i64 %481, 96, !dbg !246
+  %492 = getelementptr inbounds half, ptr %C, i64 %491, !dbg !246
+  store <32 x half> %490, ptr %492, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 5, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 5, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %345 = shl i64 %280, 32, !dbg !246
-  %sext59 = add i64 %345, 43980465111040, !dbg !246
-  %346 = ashr exact i64 %sext59, 32, !dbg !246
+  %493 = shl i64 %428, 32, !dbg !246
+  %sext59 = add i64 %493, 43980465111040, !dbg !246
+  %494 = ashr exact i64 %sext59, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %347 = load <32 x half>, ptr %46, align 64, !dbg !246, !tbaa !265
-  %348 = getelementptr inbounds half, ptr %C, i64 %346, !dbg !246
-  store <32 x half> %347, ptr %348, align 64, !dbg !246, !tbaa !267
+  %495 = load <32 x half>, ptr %46, align 64, !dbg !246, !tbaa !265
+  %496 = getelementptr inbounds half, ptr %C, i64 %494, !dbg !246
+  store <32 x half> %495, ptr %496, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %349 = load <32 x half>, ptr %47, align 64, !dbg !246, !tbaa !265
-  %350 = or i64 %346, 32, !dbg !246
-  %351 = getelementptr inbounds half, ptr %C, i64 %350, !dbg !246
-  store <32 x half> %349, ptr %351, align 64, !dbg !246, !tbaa !267
+  %497 = load <32 x half>, ptr %47, align 64, !dbg !246, !tbaa !265
+  %498 = or i64 %494, 32, !dbg !246
+  %499 = getelementptr inbounds half, ptr %C, i64 %498, !dbg !246
+  store <32 x half> %497, ptr %499, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %352 = load <32 x half>, ptr %48, align 64, !dbg !246, !tbaa !265
-  %353 = or i64 %346, 64, !dbg !246
-  %354 = getelementptr inbounds half, ptr %C, i64 %353, !dbg !246
-  store <32 x half> %352, ptr %354, align 64, !dbg !246, !tbaa !267
+  %500 = load <32 x half>, ptr %48, align 64, !dbg !246, !tbaa !265
+  %501 = or i64 %494, 64, !dbg !246
+  %502 = getelementptr inbounds half, ptr %C, i64 %501, !dbg !246
+  store <32 x half> %500, ptr %502, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %355 = load <32 x half>, ptr %49, align 64, !dbg !246, !tbaa !265
-  %356 = or i64 %346, 96, !dbg !246
-  %357 = getelementptr inbounds half, ptr %C, i64 %356, !dbg !246
-  store <32 x half> %355, ptr %357, align 64, !dbg !246, !tbaa !267
+  %503 = load <32 x half>, ptr %49, align 64, !dbg !246, !tbaa !265
+  %504 = or i64 %494, 96, !dbg !246
+  %505 = getelementptr inbounds half, ptr %C, i64 %504, !dbg !246
+  store <32 x half> %503, ptr %505, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 6, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 6, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %358 = shl i64 %280, 32, !dbg !246
-  %sext60 = add i64 %358, 52776558133248, !dbg !246
-  %359 = ashr exact i64 %sext60, 32, !dbg !246
+  %506 = shl i64 %428, 32, !dbg !246
+  %sext60 = add i64 %506, 52776558133248, !dbg !246
+  %507 = ashr exact i64 %sext60, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %360 = load <32 x half>, ptr %50, align 64, !dbg !246, !tbaa !265
-  %361 = getelementptr inbounds half, ptr %C, i64 %359, !dbg !246
-  store <32 x half> %360, ptr %361, align 64, !dbg !246, !tbaa !267
+  %508 = load <32 x half>, ptr %50, align 64, !dbg !246, !tbaa !265
+  %509 = getelementptr inbounds half, ptr %C, i64 %507, !dbg !246
+  store <32 x half> %508, ptr %509, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %362 = load <32 x half>, ptr %51, align 64, !dbg !246, !tbaa !265
-  %363 = or i64 %359, 32, !dbg !246
-  %364 = getelementptr inbounds half, ptr %C, i64 %363, !dbg !246
-  store <32 x half> %362, ptr %364, align 64, !dbg !246, !tbaa !267
+  %510 = load <32 x half>, ptr %51, align 64, !dbg !246, !tbaa !265
+  %511 = or i64 %507, 32, !dbg !246
+  %512 = getelementptr inbounds half, ptr %C, i64 %511, !dbg !246
+  store <32 x half> %510, ptr %512, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %365 = load <32 x half>, ptr %52, align 64, !dbg !246, !tbaa !265
-  %366 = or i64 %359, 64, !dbg !246
-  %367 = getelementptr inbounds half, ptr %C, i64 %366, !dbg !246
-  store <32 x half> %365, ptr %367, align 64, !dbg !246, !tbaa !267
+  %513 = load <32 x half>, ptr %52, align 64, !dbg !246, !tbaa !265
+  %514 = or i64 %507, 64, !dbg !246
+  %515 = getelementptr inbounds half, ptr %C, i64 %514, !dbg !246
+  store <32 x half> %513, ptr %515, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %368 = load <32 x half>, ptr %53, align 64, !dbg !246, !tbaa !265
-  %369 = or i64 %359, 96, !dbg !246
-  %370 = getelementptr inbounds half, ptr %C, i64 %369, !dbg !246
-  store <32 x half> %368, ptr %370, align 64, !dbg !246, !tbaa !267
+  %516 = load <32 x half>, ptr %53, align 64, !dbg !246, !tbaa !265
+  %517 = or i64 %507, 96, !dbg !246
+  %518 = getelementptr inbounds half, ptr %C, i64 %517, !dbg !246
+  store <32 x half> %516, ptr %518, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 7, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 7, metadata !263, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i32 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %371 = shl i64 %280, 32, !dbg !246
-  %sext61 = add i64 %371, 61572651155456, !dbg !246
-  %372 = ashr exact i64 %sext61, 32, !dbg !246
+  %519 = shl i64 %428, 32, !dbg !246
+  %sext61 = add i64 %519, 61572651155456, !dbg !246
+  %520 = ashr exact i64 %sext61, 32, !dbg !246
   call void @llvm.dbg.declare(metadata i64 0, metadata !264, metadata !DIExpression()), !dbg !246
-  %373 = load <32 x half>, ptr %25, align 64, !dbg !246, !tbaa !265
-  %374 = getelementptr inbounds half, ptr %C, i64 %372, !dbg !246
-  store <32 x half> %373, ptr %374, align 64, !dbg !246, !tbaa !267
+  %521 = load <32 x half>, ptr %25, align 64, !dbg !246, !tbaa !265
+  %522 = getelementptr inbounds half, ptr %C, i64 %520, !dbg !246
+  store <32 x half> %521, ptr %522, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 1, metadata !264, metadata !DIExpression()), !dbg !246
-  %375 = load <32 x half>, ptr %54, align 64, !dbg !246, !tbaa !265
-  %376 = or i64 %372, 32, !dbg !246
-  %377 = getelementptr inbounds half, ptr %C, i64 %376, !dbg !246
-  store <32 x half> %375, ptr %377, align 64, !dbg !246, !tbaa !267
+  %523 = load <32 x half>, ptr %54, align 64, !dbg !246, !tbaa !265
+  %524 = or i64 %520, 32, !dbg !246
+  %525 = getelementptr inbounds half, ptr %C, i64 %524, !dbg !246
+  store <32 x half> %523, ptr %525, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 2, metadata !264, metadata !DIExpression()), !dbg !246
-  %378 = load <32 x half>, ptr %55, align 64, !dbg !246, !tbaa !265
-  %379 = or i64 %372, 64, !dbg !246
-  %380 = getelementptr inbounds half, ptr %C, i64 %379, !dbg !246
-  store <32 x half> %378, ptr %380, align 64, !dbg !246, !tbaa !267
+  %526 = load <32 x half>, ptr %55, align 64, !dbg !246, !tbaa !265
+  %527 = or i64 %520, 64, !dbg !246
+  %528 = getelementptr inbounds half, ptr %C, i64 %527, !dbg !246
+  store <32 x half> %526, ptr %528, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 3, metadata !264, metadata !DIExpression()), !dbg !246
-  %381 = load <32 x half>, ptr %56, align 64, !dbg !246, !tbaa !265
-  %382 = or i64 %372, 96, !dbg !246
-  %383 = getelementptr inbounds half, ptr %C, i64 %382, !dbg !246
-  store <32 x half> %381, ptr %383, align 64, !dbg !246, !tbaa !267
+  %529 = load <32 x half>, ptr %56, align 64, !dbg !246, !tbaa !265
+  %530 = or i64 %520, 96, !dbg !246
+  %531 = getelementptr inbounds half, ptr %C, i64 %530, !dbg !246
+  store <32 x half> %529, ptr %531, align 64, !dbg !246, !tbaa !267
   call void @llvm.dbg.declare(metadata i64 4, metadata !264, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata i64 8, metadata !263, metadata !DIExpression()), !dbg !246
   %indvars.iv.next50 = add nuw nsw i64 %indvars.iv49, 1, !dbg !246
@@ -1706,345 +1854,345 @@ for_begin_n.inner.preheader:                      ; preds = %for_end_m.c.outer
 for_begin_m.c.outer.preheader:                    ; preds = %for_end_n, %for_end_m.c.outer
   %indvars.iv34 = phi i64 [ %indvars.iv.next35, %for_end_m.c.outer ], [ 0, %for_end_n ]
   call void @llvm.dbg.declare(metadata i64 %indvars.iv34, metadata !269, metadata !DIExpression()), !dbg !246
-  %384 = shl nsw i64 %indvars.iv34, 8
-  %385 = shl nsw i64 %indvars.iv34, 2
+  %532 = shl nsw i64 %indvars.iv34, 8
+  %533 = shl nsw i64 %indvars.iv34, 2
   call void @llvm.dbg.declare(metadata i32 0, metadata !270, metadata !DIExpression()), !dbg !246
   br label %for_body_m.c.outer, !dbg !246
 
 for_body_m.c.outer:                               ; preds = %for_begin_m.c.outer.preheader, %for_body_m.c.outer
   %indvars.iv30 = phi i64 [ 0, %for_begin_m.c.outer.preheader ], [ %indvars.iv.next31, %for_body_m.c.outer ]
   call void @llvm.dbg.declare(metadata i64 %indvars.iv30, metadata !270, metadata !DIExpression()), !dbg !246
-  %386 = shl nuw nsw i64 %indvars.iv30, 6, !dbg !246
-  %387 = add nuw nsw i64 %386, %384, !dbg !246
-  %388 = trunc i64 %387 to i32, !dbg !246
-  %389 = insertelement <32 x i32> undef, i32 %388, i64 0, !dbg !246
-  %390 = shufflevector <32 x i32> %389, <32 x i32> undef, <32 x i32> zeroinitializer, !dbg !246
-  %cse_var_2 = or <32 x i32> %390, <i32 poison, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 16, i32 17, i32 18, i32 19, i32 20, i32 21, i32 22, i32 23, i32 32, i32 33, i32 34, i32 35, i32 36, i32 37, i32 38, i32 39, i32 48, i32 49, i32 50, i32 51, i32 52, i32 53, i32 54, i32 55>, !dbg !246
+  %534 = shl nuw nsw i64 %indvars.iv30, 6, !dbg !246
+  %535 = add nuw nsw i64 %534, %532, !dbg !246
+  %536 = trunc i64 %535 to i32, !dbg !246
+  %537 = insertelement <32 x i32> undef, i32 %536, i64 0, !dbg !246
+  %538 = shufflevector <32 x i32> %537, <32 x i32> undef, <32 x i32> zeroinitializer, !dbg !246
+  %cse_var_2 = or <32 x i32> %538, <i32 poison, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 16, i32 17, i32 18, i32 19, i32 20, i32 21, i32 22, i32 23, i32 32, i32 33, i32 34, i32 35, i32 36, i32 37, i32 38, i32 39, i32 48, i32 49, i32 50, i32 51, i32 52, i32 53, i32 54, i32 55>, !dbg !246
   call void @llvm.dbg.declare(metadata <32 x i32> %cse_var_2, metadata !271, metadata !DIExpression()), !dbg !246
   call void @llvm.dbg.declare(metadata <32 x i32> %cse_var_2, metadata !271, metadata !DIExpression()), !dbg !246
-  %391 = getelementptr inbounds half, ptr %CBits, i64 %387, !dbg !246
-  %392 = load half, ptr %391, align 64, !dbg !246, !tbaa !273
-  %393 = extractelement <32 x i32> %cse_var_2, i64 1, !dbg !246
-  %394 = sext i32 %393 to i64, !dbg !246
-  %395 = getelementptr inbounds half, ptr %CBits, i64 %394, !dbg !246
-  %396 = load half, ptr %395, align 2, !dbg !246, !tbaa !273
-  %397 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 2, i32 3>, !dbg !246
-  %398 = sext <2 x i32> %397 to <2 x i64>, !dbg !246
-  %399 = extractelement <2 x i64> %398, i64 0, !dbg !246
-  %400 = getelementptr inbounds half, ptr %CBits, i64 %399, !dbg !246
-  %401 = load half, ptr %400, align 2, !dbg !246, !tbaa !273
-  %402 = extractelement <2 x i64> %398, i64 1, !dbg !246
-  %403 = getelementptr inbounds half, ptr %CBits, i64 %402, !dbg !246
-  %404 = load half, ptr %403, align 2, !dbg !246, !tbaa !273
-  %405 = extractelement <32 x i32> %cse_var_2, i64 4, !dbg !246
-  %406 = sext i32 %405 to i64, !dbg !246
-  %407 = getelementptr inbounds half, ptr %CBits, i64 %406, !dbg !246
-  %408 = load half, ptr %407, align 2, !dbg !246, !tbaa !273
-  %409 = extractelement <32 x i32> %cse_var_2, i64 5, !dbg !246
-  %410 = sext i32 %409 to i64, !dbg !246
-  %411 = getelementptr inbounds half, ptr %CBits, i64 %410, !dbg !246
-  %412 = load half, ptr %411, align 2, !dbg !246, !tbaa !273
-  %413 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 6, i32 7>, !dbg !246
-  %414 = sext <2 x i32> %413 to <2 x i64>, !dbg !246
-  %415 = extractelement <2 x i64> %414, i64 0, !dbg !246
-  %416 = getelementptr inbounds half, ptr %CBits, i64 %415, !dbg !246
-  %417 = load half, ptr %416, align 2, !dbg !246, !tbaa !273
-  %418 = extractelement <2 x i64> %414, i64 1, !dbg !246
-  %419 = getelementptr inbounds half, ptr %CBits, i64 %418, !dbg !246
-  %420 = load half, ptr %419, align 2, !dbg !246, !tbaa !273
-  %421 = extractelement <32 x i32> %cse_var_2, i64 8, !dbg !246
-  %422 = sext i32 %421 to i64, !dbg !246
-  %423 = getelementptr inbounds half, ptr %CBits, i64 %422, !dbg !246
-  %424 = load half, ptr %423, align 2, !dbg !246, !tbaa !273
-  %425 = extractelement <32 x i32> %cse_var_2, i64 9, !dbg !246
-  %426 = sext i32 %425 to i64, !dbg !246
-  %427 = getelementptr inbounds half, ptr %CBits, i64 %426, !dbg !246
-  %428 = load half, ptr %427, align 2, !dbg !246, !tbaa !273
-  %429 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 10, i32 11>, !dbg !246
-  %430 = sext <2 x i32> %429 to <2 x i64>, !dbg !246
-  %431 = extractelement <2 x i64> %430, i64 0, !dbg !246
-  %432 = getelementptr inbounds half, ptr %CBits, i64 %431, !dbg !246
-  %433 = load half, ptr %432, align 2, !dbg !246, !tbaa !273
-  %434 = extractelement <2 x i64> %430, i64 1, !dbg !246
-  %435 = getelementptr inbounds half, ptr %CBits, i64 %434, !dbg !246
-  %436 = load half, ptr %435, align 2, !dbg !246, !tbaa !273
-  %437 = extractelement <32 x i32> %cse_var_2, i64 12, !dbg !246
-  %438 = sext i32 %437 to i64, !dbg !246
-  %439 = getelementptr inbounds half, ptr %CBits, i64 %438, !dbg !246
-  %440 = load half, ptr %439, align 2, !dbg !246, !tbaa !273
-  %441 = extractelement <32 x i32> %cse_var_2, i64 13, !dbg !246
-  %442 = sext i32 %441 to i64, !dbg !246
-  %443 = getelementptr inbounds half, ptr %CBits, i64 %442, !dbg !246
-  %444 = load half, ptr %443, align 2, !dbg !246, !tbaa !273
-  %445 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 14, i32 15>, !dbg !246
-  %446 = sext <2 x i32> %445 to <2 x i64>, !dbg !246
-  %447 = extractelement <2 x i64> %446, i64 0, !dbg !246
-  %448 = getelementptr inbounds half, ptr %CBits, i64 %447, !dbg !246
-  %449 = load half, ptr %448, align 2, !dbg !246, !tbaa !273
-  %450 = extractelement <2 x i64> %446, i64 1, !dbg !246
-  %451 = getelementptr inbounds half, ptr %CBits, i64 %450, !dbg !246
-  %452 = load half, ptr %451, align 2, !dbg !246, !tbaa !273
-  %453 = extractelement <32 x i32> %cse_var_2, i64 16, !dbg !246
-  %454 = sext i32 %453 to i64, !dbg !246
-  %455 = getelementptr inbounds half, ptr %CBits, i64 %454, !dbg !246
-  %456 = load half, ptr %455, align 2, !dbg !246, !tbaa !273
-  %457 = extractelement <32 x i32> %cse_var_2, i64 17, !dbg !246
-  %458 = sext i32 %457 to i64, !dbg !246
-  %459 = getelementptr inbounds half, ptr %CBits, i64 %458, !dbg !246
-  %460 = load half, ptr %459, align 2, !dbg !246, !tbaa !273
-  %461 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 18, i32 19>, !dbg !246
-  %462 = sext <2 x i32> %461 to <2 x i64>, !dbg !246
-  %463 = extractelement <2 x i64> %462, i64 0, !dbg !246
-  %464 = getelementptr inbounds half, ptr %CBits, i64 %463, !dbg !246
-  %465 = load half, ptr %464, align 2, !dbg !246, !tbaa !273
-  %466 = extractelement <2 x i64> %462, i64 1, !dbg !246
-  %467 = getelementptr inbounds half, ptr %CBits, i64 %466, !dbg !246
-  %468 = load half, ptr %467, align 2, !dbg !246, !tbaa !273
-  %469 = extractelement <32 x i32> %cse_var_2, i64 20, !dbg !246
-  %470 = sext i32 %469 to i64, !dbg !246
-  %471 = getelementptr inbounds half, ptr %CBits, i64 %470, !dbg !246
-  %472 = load half, ptr %471, align 2, !dbg !246, !tbaa !273
-  %473 = extractelement <32 x i32> %cse_var_2, i64 21, !dbg !246
-  %474 = sext i32 %473 to i64, !dbg !246
-  %475 = getelementptr inbounds half, ptr %CBits, i64 %474, !dbg !246
-  %476 = load half, ptr %475, align 2, !dbg !246, !tbaa !273
-  %477 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 22, i32 23>, !dbg !246
-  %478 = sext <2 x i32> %477 to <2 x i64>, !dbg !246
-  %479 = extractelement <2 x i64> %478, i64 0, !dbg !246
-  %480 = getelementptr inbounds half, ptr %CBits, i64 %479, !dbg !246
-  %481 = load half, ptr %480, align 2, !dbg !246, !tbaa !273
-  %482 = extractelement <2 x i64> %478, i64 1, !dbg !246
-  %483 = getelementptr inbounds half, ptr %CBits, i64 %482, !dbg !246
-  %484 = load half, ptr %483, align 2, !dbg !246, !tbaa !273
-  %485 = extractelement <32 x i32> %cse_var_2, i64 24, !dbg !246
-  %486 = sext i32 %485 to i64, !dbg !246
-  %487 = getelementptr inbounds half, ptr %CBits, i64 %486, !dbg !246
-  %488 = load half, ptr %487, align 2, !dbg !246, !tbaa !273
-  %489 = extractelement <32 x i32> %cse_var_2, i64 25, !dbg !246
-  %490 = sext i32 %489 to i64, !dbg !246
-  %491 = getelementptr inbounds half, ptr %CBits, i64 %490, !dbg !246
-  %492 = load half, ptr %491, align 2, !dbg !246, !tbaa !273
-  %493 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 26, i32 27>, !dbg !246
-  %494 = sext <2 x i32> %493 to <2 x i64>, !dbg !246
-  %495 = extractelement <2 x i64> %494, i64 0, !dbg !246
-  %496 = getelementptr inbounds half, ptr %CBits, i64 %495, !dbg !246
-  %497 = load half, ptr %496, align 2, !dbg !246, !tbaa !273
-  %498 = extractelement <2 x i64> %494, i64 1, !dbg !246
-  %499 = getelementptr inbounds half, ptr %CBits, i64 %498, !dbg !246
-  %500 = load half, ptr %499, align 2, !dbg !246, !tbaa !273
-  %501 = extractelement <32 x i32> %cse_var_2, i64 28, !dbg !246
-  %502 = sext i32 %501 to i64, !dbg !246
-  %503 = getelementptr inbounds half, ptr %CBits, i64 %502, !dbg !246
-  %504 = load half, ptr %503, align 2, !dbg !246, !tbaa !273
-  %505 = extractelement <32 x i32> %cse_var_2, i64 29, !dbg !246
-  %506 = sext i32 %505 to i64, !dbg !246
-  %507 = getelementptr inbounds half, ptr %CBits, i64 %506, !dbg !246
-  %508 = load half, ptr %507, align 2, !dbg !246, !tbaa !273
-  %509 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 30, i32 31>, !dbg !246
-  %510 = sext <2 x i32> %509 to <2 x i64>, !dbg !246
-  %511 = extractelement <2 x i64> %510, i64 0, !dbg !246
-  %512 = getelementptr inbounds half, ptr %CBits, i64 %511, !dbg !246
-  %513 = load half, ptr %512, align 2, !dbg !246, !tbaa !273
-  %514 = extractelement <2 x i64> %510, i64 1, !dbg !246
-  %515 = getelementptr inbounds half, ptr %CBits, i64 %514, !dbg !246
-  %516 = load half, ptr %515, align 2, !dbg !246, !tbaa !273
-  %517 = insertelement <32 x half> undef, half %392, i64 0, !dbg !246
-  %518 = insertelement <32 x half> %517, half %396, i64 1, !dbg !246
-  %519 = insertelement <32 x half> %518, half %401, i64 2, !dbg !246
-  %520 = insertelement <32 x half> %519, half %404, i64 3, !dbg !246
-  %521 = insertelement <32 x half> %520, half %408, i64 4, !dbg !246
-  %522 = insertelement <32 x half> %521, half %412, i64 5, !dbg !246
-  %523 = insertelement <32 x half> %522, half %417, i64 6, !dbg !246
-  %524 = insertelement <32 x half> %523, half %420, i64 7, !dbg !246
-  %525 = insertelement <32 x half> %524, half %424, i64 8, !dbg !246
-  %526 = insertelement <32 x half> %525, half %428, i64 9, !dbg !246
-  %527 = insertelement <32 x half> %526, half %433, i64 10, !dbg !246
-  %528 = insertelement <32 x half> %527, half %436, i64 11, !dbg !246
-  %529 = insertelement <32 x half> %528, half %440, i64 12, !dbg !246
-  %530 = insertelement <32 x half> %529, half %444, i64 13, !dbg !246
-  %531 = insertelement <32 x half> %530, half %449, i64 14, !dbg !246
-  %532 = insertelement <32 x half> %531, half %452, i64 15, !dbg !246
-  %533 = insertelement <32 x half> %532, half %456, i64 16, !dbg !246
-  %534 = insertelement <32 x half> %533, half %460, i64 17, !dbg !246
-  %535 = insertelement <32 x half> %534, half %465, i64 18, !dbg !246
-  %536 = insertelement <32 x half> %535, half %468, i64 19, !dbg !246
-  %537 = insertelement <32 x half> %536, half %472, i64 20, !dbg !246
-  %538 = insertelement <32 x half> %537, half %476, i64 21, !dbg !246
-  %539 = insertelement <32 x half> %538, half %481, i64 22, !dbg !246
-  %540 = insertelement <32 x half> %539, half %484, i64 23, !dbg !246
-  %541 = insertelement <32 x half> %540, half %488, i64 24, !dbg !246
-  %542 = insertelement <32 x half> %541, half %492, i64 25, !dbg !246
-  %543 = insertelement <32 x half> %542, half %497, i64 26, !dbg !246
-  %544 = insertelement <32 x half> %543, half %500, i64 27, !dbg !246
-  %545 = insertelement <32 x half> %544, half %504, i64 28, !dbg !246
-  %546 = insertelement <32 x half> %545, half %508, i64 29, !dbg !246
-  %547 = insertelement <32 x half> %546, half %513, i64 30, !dbg !246
-  %548 = insertelement <32 x half> %547, half %516, i64 31, !dbg !246
-  %549 = or <32 x i32> %390, <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15, i32 24, i32 25, i32 26, i32 27, i32 28, i32 29, i32 30, i32 31, i32 40, i32 41, i32 42, i32 43, i32 44, i32 45, i32 46, i32 47, i32 56, i32 57, i32 58, i32 59, i32 60, i32 61, i32 62, i32 63>, !dbg !246
-  %550 = extractelement <32 x i32> %549, i64 0, !dbg !246
-  %551 = sext i32 %550 to i64, !dbg !246
-  %552 = getelementptr inbounds half, ptr %CBits, i64 %551, !dbg !246
-  %553 = load half, ptr %552, align 2, !dbg !246, !tbaa !273
-  %554 = extractelement <32 x i32> %549, i64 1, !dbg !246
-  %555 = sext i32 %554 to i64, !dbg !246
-  %556 = getelementptr inbounds half, ptr %CBits, i64 %555, !dbg !246
-  %557 = load half, ptr %556, align 2, !dbg !246, !tbaa !273
-  %558 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 2, i32 3>, !dbg !246
-  %559 = sext <2 x i32> %558 to <2 x i64>, !dbg !246
-  %560 = extractelement <2 x i64> %559, i64 0, !dbg !246
-  %561 = getelementptr inbounds half, ptr %CBits, i64 %560, !dbg !246
-  %562 = load half, ptr %561, align 2, !dbg !246, !tbaa !273
-  %563 = extractelement <2 x i64> %559, i64 1, !dbg !246
+  %539 = getelementptr inbounds half, ptr %CBits, i64 %535, !dbg !246
+  %540 = load half, ptr %539, align 64, !dbg !246, !tbaa !273
+  %541 = extractelement <32 x i32> %cse_var_2, i64 1, !dbg !246
+  %542 = sext i32 %541 to i64, !dbg !246
+  %543 = getelementptr inbounds half, ptr %CBits, i64 %542, !dbg !246
+  %544 = load half, ptr %543, align 2, !dbg !246, !tbaa !273
+  %545 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 2, i32 3>, !dbg !246
+  %546 = sext <2 x i32> %545 to <2 x i64>, !dbg !246
+  %547 = extractelement <2 x i64> %546, i64 0, !dbg !246
+  %548 = getelementptr inbounds half, ptr %CBits, i64 %547, !dbg !246
+  %549 = load half, ptr %548, align 2, !dbg !246, !tbaa !273
+  %550 = extractelement <2 x i64> %546, i64 1, !dbg !246
+  %551 = getelementptr inbounds half, ptr %CBits, i64 %550, !dbg !246
+  %552 = load half, ptr %551, align 2, !dbg !246, !tbaa !273
+  %553 = extractelement <32 x i32> %cse_var_2, i64 4, !dbg !246
+  %554 = sext i32 %553 to i64, !dbg !246
+  %555 = getelementptr inbounds half, ptr %CBits, i64 %554, !dbg !246
+  %556 = load half, ptr %555, align 2, !dbg !246, !tbaa !273
+  %557 = extractelement <32 x i32> %cse_var_2, i64 5, !dbg !246
+  %558 = sext i32 %557 to i64, !dbg !246
+  %559 = getelementptr inbounds half, ptr %CBits, i64 %558, !dbg !246
+  %560 = load half, ptr %559, align 2, !dbg !246, !tbaa !273
+  %561 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 6, i32 7>, !dbg !246
+  %562 = sext <2 x i32> %561 to <2 x i64>, !dbg !246
+  %563 = extractelement <2 x i64> %562, i64 0, !dbg !246
   %564 = getelementptr inbounds half, ptr %CBits, i64 %563, !dbg !246
   %565 = load half, ptr %564, align 2, !dbg !246, !tbaa !273
-  %566 = extractelement <32 x i32> %549, i64 4, !dbg !246
-  %567 = sext i32 %566 to i64, !dbg !246
-  %568 = getelementptr inbounds half, ptr %CBits, i64 %567, !dbg !246
-  %569 = load half, ptr %568, align 2, !dbg !246, !tbaa !273
-  %570 = extractelement <32 x i32> %549, i64 5, !dbg !246
-  %571 = sext i32 %570 to i64, !dbg !246
-  %572 = getelementptr inbounds half, ptr %CBits, i64 %571, !dbg !246
-  %573 = load half, ptr %572, align 2, !dbg !246, !tbaa !273
-  %574 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 6, i32 7>, !dbg !246
-  %575 = sext <2 x i32> %574 to <2 x i64>, !dbg !246
-  %576 = extractelement <2 x i64> %575, i64 0, !dbg !246
-  %577 = getelementptr inbounds half, ptr %CBits, i64 %576, !dbg !246
-  %578 = load half, ptr %577, align 2, !dbg !246, !tbaa !273
-  %579 = extractelement <2 x i64> %575, i64 1, !dbg !246
+  %566 = extractelement <2 x i64> %562, i64 1, !dbg !246
+  %567 = getelementptr inbounds half, ptr %CBits, i64 %566, !dbg !246
+  %568 = load half, ptr %567, align 2, !dbg !246, !tbaa !273
+  %569 = extractelement <32 x i32> %cse_var_2, i64 8, !dbg !246
+  %570 = sext i32 %569 to i64, !dbg !246
+  %571 = getelementptr inbounds half, ptr %CBits, i64 %570, !dbg !246
+  %572 = load half, ptr %571, align 2, !dbg !246, !tbaa !273
+  %573 = extractelement <32 x i32> %cse_var_2, i64 9, !dbg !246
+  %574 = sext i32 %573 to i64, !dbg !246
+  %575 = getelementptr inbounds half, ptr %CBits, i64 %574, !dbg !246
+  %576 = load half, ptr %575, align 2, !dbg !246, !tbaa !273
+  %577 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 10, i32 11>, !dbg !246
+  %578 = sext <2 x i32> %577 to <2 x i64>, !dbg !246
+  %579 = extractelement <2 x i64> %578, i64 0, !dbg !246
   %580 = getelementptr inbounds half, ptr %CBits, i64 %579, !dbg !246
   %581 = load half, ptr %580, align 2, !dbg !246, !tbaa !273
-  %582 = extractelement <32 x i32> %549, i64 8, !dbg !246
-  %583 = sext i32 %582 to i64, !dbg !246
-  %584 = getelementptr inbounds half, ptr %CBits, i64 %583, !dbg !246
-  %585 = load half, ptr %584, align 2, !dbg !246, !tbaa !273
-  %586 = extractelement <32 x i32> %549, i64 9, !dbg !246
-  %587 = sext i32 %586 to i64, !dbg !246
-  %588 = getelementptr inbounds half, ptr %CBits, i64 %587, !dbg !246
-  %589 = load half, ptr %588, align 2, !dbg !246, !tbaa !273
-  %590 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 10, i32 11>, !dbg !246
-  %591 = sext <2 x i32> %590 to <2 x i64>, !dbg !246
-  %592 = extractelement <2 x i64> %591, i64 0, !dbg !246
-  %593 = getelementptr inbounds half, ptr %CBits, i64 %592, !dbg !246
-  %594 = load half, ptr %593, align 2, !dbg !246, !tbaa !273
-  %595 = extractelement <2 x i64> %591, i64 1, !dbg !246
+  %582 = extractelement <2 x i64> %578, i64 1, !dbg !246
+  %583 = getelementptr inbounds half, ptr %CBits, i64 %582, !dbg !246
+  %584 = load half, ptr %583, align 2, !dbg !246, !tbaa !273
+  %585 = extractelement <32 x i32> %cse_var_2, i64 12, !dbg !246
+  %586 = sext i32 %585 to i64, !dbg !246
+  %587 = getelementptr inbounds half, ptr %CBits, i64 %586, !dbg !246
+  %588 = load half, ptr %587, align 2, !dbg !246, !tbaa !273
+  %589 = extractelement <32 x i32> %cse_var_2, i64 13, !dbg !246
+  %590 = sext i32 %589 to i64, !dbg !246
+  %591 = getelementptr inbounds half, ptr %CBits, i64 %590, !dbg !246
+  %592 = load half, ptr %591, align 2, !dbg !246, !tbaa !273
+  %593 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 14, i32 15>, !dbg !246
+  %594 = sext <2 x i32> %593 to <2 x i64>, !dbg !246
+  %595 = extractelement <2 x i64> %594, i64 0, !dbg !246
   %596 = getelementptr inbounds half, ptr %CBits, i64 %595, !dbg !246
   %597 = load half, ptr %596, align 2, !dbg !246, !tbaa !273
-  %598 = extractelement <32 x i32> %549, i64 12, !dbg !246
-  %599 = sext i32 %598 to i64, !dbg !246
-  %600 = getelementptr inbounds half, ptr %CBits, i64 %599, !dbg !246
-  %601 = load half, ptr %600, align 2, !dbg !246, !tbaa !273
-  %602 = extractelement <32 x i32> %549, i64 13, !dbg !246
-  %603 = sext i32 %602 to i64, !dbg !246
-  %604 = getelementptr inbounds half, ptr %CBits, i64 %603, !dbg !246
-  %605 = load half, ptr %604, align 2, !dbg !246, !tbaa !273
-  %606 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 14, i32 15>, !dbg !246
-  %607 = sext <2 x i32> %606 to <2 x i64>, !dbg !246
-  %608 = extractelement <2 x i64> %607, i64 0, !dbg !246
-  %609 = getelementptr inbounds half, ptr %CBits, i64 %608, !dbg !246
-  %610 = load half, ptr %609, align 2, !dbg !246, !tbaa !273
-  %611 = extractelement <2 x i64> %607, i64 1, !dbg !246
+  %598 = extractelement <2 x i64> %594, i64 1, !dbg !246
+  %599 = getelementptr inbounds half, ptr %CBits, i64 %598, !dbg !246
+  %600 = load half, ptr %599, align 2, !dbg !246, !tbaa !273
+  %601 = extractelement <32 x i32> %cse_var_2, i64 16, !dbg !246
+  %602 = sext i32 %601 to i64, !dbg !246
+  %603 = getelementptr inbounds half, ptr %CBits, i64 %602, !dbg !246
+  %604 = load half, ptr %603, align 2, !dbg !246, !tbaa !273
+  %605 = extractelement <32 x i32> %cse_var_2, i64 17, !dbg !246
+  %606 = sext i32 %605 to i64, !dbg !246
+  %607 = getelementptr inbounds half, ptr %CBits, i64 %606, !dbg !246
+  %608 = load half, ptr %607, align 2, !dbg !246, !tbaa !273
+  %609 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 18, i32 19>, !dbg !246
+  %610 = sext <2 x i32> %609 to <2 x i64>, !dbg !246
+  %611 = extractelement <2 x i64> %610, i64 0, !dbg !246
   %612 = getelementptr inbounds half, ptr %CBits, i64 %611, !dbg !246
   %613 = load half, ptr %612, align 2, !dbg !246, !tbaa !273
-  %614 = extractelement <32 x i32> %549, i64 16, !dbg !246
-  %615 = sext i32 %614 to i64, !dbg !246
-  %616 = getelementptr inbounds half, ptr %CBits, i64 %615, !dbg !246
-  %617 = load half, ptr %616, align 2, !dbg !246, !tbaa !273
-  %618 = extractelement <32 x i32> %549, i64 17, !dbg !246
-  %619 = sext i32 %618 to i64, !dbg !246
-  %620 = getelementptr inbounds half, ptr %CBits, i64 %619, !dbg !246
-  %621 = load half, ptr %620, align 2, !dbg !246, !tbaa !273
-  %622 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 18, i32 19>, !dbg !246
-  %623 = sext <2 x i32> %622 to <2 x i64>, !dbg !246
-  %624 = extractelement <2 x i64> %623, i64 0, !dbg !246
-  %625 = getelementptr inbounds half, ptr %CBits, i64 %624, !dbg !246
-  %626 = load half, ptr %625, align 2, !dbg !246, !tbaa !273
-  %627 = extractelement <2 x i64> %623, i64 1, !dbg !246
+  %614 = extractelement <2 x i64> %610, i64 1, !dbg !246
+  %615 = getelementptr inbounds half, ptr %CBits, i64 %614, !dbg !246
+  %616 = load half, ptr %615, align 2, !dbg !246, !tbaa !273
+  %617 = extractelement <32 x i32> %cse_var_2, i64 20, !dbg !246
+  %618 = sext i32 %617 to i64, !dbg !246
+  %619 = getelementptr inbounds half, ptr %CBits, i64 %618, !dbg !246
+  %620 = load half, ptr %619, align 2, !dbg !246, !tbaa !273
+  %621 = extractelement <32 x i32> %cse_var_2, i64 21, !dbg !246
+  %622 = sext i32 %621 to i64, !dbg !246
+  %623 = getelementptr inbounds half, ptr %CBits, i64 %622, !dbg !246
+  %624 = load half, ptr %623, align 2, !dbg !246, !tbaa !273
+  %625 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 22, i32 23>, !dbg !246
+  %626 = sext <2 x i32> %625 to <2 x i64>, !dbg !246
+  %627 = extractelement <2 x i64> %626, i64 0, !dbg !246
   %628 = getelementptr inbounds half, ptr %CBits, i64 %627, !dbg !246
   %629 = load half, ptr %628, align 2, !dbg !246, !tbaa !273
-  %630 = extractelement <32 x i32> %549, i64 20, !dbg !246
-  %631 = sext i32 %630 to i64, !dbg !246
-  %632 = getelementptr inbounds half, ptr %CBits, i64 %631, !dbg !246
-  %633 = load half, ptr %632, align 2, !dbg !246, !tbaa !273
-  %634 = extractelement <32 x i32> %549, i64 21, !dbg !246
-  %635 = sext i32 %634 to i64, !dbg !246
-  %636 = getelementptr inbounds half, ptr %CBits, i64 %635, !dbg !246
-  %637 = load half, ptr %636, align 2, !dbg !246, !tbaa !273
-  %638 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 22, i32 23>, !dbg !246
-  %639 = sext <2 x i32> %638 to <2 x i64>, !dbg !246
-  %640 = extractelement <2 x i64> %639, i64 0, !dbg !246
-  %641 = getelementptr inbounds half, ptr %CBits, i64 %640, !dbg !246
-  %642 = load half, ptr %641, align 2, !dbg !246, !tbaa !273
-  %643 = extractelement <2 x i64> %639, i64 1, !dbg !246
+  %630 = extractelement <2 x i64> %626, i64 1, !dbg !246
+  %631 = getelementptr inbounds half, ptr %CBits, i64 %630, !dbg !246
+  %632 = load half, ptr %631, align 2, !dbg !246, !tbaa !273
+  %633 = extractelement <32 x i32> %cse_var_2, i64 24, !dbg !246
+  %634 = sext i32 %633 to i64, !dbg !246
+  %635 = getelementptr inbounds half, ptr %CBits, i64 %634, !dbg !246
+  %636 = load half, ptr %635, align 2, !dbg !246, !tbaa !273
+  %637 = extractelement <32 x i32> %cse_var_2, i64 25, !dbg !246
+  %638 = sext i32 %637 to i64, !dbg !246
+  %639 = getelementptr inbounds half, ptr %CBits, i64 %638, !dbg !246
+  %640 = load half, ptr %639, align 2, !dbg !246, !tbaa !273
+  %641 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 26, i32 27>, !dbg !246
+  %642 = sext <2 x i32> %641 to <2 x i64>, !dbg !246
+  %643 = extractelement <2 x i64> %642, i64 0, !dbg !246
   %644 = getelementptr inbounds half, ptr %CBits, i64 %643, !dbg !246
   %645 = load half, ptr %644, align 2, !dbg !246, !tbaa !273
-  %646 = extractelement <32 x i32> %549, i64 24, !dbg !246
-  %647 = sext i32 %646 to i64, !dbg !246
-  %648 = getelementptr inbounds half, ptr %CBits, i64 %647, !dbg !246
-  %649 = load half, ptr %648, align 2, !dbg !246, !tbaa !273
-  %650 = extractelement <32 x i32> %549, i64 25, !dbg !246
-  %651 = sext i32 %650 to i64, !dbg !246
-  %652 = getelementptr inbounds half, ptr %CBits, i64 %651, !dbg !246
-  %653 = load half, ptr %652, align 2, !dbg !246, !tbaa !273
-  %654 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 26, i32 27>, !dbg !246
-  %655 = sext <2 x i32> %654 to <2 x i64>, !dbg !246
-  %656 = extractelement <2 x i64> %655, i64 0, !dbg !246
-  %657 = getelementptr inbounds half, ptr %CBits, i64 %656, !dbg !246
-  %658 = load half, ptr %657, align 2, !dbg !246, !tbaa !273
-  %659 = extractelement <2 x i64> %655, i64 1, !dbg !246
+  %646 = extractelement <2 x i64> %642, i64 1, !dbg !246
+  %647 = getelementptr inbounds half, ptr %CBits, i64 %646, !dbg !246
+  %648 = load half, ptr %647, align 2, !dbg !246, !tbaa !273
+  %649 = extractelement <32 x i32> %cse_var_2, i64 28, !dbg !246
+  %650 = sext i32 %649 to i64, !dbg !246
+  %651 = getelementptr inbounds half, ptr %CBits, i64 %650, !dbg !246
+  %652 = load half, ptr %651, align 2, !dbg !246, !tbaa !273
+  %653 = extractelement <32 x i32> %cse_var_2, i64 29, !dbg !246
+  %654 = sext i32 %653 to i64, !dbg !246
+  %655 = getelementptr inbounds half, ptr %CBits, i64 %654, !dbg !246
+  %656 = load half, ptr %655, align 2, !dbg !246, !tbaa !273
+  %657 = shufflevector <32 x i32> %cse_var_2, <32 x i32> poison, <2 x i32> <i32 30, i32 31>, !dbg !246
+  %658 = sext <2 x i32> %657 to <2 x i64>, !dbg !246
+  %659 = extractelement <2 x i64> %658, i64 0, !dbg !246
   %660 = getelementptr inbounds half, ptr %CBits, i64 %659, !dbg !246
   %661 = load half, ptr %660, align 2, !dbg !246, !tbaa !273
-  %662 = extractelement <32 x i32> %549, i64 28, !dbg !246
-  %663 = sext i32 %662 to i64, !dbg !246
-  %664 = getelementptr inbounds half, ptr %CBits, i64 %663, !dbg !246
-  %665 = load half, ptr %664, align 2, !dbg !246, !tbaa !273
-  %666 = extractelement <32 x i32> %549, i64 29, !dbg !246
-  %667 = sext i32 %666 to i64, !dbg !246
-  %668 = getelementptr inbounds half, ptr %CBits, i64 %667, !dbg !246
-  %669 = load half, ptr %668, align 2, !dbg !246, !tbaa !273
-  %670 = shufflevector <32 x i32> %549, <32 x i32> poison, <2 x i32> <i32 30, i32 31>, !dbg !246
-  %671 = sext <2 x i32> %670 to <2 x i64>, !dbg !246
-  %672 = extractelement <2 x i64> %671, i64 0, !dbg !246
-  %673 = getelementptr inbounds half, ptr %CBits, i64 %672, !dbg !246
-  %674 = load half, ptr %673, align 2, !dbg !246, !tbaa !273
-  %675 = extractelement <2 x i64> %671, i64 1, !dbg !246
-  %676 = getelementptr inbounds half, ptr %CBits, i64 %675, !dbg !246
-  %677 = load half, ptr %676, align 2, !dbg !246, !tbaa !273
-  %678 = insertelement <32 x half> undef, half %553, i64 0, !dbg !246
-  %679 = insertelement <32 x half> %678, half %557, i64 1, !dbg !246
-  %680 = insertelement <32 x half> %679, half %562, i64 2, !dbg !246
-  %681 = insertelement <32 x half> %680, half %565, i64 3, !dbg !246
-  %682 = insertelement <32 x half> %681, half %569, i64 4, !dbg !246
-  %683 = insertelement <32 x half> %682, half %573, i64 5, !dbg !246
-  %684 = insertelement <32 x half> %683, half %578, i64 6, !dbg !246
-  %685 = insertelement <32 x half> %684, half %581, i64 7, !dbg !246
-  %686 = insertelement <32 x half> %685, half %585, i64 8, !dbg !246
-  %687 = insertelement <32 x half> %686, half %589, i64 9, !dbg !246
-  %688 = insertelement <32 x half> %687, half %594, i64 10, !dbg !246
-  %689 = insertelement <32 x half> %688, half %597, i64 11, !dbg !246
-  %690 = insertelement <32 x half> %689, half %601, i64 12, !dbg !246
-  %691 = insertelement <32 x half> %690, half %605, i64 13, !dbg !246
-  %692 = insertelement <32 x half> %691, half %610, i64 14, !dbg !246
-  %693 = insertelement <32 x half> %692, half %613, i64 15, !dbg !246
-  %694 = insertelement <32 x half> %693, half %617, i64 16, !dbg !246
-  %695 = insertelement <32 x half> %694, half %621, i64 17, !dbg !246
-  %696 = insertelement <32 x half> %695, half %626, i64 18, !dbg !246
-  %697 = insertelement <32 x half> %696, half %629, i64 19, !dbg !246
-  %698 = insertelement <32 x half> %697, half %633, i64 20, !dbg !246
-  %699 = insertelement <32 x half> %698, half %637, i64 21, !dbg !246
-  %700 = insertelement <32 x half> %699, half %642, i64 22, !dbg !246
-  %701 = insertelement <32 x half> %700, half %645, i64 23, !dbg !246
-  %702 = insertelement <32 x half> %701, half %649, i64 24, !dbg !246
-  %703 = insertelement <32 x half> %702, half %653, i64 25, !dbg !246
-  %704 = insertelement <32 x half> %703, half %658, i64 26, !dbg !246
-  %705 = insertelement <32 x half> %704, half %661, i64 27, !dbg !246
-  %706 = insertelement <32 x half> %705, half %665, i64 28, !dbg !246
-  %707 = insertelement <32 x half> %706, half %669, i64 29, !dbg !246
-  %708 = insertelement <32 x half> %707, half %674, i64 30, !dbg !246
-  %709 = insertelement <32 x half> %708, half %677, i64 31, !dbg !246
-  %710 = tail call <32 x half> @llvm.fmuladd.v32f16(<32 x half> %548, <32 x half> <half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800>, <32 x half> %709), !dbg !246
-  %711 = add nuw nsw i64 %indvars.iv30, %385, !dbg !246
-  %712 = getelementptr inbounds <32 x half>, ptr %C.global, i64 %711, !dbg !246
-  store <32 x half> %710, ptr %712, align 64, !dbg !246, !tbaa !265
+  %662 = extractelement <2 x i64> %658, i64 1, !dbg !246
+  %663 = getelementptr inbounds half, ptr %CBits, i64 %662, !dbg !246
+  %664 = load half, ptr %663, align 2, !dbg !246, !tbaa !273
+  %665 = insertelement <32 x half> undef, half %540, i64 0, !dbg !246
+  %666 = insertelement <32 x half> %665, half %544, i64 1, !dbg !246
+  %667 = insertelement <32 x half> %666, half %549, i64 2, !dbg !246
+  %668 = insertelement <32 x half> %667, half %552, i64 3, !dbg !246
+  %669 = insertelement <32 x half> %668, half %556, i64 4, !dbg !246
+  %670 = insertelement <32 x half> %669, half %560, i64 5, !dbg !246
+  %671 = insertelement <32 x half> %670, half %565, i64 6, !dbg !246
+  %672 = insertelement <32 x half> %671, half %568, i64 7, !dbg !246
+  %673 = insertelement <32 x half> %672, half %572, i64 8, !dbg !246
+  %674 = insertelement <32 x half> %673, half %576, i64 9, !dbg !246
+  %675 = insertelement <32 x half> %674, half %581, i64 10, !dbg !246
+  %676 = insertelement <32 x half> %675, half %584, i64 11, !dbg !246
+  %677 = insertelement <32 x half> %676, half %588, i64 12, !dbg !246
+  %678 = insertelement <32 x half> %677, half %592, i64 13, !dbg !246
+  %679 = insertelement <32 x half> %678, half %597, i64 14, !dbg !246
+  %680 = insertelement <32 x half> %679, half %600, i64 15, !dbg !246
+  %681 = insertelement <32 x half> %680, half %604, i64 16, !dbg !246
+  %682 = insertelement <32 x half> %681, half %608, i64 17, !dbg !246
+  %683 = insertelement <32 x half> %682, half %613, i64 18, !dbg !246
+  %684 = insertelement <32 x half> %683, half %616, i64 19, !dbg !246
+  %685 = insertelement <32 x half> %684, half %620, i64 20, !dbg !246
+  %686 = insertelement <32 x half> %685, half %624, i64 21, !dbg !246
+  %687 = insertelement <32 x half> %686, half %629, i64 22, !dbg !246
+  %688 = insertelement <32 x half> %687, half %632, i64 23, !dbg !246
+  %689 = insertelement <32 x half> %688, half %636, i64 24, !dbg !246
+  %690 = insertelement <32 x half> %689, half %640, i64 25, !dbg !246
+  %691 = insertelement <32 x half> %690, half %645, i64 26, !dbg !246
+  %692 = insertelement <32 x half> %691, half %648, i64 27, !dbg !246
+  %693 = insertelement <32 x half> %692, half %652, i64 28, !dbg !246
+  %694 = insertelement <32 x half> %693, half %656, i64 29, !dbg !246
+  %695 = insertelement <32 x half> %694, half %661, i64 30, !dbg !246
+  %696 = insertelement <32 x half> %695, half %664, i64 31, !dbg !246
+  %697 = or <32 x i32> %538, <i32 8, i32 9, i32 10, i32 11, i32 12, i32 13, i32 14, i32 15, i32 24, i32 25, i32 26, i32 27, i32 28, i32 29, i32 30, i32 31, i32 40, i32 41, i32 42, i32 43, i32 44, i32 45, i32 46, i32 47, i32 56, i32 57, i32 58, i32 59, i32 60, i32 61, i32 62, i32 63>, !dbg !246
+  %698 = extractelement <32 x i32> %697, i64 0, !dbg !246
+  %699 = sext i32 %698 to i64, !dbg !246
+  %700 = getelementptr inbounds half, ptr %CBits, i64 %699, !dbg !246
+  %701 = load half, ptr %700, align 2, !dbg !246, !tbaa !273
+  %702 = extractelement <32 x i32> %697, i64 1, !dbg !246
+  %703 = sext i32 %702 to i64, !dbg !246
+  %704 = getelementptr inbounds half, ptr %CBits, i64 %703, !dbg !246
+  %705 = load half, ptr %704, align 2, !dbg !246, !tbaa !273
+  %706 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 2, i32 3>, !dbg !246
+  %707 = sext <2 x i32> %706 to <2 x i64>, !dbg !246
+  %708 = extractelement <2 x i64> %707, i64 0, !dbg !246
+  %709 = getelementptr inbounds half, ptr %CBits, i64 %708, !dbg !246
+  %710 = load half, ptr %709, align 2, !dbg !246, !tbaa !273
+  %711 = extractelement <2 x i64> %707, i64 1, !dbg !246
+  %712 = getelementptr inbounds half, ptr %CBits, i64 %711, !dbg !246
+  %713 = load half, ptr %712, align 2, !dbg !246, !tbaa !273
+  %714 = extractelement <32 x i32> %697, i64 4, !dbg !246
+  %715 = sext i32 %714 to i64, !dbg !246
+  %716 = getelementptr inbounds half, ptr %CBits, i64 %715, !dbg !246
+  %717 = load half, ptr %716, align 2, !dbg !246, !tbaa !273
+  %718 = extractelement <32 x i32> %697, i64 5, !dbg !246
+  %719 = sext i32 %718 to i64, !dbg !246
+  %720 = getelementptr inbounds half, ptr %CBits, i64 %719, !dbg !246
+  %721 = load half, ptr %720, align 2, !dbg !246, !tbaa !273
+  %722 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 6, i32 7>, !dbg !246
+  %723 = sext <2 x i32> %722 to <2 x i64>, !dbg !246
+  %724 = extractelement <2 x i64> %723, i64 0, !dbg !246
+  %725 = getelementptr inbounds half, ptr %CBits, i64 %724, !dbg !246
+  %726 = load half, ptr %725, align 2, !dbg !246, !tbaa !273
+  %727 = extractelement <2 x i64> %723, i64 1, !dbg !246
+  %728 = getelementptr inbounds half, ptr %CBits, i64 %727, !dbg !246
+  %729 = load half, ptr %728, align 2, !dbg !246, !tbaa !273
+  %730 = extractelement <32 x i32> %697, i64 8, !dbg !246
+  %731 = sext i32 %730 to i64, !dbg !246
+  %732 = getelementptr inbounds half, ptr %CBits, i64 %731, !dbg !246
+  %733 = load half, ptr %732, align 2, !dbg !246, !tbaa !273
+  %734 = extractelement <32 x i32> %697, i64 9, !dbg !246
+  %735 = sext i32 %734 to i64, !dbg !246
+  %736 = getelementptr inbounds half, ptr %CBits, i64 %735, !dbg !246
+  %737 = load half, ptr %736, align 2, !dbg !246, !tbaa !273
+  %738 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 10, i32 11>, !dbg !246
+  %739 = sext <2 x i32> %738 to <2 x i64>, !dbg !246
+  %740 = extractelement <2 x i64> %739, i64 0, !dbg !246
+  %741 = getelementptr inbounds half, ptr %CBits, i64 %740, !dbg !246
+  %742 = load half, ptr %741, align 2, !dbg !246, !tbaa !273
+  %743 = extractelement <2 x i64> %739, i64 1, !dbg !246
+  %744 = getelementptr inbounds half, ptr %CBits, i64 %743, !dbg !246
+  %745 = load half, ptr %744, align 2, !dbg !246, !tbaa !273
+  %746 = extractelement <32 x i32> %697, i64 12, !dbg !246
+  %747 = sext i32 %746 to i64, !dbg !246
+  %748 = getelementptr inbounds half, ptr %CBits, i64 %747, !dbg !246
+  %749 = load half, ptr %748, align 2, !dbg !246, !tbaa !273
+  %750 = extractelement <32 x i32> %697, i64 13, !dbg !246
+  %751 = sext i32 %750 to i64, !dbg !246
+  %752 = getelementptr inbounds half, ptr %CBits, i64 %751, !dbg !246
+  %753 = load half, ptr %752, align 2, !dbg !246, !tbaa !273
+  %754 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 14, i32 15>, !dbg !246
+  %755 = sext <2 x i32> %754 to <2 x i64>, !dbg !246
+  %756 = extractelement <2 x i64> %755, i64 0, !dbg !246
+  %757 = getelementptr inbounds half, ptr %CBits, i64 %756, !dbg !246
+  %758 = load half, ptr %757, align 2, !dbg !246, !tbaa !273
+  %759 = extractelement <2 x i64> %755, i64 1, !dbg !246
+  %760 = getelementptr inbounds half, ptr %CBits, i64 %759, !dbg !246
+  %761 = load half, ptr %760, align 2, !dbg !246, !tbaa !273
+  %762 = extractelement <32 x i32> %697, i64 16, !dbg !246
+  %763 = sext i32 %762 to i64, !dbg !246
+  %764 = getelementptr inbounds half, ptr %CBits, i64 %763, !dbg !246
+  %765 = load half, ptr %764, align 2, !dbg !246, !tbaa !273
+  %766 = extractelement <32 x i32> %697, i64 17, !dbg !246
+  %767 = sext i32 %766 to i64, !dbg !246
+  %768 = getelementptr inbounds half, ptr %CBits, i64 %767, !dbg !246
+  %769 = load half, ptr %768, align 2, !dbg !246, !tbaa !273
+  %770 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 18, i32 19>, !dbg !246
+  %771 = sext <2 x i32> %770 to <2 x i64>, !dbg !246
+  %772 = extractelement <2 x i64> %771, i64 0, !dbg !246
+  %773 = getelementptr inbounds half, ptr %CBits, i64 %772, !dbg !246
+  %774 = load half, ptr %773, align 2, !dbg !246, !tbaa !273
+  %775 = extractelement <2 x i64> %771, i64 1, !dbg !246
+  %776 = getelementptr inbounds half, ptr %CBits, i64 %775, !dbg !246
+  %777 = load half, ptr %776, align 2, !dbg !246, !tbaa !273
+  %778 = extractelement <32 x i32> %697, i64 20, !dbg !246
+  %779 = sext i32 %778 to i64, !dbg !246
+  %780 = getelementptr inbounds half, ptr %CBits, i64 %779, !dbg !246
+  %781 = load half, ptr %780, align 2, !dbg !246, !tbaa !273
+  %782 = extractelement <32 x i32> %697, i64 21, !dbg !246
+  %783 = sext i32 %782 to i64, !dbg !246
+  %784 = getelementptr inbounds half, ptr %CBits, i64 %783, !dbg !246
+  %785 = load half, ptr %784, align 2, !dbg !246, !tbaa !273
+  %786 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 22, i32 23>, !dbg !246
+  %787 = sext <2 x i32> %786 to <2 x i64>, !dbg !246
+  %788 = extractelement <2 x i64> %787, i64 0, !dbg !246
+  %789 = getelementptr inbounds half, ptr %CBits, i64 %788, !dbg !246
+  %790 = load half, ptr %789, align 2, !dbg !246, !tbaa !273
+  %791 = extractelement <2 x i64> %787, i64 1, !dbg !246
+  %792 = getelementptr inbounds half, ptr %CBits, i64 %791, !dbg !246
+  %793 = load half, ptr %792, align 2, !dbg !246, !tbaa !273
+  %794 = extractelement <32 x i32> %697, i64 24, !dbg !246
+  %795 = sext i32 %794 to i64, !dbg !246
+  %796 = getelementptr inbounds half, ptr %CBits, i64 %795, !dbg !246
+  %797 = load half, ptr %796, align 2, !dbg !246, !tbaa !273
+  %798 = extractelement <32 x i32> %697, i64 25, !dbg !246
+  %799 = sext i32 %798 to i64, !dbg !246
+  %800 = getelementptr inbounds half, ptr %CBits, i64 %799, !dbg !246
+  %801 = load half, ptr %800, align 2, !dbg !246, !tbaa !273
+  %802 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 26, i32 27>, !dbg !246
+  %803 = sext <2 x i32> %802 to <2 x i64>, !dbg !246
+  %804 = extractelement <2 x i64> %803, i64 0, !dbg !246
+  %805 = getelementptr inbounds half, ptr %CBits, i64 %804, !dbg !246
+  %806 = load half, ptr %805, align 2, !dbg !246, !tbaa !273
+  %807 = extractelement <2 x i64> %803, i64 1, !dbg !246
+  %808 = getelementptr inbounds half, ptr %CBits, i64 %807, !dbg !246
+  %809 = load half, ptr %808, align 2, !dbg !246, !tbaa !273
+  %810 = extractelement <32 x i32> %697, i64 28, !dbg !246
+  %811 = sext i32 %810 to i64, !dbg !246
+  %812 = getelementptr inbounds half, ptr %CBits, i64 %811, !dbg !246
+  %813 = load half, ptr %812, align 2, !dbg !246, !tbaa !273
+  %814 = extractelement <32 x i32> %697, i64 29, !dbg !246
+  %815 = sext i32 %814 to i64, !dbg !246
+  %816 = getelementptr inbounds half, ptr %CBits, i64 %815, !dbg !246
+  %817 = load half, ptr %816, align 2, !dbg !246, !tbaa !273
+  %818 = shufflevector <32 x i32> %697, <32 x i32> poison, <2 x i32> <i32 30, i32 31>, !dbg !246
+  %819 = sext <2 x i32> %818 to <2 x i64>, !dbg !246
+  %820 = extractelement <2 x i64> %819, i64 0, !dbg !246
+  %821 = getelementptr inbounds half, ptr %CBits, i64 %820, !dbg !246
+  %822 = load half, ptr %821, align 2, !dbg !246, !tbaa !273
+  %823 = extractelement <2 x i64> %819, i64 1, !dbg !246
+  %824 = getelementptr inbounds half, ptr %CBits, i64 %823, !dbg !246
+  %825 = load half, ptr %824, align 2, !dbg !246, !tbaa !273
+  %826 = insertelement <32 x half> undef, half %701, i64 0, !dbg !246
+  %827 = insertelement <32 x half> %826, half %705, i64 1, !dbg !246
+  %828 = insertelement <32 x half> %827, half %710, i64 2, !dbg !246
+  %829 = insertelement <32 x half> %828, half %713, i64 3, !dbg !246
+  %830 = insertelement <32 x half> %829, half %717, i64 4, !dbg !246
+  %831 = insertelement <32 x half> %830, half %721, i64 5, !dbg !246
+  %832 = insertelement <32 x half> %831, half %726, i64 6, !dbg !246
+  %833 = insertelement <32 x half> %832, half %729, i64 7, !dbg !246
+  %834 = insertelement <32 x half> %833, half %733, i64 8, !dbg !246
+  %835 = insertelement <32 x half> %834, half %737, i64 9, !dbg !246
+  %836 = insertelement <32 x half> %835, half %742, i64 10, !dbg !246
+  %837 = insertelement <32 x half> %836, half %745, i64 11, !dbg !246
+  %838 = insertelement <32 x half> %837, half %749, i64 12, !dbg !246
+  %839 = insertelement <32 x half> %838, half %753, i64 13, !dbg !246
+  %840 = insertelement <32 x half> %839, half %758, i64 14, !dbg !246
+  %841 = insertelement <32 x half> %840, half %761, i64 15, !dbg !246
+  %842 = insertelement <32 x half> %841, half %765, i64 16, !dbg !246
+  %843 = insertelement <32 x half> %842, half %769, i64 17, !dbg !246
+  %844 = insertelement <32 x half> %843, half %774, i64 18, !dbg !246
+  %845 = insertelement <32 x half> %844, half %777, i64 19, !dbg !246
+  %846 = insertelement <32 x half> %845, half %781, i64 20, !dbg !246
+  %847 = insertelement <32 x half> %846, half %785, i64 21, !dbg !246
+  %848 = insertelement <32 x half> %847, half %790, i64 22, !dbg !246
+  %849 = insertelement <32 x half> %848, half %793, i64 23, !dbg !246
+  %850 = insertelement <32 x half> %849, half %797, i64 24, !dbg !246
+  %851 = insertelement <32 x half> %850, half %801, i64 25, !dbg !246
+  %852 = insertelement <32 x half> %851, half %806, i64 26, !dbg !246
+  %853 = insertelement <32 x half> %852, half %809, i64 27, !dbg !246
+  %854 = insertelement <32 x half> %853, half %813, i64 28, !dbg !246
+  %855 = insertelement <32 x half> %854, half %817, i64 29, !dbg !246
+  %856 = insertelement <32 x half> %855, half %822, i64 30, !dbg !246
+  %857 = insertelement <32 x half> %856, half %825, i64 31, !dbg !246
+  %858 = tail call <32 x half> @llvm.fmuladd.v32f16(<32 x half> %696, <32 x half> <half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800, half 0xH3800>, <32 x half> %857), !dbg !246
+  %859 = add nuw nsw i64 %indvars.iv30, %533, !dbg !246
+  %860 = getelementptr inbounds <32 x half>, ptr %C.global, i64 %859, !dbg !246
+  store <32 x half> %858, ptr %860, align 64, !dbg !246, !tbaa !265
   %indvars.iv.next31 = add nuw nsw i64 %indvars.iv30, 1, !dbg !246
   call void @llvm.dbg.declare(metadata i64 %indvars.iv.next31, metadata !270, metadata !DIExpression()), !dbg !246
   %exitcond33.not = icmp eq i64 %indvars.iv.next31, 4, !dbg !246
@@ -2057,9 +2205,9 @@ for_end_m.c.outer:                                ; preds = %for_body_m.c.outer
   br i1 %exitcond37.not, label %for_begin_n.inner.preheader, label %for_begin_m.c.outer.preheader, !dbg !246, !prof !29
 
 if_end5:                                          ; preds = %for_end_m.outer
-  %713 = load ptr, ptr @__TVMBackendFreeWorkspace, align 8, !dbg !246, !tbaa !26
-  %714 = tail call i32 %713(i32 1, i32 %dev_id, ptr nonnull %CBits), !dbg !246
-  %.not10 = icmp eq i32 %714, 0, !dbg !246
+  %861 = load ptr, ptr @__TVMBackendFreeWorkspace, align 8, !dbg !246, !tbaa !26
+  %862 = tail call i32 %861(i32 1, i32 %dev_id, ptr nonnull %CBits), !dbg !246
+  %.not10 = icmp eq i32 %862, 0, !dbg !246
   br i1 %.not10, label %for_begin_n.outer, label %common.ret, !dbg !246, !prof !29
 }
 
@@ -2221,17 +2369,11 @@ b6:                                               ; preds = %b5, %b4, %b3, %b1
 ; Function Attrs: alwaysinline mustprogress nocallback nofree nounwind willreturn memory(argmem: write)
 declare void @llvm.memset.p0.i64(ptr nocapture writeonly, i8, i64, i1 immarg) #6
 
-; Function Attrs: alwaysinline mustprogress nocallback nofree nosync nounwind speculatable willreturn memory(none)
-declare float @llvm.fmuladd.f32(float, float, float) #7
-
 ; Function Attrs: alwaysinline mustprogress nocallback nofree nosync nounwind willreturn memory(none)
-declare <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8>, <16 x i8>) #8
-
-; Function Attrs: alwaysinline mustprogress nocallback nofree nosync nounwind willreturn memory(none)
-declare <16 x i8> @llvm.aarch64.neon.srhadd.v16i8(<16 x i8>, <16 x i8>) #8
+declare <16 x i8> @llvm.aarch64.neon.tbl1.v16i8(<16 x i8>, <16 x i8>) #7
 
 ; Function Attrs: alwaysinline mustprogress nocallback nofree nosync nounwind speculatable willreturn memory(none)
-declare <8 x half> @llvm.fmuladd.v8f16(<8 x half>, <8 x half>, <8 x half>) #7
+declare <8 x half> @llvm.fmuladd.v8f16(<8 x half>, <8 x half>, <8 x half>) #8
 
 ; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
 declare void @llvm.dbg.value(metadata, metadata, metadata) #9
@@ -2246,8 +2388,8 @@ attributes #3 = { noinline "target-cpu"="apple-m2" }
 attributes #4 = { "probe-stack"="__chkstk_darwin" "target-cpu"="apple-m2" }
 attributes #5 = { nofree nosync nounwind memory(none) "target-cpu"="apple-m2" "target-features" }
 attributes #6 = { alwaysinline mustprogress nocallback nofree nounwind willreturn memory(argmem: write) }
-attributes #7 = { alwaysinline mustprogress nocallback nofree nosync nounwind speculatable willreturn memory(none) }
-attributes #8 = { alwaysinline mustprogress nocallback nofree nosync nounwind willreturn memory(none) }
+attributes #7 = { alwaysinline mustprogress nocallback nofree nosync nounwind willreturn memory(none) }
+attributes #8 = { alwaysinline mustprogress nocallback nofree nosync nounwind speculatable willreturn memory(none) }
 attributes #9 = { nocallback nofree nosync nounwind speculatable willreturn memory(none) }
 
 !llvm.dbg.cu = !{!0}
@@ -2285,34 +2427,34 @@ attributes #9 = { nocallback nofree nosync nounwind speculatable willreturn memo
 !28 = !{!"tvm-tbaa"}
 !29 = !{!"branch_weights", i32 1, i32 1048576}
 !30 = !{!31, !31, i64 0}
-!31 = !{!"0x6000006d4d80.w4.b0", !32, i64 0}
-!32 = !{!"0x6000006d4d80.w8.b0", !33, i64 0}
-!33 = !{!"0x6000006d4d80.w16.b0", !34, i64 0}
-!34 = !{!"0x6000006d4d80.w32.b0", !35, i64 0}
-!35 = !{!"0x6000006d4d80.w64.b0", !36, i64 0}
-!36 = !{!"0x6000006d4d80.w128.b0", !37, i64 0}
-!37 = !{!"0x6000006d4d80.w256.b0", !38, i64 0}
-!38 = !{!"0x6000006d4d80.w512.b0", !39, i64 0}
-!39 = !{!"0x6000006d4d80.w1024.b0", !40, i64 0}
-!40 = !{!"0x6000006d4d80", !28, i64 0}
+!31 = !{!"0x600001079a70.w4.b0", !32, i64 0}
+!32 = !{!"0x600001079a70.w8.b0", !33, i64 0}
+!33 = !{!"0x600001079a70.w16.b0", !34, i64 0}
+!34 = !{!"0x600001079a70.w32.b0", !35, i64 0}
+!35 = !{!"0x600001079a70.w64.b0", !36, i64 0}
+!36 = !{!"0x600001079a70.w128.b0", !37, i64 0}
+!37 = !{!"0x600001079a70.w256.b0", !38, i64 0}
+!38 = !{!"0x600001079a70.w512.b0", !39, i64 0}
+!39 = !{!"0x600001079a70.w1024.b0", !40, i64 0}
+!40 = !{!"0x600001079a70", !28, i64 0}
 !41 = !DILocalVariable(name: "A.code", scope: !11, file: !1, type: !14)
 !42 = !{!43, !43, i64 0}
-!43 = !{!"0x6000006d4d80.w4.b4", !32, i64 0}
+!43 = !{!"0x600001079a70.w4.b4", !32, i64 0}
 !44 = !DILocalVariable(name: "LUT.code", scope: !11, file: !1, type: !14)
 !45 = !{!46, !46, i64 0}
-!46 = !{!"0x6000006d4d80.w4.b8", !47, i64 0}
-!47 = !{!"0x6000006d4d80.w8.b8", !33, i64 0}
+!46 = !{!"0x600001079a70.w4.b8", !47, i64 0}
+!47 = !{!"0x600001079a70.w8.b8", !33, i64 0}
 !48 = !DILocalVariable(name: "Scales.code", scope: !11, file: !1, type: !14)
 !49 = !{!50, !50, i64 0}
-!50 = !{!"0x6000006d4d80.w4.b12", !47, i64 0}
+!50 = !{!"0x600001079a70.w4.b12", !47, i64 0}
 !51 = !DILocalVariable(name: "LUT_Scales.code", scope: !11, file: !1, type: !14)
 !52 = !{!53, !53, i64 0}
-!53 = !{!"0x6000006d4d80.w4.b16", !54, i64 0}
-!54 = !{!"0x6000006d4d80.w8.b16", !55, i64 0}
-!55 = !{!"0x6000006d4d80.w16.b16", !34, i64 0}
+!53 = !{!"0x600001079a70.w4.b16", !54, i64 0}
+!54 = !{!"0x600001079a70.w8.b16", !55, i64 0}
+!55 = !{!"0x600001079a70.w16.b16", !34, i64 0}
 !56 = !DILocalVariable(name: "LUT_Biases.code", scope: !11, file: !1, type: !14)
 !57 = !{!58, !58, i64 0}
-!58 = !{!"0x6000006d4d80.w4.b20", !54, i64 0}
+!58 = !{!"0x600001079a70.w4.b20", !54, i64 0}
 !59 = !DILocalVariable(name: "C.code", scope: !11, file: !1, type: !14)
 !60 = !DILocalVariable(name: "A", scope: !11, file: !1, type: !15)
 !61 = !DILocalVariable(name: "LUT", scope: !11, file: !1, type: !15)
@@ -2348,147 +2490,147 @@ attributes #9 = { nocallback nofree nosync nounwind speculatable willreturn memo
 !91 = !DILocalVariable(name: "qgemm_lut_t12_int8_m4096_k4096_n512_b2.C.strides", scope: !11, file: !1, type: !67)
 !92 = !DILocalVariable(name: "C", scope: !11, file: !1, type: !82)
 !93 = !{!94, !94, i64 0}
-!94 = !{!"0x6000006ecc00.w8.b0", !95, i64 0}
-!95 = !{!"0x6000006ecc00.w16.b0", !96, i64 0}
-!96 = !{!"0x6000006ecc00.w32.b0", !97, i64 0}
-!97 = !{!"0x6000006ecc00.w64.b0", !98, i64 0}
-!98 = !{!"0x6000006ecc00.w128.b0", !99, i64 0}
-!99 = !{!"0x6000006ecc00.w256.b0", !100, i64 0}
-!100 = !{!"0x6000006ecc00.w512.b0", !101, i64 0}
-!101 = !{!"0x6000006ecc00.w1024.b0", !102, i64 0}
-!102 = !{!"0x6000006ecc00", !28, i64 0}
+!94 = !{!"0x60000106f4b0.w8.b0", !95, i64 0}
+!95 = !{!"0x60000106f4b0.w16.b0", !96, i64 0}
+!96 = !{!"0x60000106f4b0.w32.b0", !97, i64 0}
+!97 = !{!"0x60000106f4b0.w64.b0", !98, i64 0}
+!98 = !{!"0x60000106f4b0.w128.b0", !99, i64 0}
+!99 = !{!"0x60000106f4b0.w256.b0", !100, i64 0}
+!100 = !{!"0x60000106f4b0.w512.b0", !101, i64 0}
+!101 = !{!"0x60000106f4b0.w1024.b0", !102, i64 0}
+!102 = !{!"0x60000106f4b0", !28, i64 0}
 !103 = !{!104, !104, i64 0}
-!104 = !{!"0x6000006ecc00.w8.b8", !95, i64 0}
+!104 = !{!"0x60000106f4b0.w8.b8", !95, i64 0}
 !105 = !{!106, !106, i64 0}
-!106 = !{!"0x6000006ecc00.w8.b16", !107, i64 0}
-!107 = !{!"0x6000006ecc00.w16.b16", !96, i64 0}
+!106 = !{!"0x60000106f4b0.w8.b16", !107, i64 0}
+!107 = !{!"0x60000106f4b0.w16.b16", !96, i64 0}
 !108 = !{!109, !109, i64 0}
-!109 = !{!"0x6000006ee940.w8.b16", !110, i64 0}
-!110 = !{!"0x6000006ee940.w16.b16", !111, i64 0}
-!111 = !{!"0x6000006ee940.w32.b0", !112, i64 0}
-!112 = !{!"0x6000006ee940.w64.b0", !113, i64 0}
-!113 = !{!"0x6000006ee940.w128.b0", !114, i64 0}
-!114 = !{!"0x6000006ee940.w256.b0", !115, i64 0}
-!115 = !{!"0x6000006ee940.w512.b0", !116, i64 0}
-!116 = !{!"0x6000006ee940.w1024.b0", !117, i64 0}
-!117 = !{!"0x6000006ee940", !28, i64 0}
+!109 = !{!"0x60000109c300.w8.b16", !110, i64 0}
+!110 = !{!"0x60000109c300.w16.b16", !111, i64 0}
+!111 = !{!"0x60000109c300.w32.b0", !112, i64 0}
+!112 = !{!"0x60000109c300.w64.b0", !113, i64 0}
+!113 = !{!"0x60000109c300.w128.b0", !114, i64 0}
+!114 = !{!"0x60000109c300.w256.b0", !115, i64 0}
+!115 = !{!"0x60000109c300.w512.b0", !116, i64 0}
+!116 = !{!"0x60000109c300.w1024.b0", !117, i64 0}
+!117 = !{!"0x60000109c300", !28, i64 0}
 !118 = !{!119, !119, i64 0}
-!119 = !{!"0x6000006ee940.w8.b8", !120, i64 0}
-!120 = !{!"0x6000006ee940.w16.b0", !111, i64 0}
+!119 = !{!"0x60000109c300.w8.b8", !120, i64 0}
+!120 = !{!"0x60000109c300.w16.b0", !111, i64 0}
 !121 = !{!122, !122, i64 0}
-!122 = !{!"0x6000006ee940.w8.b0", !120, i64 0}
+!122 = !{!"0x60000109c300.w8.b0", !120, i64 0}
 !123 = !{!124, !124, i64 0}
-!124 = !{!"0x6000005470c0.w8.b0", !125, i64 0}
-!125 = !{!"0x6000005470c0.w16.b0", !126, i64 0}
-!126 = !{!"0x6000005470c0.w32.b0", !127, i64 0}
-!127 = !{!"0x6000005470c0.w64.b0", !128, i64 0}
-!128 = !{!"0x6000005470c0.w128.b0", !129, i64 0}
-!129 = !{!"0x6000005470c0.w256.b0", !130, i64 0}
-!130 = !{!"0x6000005470c0.w512.b0", !131, i64 0}
-!131 = !{!"0x6000005470c0.w1024.b0", !132, i64 0}
-!132 = !{!"0x6000005470c0", !28, i64 0}
+!124 = !{!"0x60000109cf30.w8.b0", !125, i64 0}
+!125 = !{!"0x60000109cf30.w16.b0", !126, i64 0}
+!126 = !{!"0x60000109cf30.w32.b0", !127, i64 0}
+!127 = !{!"0x60000109cf30.w64.b0", !128, i64 0}
+!128 = !{!"0x60000109cf30.w128.b0", !129, i64 0}
+!129 = !{!"0x60000109cf30.w256.b0", !130, i64 0}
+!130 = !{!"0x60000109cf30.w512.b0", !131, i64 0}
+!131 = !{!"0x60000109cf30.w1024.b0", !132, i64 0}
+!132 = !{!"0x60000109cf30", !28, i64 0}
 !133 = !{!134, !134, i64 0}
-!134 = !{!"0x6000005470c0.w8.b8", !125, i64 0}
+!134 = !{!"0x60000109cf30.w8.b8", !125, i64 0}
 !135 = !{!136, !136, i64 0}
-!136 = !{!"0x6000005470c0.w8.b16", !137, i64 0}
-!137 = !{!"0x6000005470c0.w16.b16", !126, i64 0}
+!136 = !{!"0x60000109cf30.w8.b16", !137, i64 0}
+!137 = !{!"0x60000109cf30.w16.b16", !126, i64 0}
 !138 = !{!139, !139, i64 0}
-!139 = !{!"0x6000006cd260.w8.b16", !140, i64 0}
-!140 = !{!"0x6000006cd260.w16.b16", !141, i64 0}
-!141 = !{!"0x6000006cd260.w32.b0", !142, i64 0}
-!142 = !{!"0x6000006cd260.w64.b0", !143, i64 0}
-!143 = !{!"0x6000006cd260.w128.b0", !144, i64 0}
-!144 = !{!"0x6000006cd260.w256.b0", !145, i64 0}
-!145 = !{!"0x6000006cd260.w512.b0", !146, i64 0}
-!146 = !{!"0x6000006cd260.w1024.b0", !147, i64 0}
-!147 = !{!"0x6000006cd260", !28, i64 0}
+!139 = !{!"0x60000109ea30.w8.b16", !140, i64 0}
+!140 = !{!"0x60000109ea30.w16.b16", !141, i64 0}
+!141 = !{!"0x60000109ea30.w32.b0", !142, i64 0}
+!142 = !{!"0x60000109ea30.w64.b0", !143, i64 0}
+!143 = !{!"0x60000109ea30.w128.b0", !144, i64 0}
+!144 = !{!"0x60000109ea30.w256.b0", !145, i64 0}
+!145 = !{!"0x60000109ea30.w512.b0", !146, i64 0}
+!146 = !{!"0x60000109ea30.w1024.b0", !147, i64 0}
+!147 = !{!"0x60000109ea30", !28, i64 0}
 !148 = !{!149, !149, i64 0}
-!149 = !{!"0x6000006cd260.w8.b8", !150, i64 0}
-!150 = !{!"0x6000006cd260.w16.b0", !141, i64 0}
+!149 = !{!"0x60000109ea30.w8.b8", !150, i64 0}
+!150 = !{!"0x60000109ea30.w16.b0", !141, i64 0}
 !151 = !{!152, !152, i64 0}
-!152 = !{!"0x6000006cd260.w8.b0", !150, i64 0}
+!152 = !{!"0x60000109ea30.w8.b0", !150, i64 0}
 !153 = !{!154, !154, i64 0}
-!154 = !{!"0x6000006cecd0.w8.b0", !155, i64 0}
-!155 = !{!"0x6000006cecd0.w16.b0", !156, i64 0}
-!156 = !{!"0x6000006cecd0.w32.b0", !157, i64 0}
-!157 = !{!"0x6000006cecd0.w64.b0", !158, i64 0}
-!158 = !{!"0x6000006cecd0.w128.b0", !159, i64 0}
-!159 = !{!"0x6000006cecd0.w256.b0", !160, i64 0}
-!160 = !{!"0x6000006cecd0.w512.b0", !161, i64 0}
-!161 = !{!"0x6000006cecd0.w1024.b0", !162, i64 0}
-!162 = !{!"0x6000006cecd0", !28, i64 0}
+!154 = !{!"0x60000107e760.w8.b0", !155, i64 0}
+!155 = !{!"0x60000107e760.w16.b0", !156, i64 0}
+!156 = !{!"0x60000107e760.w32.b0", !157, i64 0}
+!157 = !{!"0x60000107e760.w64.b0", !158, i64 0}
+!158 = !{!"0x60000107e760.w128.b0", !159, i64 0}
+!159 = !{!"0x60000107e760.w256.b0", !160, i64 0}
+!160 = !{!"0x60000107e760.w512.b0", !161, i64 0}
+!161 = !{!"0x60000107e760.w1024.b0", !162, i64 0}
+!162 = !{!"0x60000107e760", !28, i64 0}
 !163 = !{!164, !164, i64 0}
-!164 = !{!"0x6000006cd830.w8.b0", !165, i64 0}
-!165 = !{!"0x6000006cd830.w16.b0", !166, i64 0}
-!166 = !{!"0x6000006cd830.w32.b0", !167, i64 0}
-!167 = !{!"0x6000006cd830.w64.b0", !168, i64 0}
-!168 = !{!"0x6000006cd830.w128.b0", !169, i64 0}
-!169 = !{!"0x6000006cd830.w256.b0", !170, i64 0}
-!170 = !{!"0x6000006cd830.w512.b0", !171, i64 0}
-!171 = !{!"0x6000006cd830.w1024.b0", !172, i64 0}
-!172 = !{!"0x6000006cd830", !28, i64 0}
+!164 = !{!"0x600001080de0.w8.b0", !165, i64 0}
+!165 = !{!"0x600001080de0.w16.b0", !166, i64 0}
+!166 = !{!"0x600001080de0.w32.b0", !167, i64 0}
+!167 = !{!"0x600001080de0.w64.b0", !168, i64 0}
+!168 = !{!"0x600001080de0.w128.b0", !169, i64 0}
+!169 = !{!"0x600001080de0.w256.b0", !170, i64 0}
+!170 = !{!"0x600001080de0.w512.b0", !171, i64 0}
+!171 = !{!"0x600001080de0.w1024.b0", !172, i64 0}
+!172 = !{!"0x600001080de0", !28, i64 0}
 !173 = !{!174, !174, i64 0}
-!174 = !{!"0x6000006cd830.w8.b8", !165, i64 0}
+!174 = !{!"0x600001080de0.w8.b8", !165, i64 0}
 !175 = !{!176, !176, i64 0}
-!176 = !{!"0x6000006deca0.w8.b8", !177, i64 0}
-!177 = !{!"0x6000006deca0.w16.b0", !178, i64 0}
-!178 = !{!"0x6000006deca0.w32.b0", !179, i64 0}
-!179 = !{!"0x6000006deca0.w64.b0", !180, i64 0}
-!180 = !{!"0x6000006deca0.w128.b0", !181, i64 0}
-!181 = !{!"0x6000006deca0.w256.b0", !182, i64 0}
-!182 = !{!"0x6000006deca0.w512.b0", !183, i64 0}
-!183 = !{!"0x6000006deca0.w1024.b0", !184, i64 0}
-!184 = !{!"0x6000006deca0", !28, i64 0}
+!176 = !{!"0x600001083420.w8.b8", !177, i64 0}
+!177 = !{!"0x600001083420.w16.b0", !178, i64 0}
+!178 = !{!"0x600001083420.w32.b0", !179, i64 0}
+!179 = !{!"0x600001083420.w64.b0", !180, i64 0}
+!180 = !{!"0x600001083420.w128.b0", !181, i64 0}
+!181 = !{!"0x600001083420.w256.b0", !182, i64 0}
+!182 = !{!"0x600001083420.w512.b0", !183, i64 0}
+!183 = !{!"0x600001083420.w1024.b0", !184, i64 0}
+!184 = !{!"0x600001083420", !28, i64 0}
 !185 = !{!186, !186, i64 0}
-!186 = !{!"0x6000006deca0.w8.b0", !177, i64 0}
+!186 = !{!"0x600001083420.w8.b0", !177, i64 0}
 !187 = !{!188, !188, i64 0}
-!188 = !{!"0x6000006cab50.w8.b0", !189, i64 0}
-!189 = !{!"0x6000006cab50.w16.b0", !190, i64 0}
-!190 = !{!"0x6000006cab50.w32.b0", !191, i64 0}
-!191 = !{!"0x6000006cab50.w64.b0", !192, i64 0}
-!192 = !{!"0x6000006cab50.w128.b0", !193, i64 0}
-!193 = !{!"0x6000006cab50.w256.b0", !194, i64 0}
-!194 = !{!"0x6000006cab50.w512.b0", !195, i64 0}
-!195 = !{!"0x6000006cab50.w1024.b0", !196, i64 0}
-!196 = !{!"0x6000006cab50", !28, i64 0}
+!188 = !{!"0x6000010835d0.w8.b0", !189, i64 0}
+!189 = !{!"0x6000010835d0.w16.b0", !190, i64 0}
+!190 = !{!"0x6000010835d0.w32.b0", !191, i64 0}
+!191 = !{!"0x6000010835d0.w64.b0", !192, i64 0}
+!192 = !{!"0x6000010835d0.w128.b0", !193, i64 0}
+!193 = !{!"0x6000010835d0.w256.b0", !194, i64 0}
+!194 = !{!"0x6000010835d0.w512.b0", !195, i64 0}
+!195 = !{!"0x6000010835d0.w1024.b0", !196, i64 0}
+!196 = !{!"0x6000010835d0", !28, i64 0}
 !197 = !{!198, !198, i64 0}
-!198 = !{!"0x6000006cab50.w8.b8", !189, i64 0}
+!198 = !{!"0x6000010835d0.w8.b8", !189, i64 0}
 !199 = !{!200, !200, i64 0}
-!200 = !{!"0x6000006ca190.w8.b8", !201, i64 0}
-!201 = !{!"0x6000006ca190.w16.b0", !202, i64 0}
-!202 = !{!"0x6000006ca190.w32.b0", !203, i64 0}
-!203 = !{!"0x6000006ca190.w64.b0", !204, i64 0}
-!204 = !{!"0x6000006ca190.w128.b0", !205, i64 0}
-!205 = !{!"0x6000006ca190.w256.b0", !206, i64 0}
-!206 = !{!"0x6000006ca190.w512.b0", !207, i64 0}
-!207 = !{!"0x6000006ca190.w1024.b0", !208, i64 0}
-!208 = !{!"0x6000006ca190", !28, i64 0}
+!200 = !{!"0x600001083e10.w8.b8", !201, i64 0}
+!201 = !{!"0x600001083e10.w16.b0", !202, i64 0}
+!202 = !{!"0x600001083e10.w32.b0", !203, i64 0}
+!203 = !{!"0x600001083e10.w64.b0", !204, i64 0}
+!204 = !{!"0x600001083e10.w128.b0", !205, i64 0}
+!205 = !{!"0x600001083e10.w256.b0", !206, i64 0}
+!206 = !{!"0x600001083e10.w512.b0", !207, i64 0}
+!207 = !{!"0x600001083e10.w1024.b0", !208, i64 0}
+!208 = !{!"0x600001083e10", !28, i64 0}
 !209 = !{!210, !210, i64 0}
-!210 = !{!"0x6000006ca190.w8.b0", !201, i64 0}
+!210 = !{!"0x600001083e10.w8.b0", !201, i64 0}
 !211 = !{!212, !212, i64 0}
-!212 = !{!"0x6000006ca400.w8.b0", !213, i64 0}
-!213 = !{!"0x6000006ca400.w16.b0", !214, i64 0}
-!214 = !{!"0x6000006ca400.w32.b0", !215, i64 0}
-!215 = !{!"0x6000006ca400.w64.b0", !216, i64 0}
-!216 = !{!"0x6000006ca400.w128.b0", !217, i64 0}
-!217 = !{!"0x6000006ca400.w256.b0", !218, i64 0}
-!218 = !{!"0x6000006ca400.w512.b0", !219, i64 0}
-!219 = !{!"0x6000006ca400.w1024.b0", !220, i64 0}
-!220 = !{!"0x6000006ca400", !28, i64 0}
+!212 = !{!"0x600001088c60.w8.b0", !213, i64 0}
+!213 = !{!"0x600001088c60.w16.b0", !214, i64 0}
+!214 = !{!"0x600001088c60.w32.b0", !215, i64 0}
+!215 = !{!"0x600001088c60.w64.b0", !216, i64 0}
+!216 = !{!"0x600001088c60.w128.b0", !217, i64 0}
+!217 = !{!"0x600001088c60.w256.b0", !218, i64 0}
+!218 = !{!"0x600001088c60.w512.b0", !219, i64 0}
+!219 = !{!"0x600001088c60.w1024.b0", !220, i64 0}
+!220 = !{!"0x600001088c60", !28, i64 0}
 !221 = !{!222, !222, i64 0}
-!222 = !{!"0x6000006ca400.w8.b8", !213, i64 0}
+!222 = !{!"0x600001088c60.w8.b8", !213, i64 0}
 !223 = !{!224, !224, i64 0}
-!224 = !{!"0x600000547ed0.w8.b8", !225, i64 0}
-!225 = !{!"0x600000547ed0.w16.b0", !226, i64 0}
-!226 = !{!"0x600000547ed0.w32.b0", !227, i64 0}
-!227 = !{!"0x600000547ed0.w64.b0", !228, i64 0}
-!228 = !{!"0x600000547ed0.w128.b0", !229, i64 0}
-!229 = !{!"0x600000547ed0.w256.b0", !230, i64 0}
-!230 = !{!"0x600000547ed0.w512.b0", !231, i64 0}
-!231 = !{!"0x600000547ed0.w1024.b0", !232, i64 0}
-!232 = !{!"0x600000547ed0", !28, i64 0}
+!224 = !{!"0x6000010895f0.w8.b8", !225, i64 0}
+!225 = !{!"0x6000010895f0.w16.b0", !226, i64 0}
+!226 = !{!"0x6000010895f0.w32.b0", !227, i64 0}
+!227 = !{!"0x6000010895f0.w64.b0", !228, i64 0}
+!228 = !{!"0x6000010895f0.w128.b0", !229, i64 0}
+!229 = !{!"0x6000010895f0.w256.b0", !230, i64 0}
+!230 = !{!"0x6000010895f0.w512.b0", !231, i64 0}
+!231 = !{!"0x6000010895f0.w1024.b0", !232, i64 0}
+!232 = !{!"0x6000010895f0", !28, i64 0}
 !233 = !{!234, !234, i64 0}
-!234 = !{!"0x600000547ed0.w8.b0", !225, i64 0}
+!234 = !{!"0x6000010895f0.w8.b0", !225, i64 0}
 !235 = distinct !DISubprogram(name: "qgemm_lut_t12_int8_m4096_k4096_n512_b2_compute_", scope: !1, file: !1, type: !236, flags: DIFlagPrototyped, spFlags: DISPFlagLocalToUnit | DISPFlagDefinition | DISPFlagOptimized, unit: !0, retainedNodes: !238)
 !236 = !DISubroutineType(types: !237)
 !237 = !{!14, !14, !77, !72, !82, !82, !82, !82}
@@ -2520,12 +2662,12 @@ attributes #9 = { nocallback nofree nosync nounwind speculatable willreturn memo
 !263 = !DILocalVariable(name: "n.inner", scope: !235, file: !1, type: !14)
 !264 = !DILocalVariable(name: "m.inner.outer", scope: !235, file: !1, type: !14)
 !265 = !{!266, !266, i64 0}
-!266 = !{!"0x600000546bb0", !28, i64 0}
+!266 = !{!"0x60000109f480", !28, i64 0}
 !267 = !{!268, !268, i64 0}
-!268 = !{!"0x6000006308d0", !28, i64 0}
+!268 = !{!"0x600001095320", !28, i64 0}
 !269 = !DILocalVariable(name: "n.c", scope: !235, file: !1, type: !14)
 !270 = !DILocalVariable(name: "m.c.outer", scope: !235, file: !1, type: !14)
 !271 = !DILocalVariable(name: "cse_var_2", scope: !235, file: !1, type: !272)
 !272 = !DIBasicType(name: "int32x32", size: 1024, encoding: DW_ATE_signed)
 !273 = !{!274, !274, i64 0}
-!274 = !{!"0x6000006cf3c0", !28, i64 0}
+!274 = !{!"0x60000103f8d0", !28, i64 0}
