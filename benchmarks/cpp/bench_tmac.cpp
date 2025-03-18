@@ -10,12 +10,14 @@ namespace mx = mlx::core;
 
 int main() {
     // 创建输入数据
-    int M = 3200;  // 原值为8640/2，调整为可被bm整除的值
-    int K = 3200;
-    int N = 64;
+    int M = 4096;  // 原值为8640/2，调整为可被bm整除的值
+    int K = 4096;
+    int N = 1024 * 64;
+    // int N = 256;
+    // int N = 1024;
 
     int nbits = 2;
-    int bm = 128;  // 调整为M的因数 (8640 ÷ 480 = 18)
+    int bm = 256;  // 调整为M的因数 (8640 ÷ 480 = 18)
     int g = 4;
     int group_size = 128;
     int act_group_size = 64;

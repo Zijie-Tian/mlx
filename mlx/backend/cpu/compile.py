@@ -17,12 +17,12 @@ from tvm import relay
 
 logger = logging.getLogger("compile")
 
+
 header_content = """
 #ifdef __cplusplus
 extern "C" {
 #endif
 """
-
 
 def compile(
     target: str,
@@ -222,6 +222,7 @@ def compile(
             scales_size *= 2
         config[template_name] = {
             "bm": str(qgemm_lut.bm),
+            "bn": str(qgemm_lut.bn),
             "simd_n_in": str(qgemm_lut.simd_n_in),
             "simd_n_out": str(qgemm_lut.simd_n_out),
             "kfactor": str(qgemm_lut.kfactor),

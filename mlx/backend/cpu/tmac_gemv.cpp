@@ -141,10 +141,20 @@ TMACMatmul::TMACMatmul(
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
     }
+
+    if (this->N_ >= 512) {
+        this->N_kernel = 512;
+    } else if (this->N_ >= 256) {
+        this->N_kernel = 256;
+    } else {
+        this->N_kernel = 1;
+    }
+
     // TODO : Here we set `N` to 1.
-    TMACGeMMConfig config = get_kcfg(M_, K_, 1, nbits_);
+    TMACGeMMConfig config = get_kcfg(M_, K_, this -> N_kernel, nbits_);
     if (config.bm == -1) {
-        LOG(FATAL) << "Cannot find the configuration for the given TMAC parameters";
+        LOG(FATAL)  << "Cannot find the configuration for the given TMAC parameters"
+                    << " (M, K, N, nbits) = (" << M_ << ", " << K_ << ", " << this -> N_kernel << ", " << nbits_ << ")";
     }
     // std::cout << "TMAC Configuration: " << config << std::endl;
     this -> bm_ = config.bm;
@@ -172,19 +182,19 @@ TMACMatmul::TMACMatmul(
             _tvm_internals -> pf = get_function(
                 TMACMatmul::_tvm_internals,
                 this -> _m, 
-                this -> get_template_name({M_, K_, 1, nbits_, 0}),
-                {M_, K_, 1, nbits_, 0}
+                this -> get_template_name({M_, K_, this -> N_kernel, nbits_, 0}),
+                {M_, K_, this -> N_kernel, nbits_, 0}
             );
             _tvm_internals -> qf = get_function(
                 TMACMatmul::_tvm_internals, 
                 this -> _m, 
 #if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
                 //! This `bm_ /  nbits_` is for name valid.
-                this -> get_template_name({bm_, K_, 1, nbits_, 1}),
+                this -> get_template_name({bm_, K_, this -> N_kernel, nbits_, 1}),
 #else
-                this -> get_template_name({M_, K_, 1, nbits_, 1}),
+                this -> get_template_name({M_, K_, this -> N_kernel, nbits_, 1}),
 #endif
-                {M_, K_, 1, nbits_, 1}
+                {M_, K_, this -> N_kernel, nbits_, 1}
             );
     }
 #endif
@@ -231,6 +241,7 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     int64_t Scales_shape[3] = {M_ / bm_, K_ / group_size_, bm_ / nbits_};
     int64_t activations_shape[2] = {N_, K_};
     int64_t output_shape[2] = {N_, M_};
+    int64_t C_tile_shape[2] = {N_kernel, M_};
     int64_t qlut_shape[3] = {N_, K_ / g_, (1 << g_)};
     int64_t luts_shape[3] = {N_, K_ / act_group_size_};
 
@@ -303,8 +314,24 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         /* .shape  = */ luts_shape,
     };
 
+    std::vector<DLTensor> C_tiles;
+    int N_tiles = (N_ + N_kernel - 1) / N_kernel;
+    for (int n_idx = 0; n_idx < N_tiles; n_idx++) {
+        DLTensor C_tile = {
+            /* .data   = */ (void *)(output_buf + n_idx * N_kernel * K_),
+            /* .device = */ cpu_dev,
+            /* .ndim   = */ 2,
+            /* .dtype  = */ float_dtype,
+            /* .shape  = */ C_tile_shape
+        };
+        C_tiles.push_back(C_tile);
+    }
+
     (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
-    (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
+    for(int i = 0; i < N_tiles; i++) {
+        (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[i]);
+    }
+    
 #else
     //! ============= Turn to void pointer. =============
     // 修正缓冲区转换方式

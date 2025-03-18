@@ -9,57 +9,57 @@ target triple = "arm64-apple-darwin23.1.0"
 %3 = type { i8, i8, i16 }
 
 @__TVMAPISetLastError = linkonce dllexport local_unnamed_addr global ptr null, align 8
-@.str = private constant [89 x i8] c"Assert fail: num_args == 4, preprocessor_t1_int8_m6400_k3200_n1_b2: num_args should be 4\00", align 1
-@.str.1 = private constant [107 x i8] c"Assert fail: not T.isnullptr(args), preprocessor_t1_int8_m6400_k3200_n1_b2: TVMValue* arg pointer was NULL\00", align 1
-@.str.2 = private constant [109 x i8] c"Assert fail: not T.isnullptr(arg_type_ids), preprocessor_t1_int8_m6400_k3200_n1_b2: int* type_codes was NULL\00", align 1
-@.str.3 = private constant [140 x i8] c"Assert fail: B_code == 3 or B_code == 13 or B_code == 7 or B_code == 4, preprocessor_t1_int8_m6400_k3200_n1_b2: Expect arg[0] to be pointer\00", align 1
-@.str.4 = private constant [176 x i8] c"Assert fail: LUT_Scales_code == 3 or LUT_Scales_code == 13 or LUT_Scales_code == 7 or LUT_Scales_code == 4, preprocessor_t1_int8_m6400_k3200_n1_b2: Expect arg[1] to be pointer\00", align 1
-@.str.5 = private constant [176 x i8] c"Assert fail: LUT_Biases_code == 3 or LUT_Biases_code == 13 or LUT_Biases_code == 7 or LUT_Biases_code == 4, preprocessor_t1_int8_m6400_k3200_n1_b2: Expect arg[2] to be pointer\00", align 1
-@.str.6 = private constant [152 x i8] c"Assert fail: QLUT_code == 3 or QLUT_code == 13 or QLUT_code == 7 or QLUT_code == 4, preprocessor_t1_int8_m6400_k3200_n1_b2: Expect arg[3] to be pointer\00", align 1
-@.str.7 = private constant [121 x i8] c"Assert fail: not T.isnullptr(B), preprocessor_t1_int8_m6400_k3200_n1_b2.B is expected to have non-NULL DLTensor* pointer\00", align 1
-@.str.8 = private constant [123 x i8] c"Assert fail: 2 == T.tvm_struct_get(B, 0, 4, \22int32\22), preprocessor_t1_int8_m6400_k3200_n1_b2.B.ndim is expected to equal 2\00", align 1
-@.str.9 = private constant [139 x i8] c"Assert fail: not T.isnullptr(LUT_Scales), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales is expected to have non-NULL DLTensor* pointer\00", align 1
-@.str.10 = private constant [141 x i8] c"Assert fail: 2 == T.tvm_struct_get(LUT_Scales, 0, 4, \22int32\22), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.ndim is expected to equal 2\00", align 1
-@.str.11 = private constant [139 x i8] c"Assert fail: not T.isnullptr(LUT_Biases), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases is expected to have non-NULL DLTensor* pointer\00", align 1
-@.str.12 = private constant [141 x i8] c"Assert fail: 2 == T.tvm_struct_get(LUT_Biases, 0, 4, \22int32\22), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.ndim is expected to equal 2\00", align 1
-@.str.13 = private constant [127 x i8] c"Assert fail: not T.isnullptr(QLUT), preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT is expected to have non-NULL DLTensor* pointer\00", align 1
-@.str.14 = private constant [129 x i8] c"Assert fail: 3 == T.tvm_struct_get(QLUT, 0, 4, \22int32\22), preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.ndim is expected to equal 3\00", align 1
-@.str.15 = private constant [245 x i8] c"Assert fail: T.tvm_struct_get(B, 0, 5, \22uint8\22) == T.uint8(2) and T.tvm_struct_get(B, 0, 6, \22uint8\22) == T.uint8(16) and T.tvm_struct_get(B, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t1_int8_m6400_k3200_n1_b2.B.dtype is expected to be float16\00", align 1
-@.str.16 = private constant [248 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_B_shape[0]) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape[0] has an unsatisfied constraint: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_B_shape[0])\00", align 1
-@.str.17 = private constant [254 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_B_shape[1]) == 3200, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape[1] has an unsatisfied constraint: 3200 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_B_shape[1])\00", align 1
-@.str.18 = private constant [167 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_B_strides[1]), preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides: expected to be compact array\00", align 1
-@.str.19 = private constant [209 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(B, 0, 8, \22uint64\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.B.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(B, 0, 8, \22uint64\22)\00", align 1
-@.str.20 = private constant [189 x i8] c"Assert fail: T.tvm_struct_get(B, 0, 10, \22int32\22) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.B.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(B, 0, 10, \22int32\22)\00", align 1
-@.str.21 = private constant [116 x i8] c"Assert fail: not T.isnullptr(B), preprocessor_t1_int8_m6400_k3200_n1_b2.B is expected to have non-NULL data pointer\00", align 1
-@.str.22 = private constant [281 x i8] c"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 5, \22uint8\22) == T.uint8(2) and T.tvm_struct_get(LUT_Scales, 0, 6, \22uint8\22) == T.uint8(16) and T.tvm_struct_get(LUT_Scales, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.dtype is expected to be float16\00", align 1
-@.str.23 = private constant [275 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Scales_shape[0]) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape[0] has an unsatisfied constraint: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Scales_shape[0])\00", align 1
-@.str.24 = private constant [277 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Scales_shape[1]) == 50, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape[1] has an unsatisfied constraint: 50 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Scales_shape[1])\00", align 1
-@.str.25 = private constant [185 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Scales_strides[1]), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides: expected to be compact array\00", align 1
-@.str.26 = private constant [236 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \22uint64\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \22uint64\22)\00", align 1
-@.str.27 = private constant [216 x i8] c"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 10, \22int32\22) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Scales, 0, 10, \22int32\22)\00", align 1
-@.str.28 = private constant [222 x i8] c"Assert fail: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \22int32\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \22int32\22)\00", align 1
-@.str.29 = private constant [134 x i8] c"Assert fail: not T.isnullptr(LUT_Scales), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales is expected to have non-NULL data pointer\00", align 1
-@.str.30 = private constant [281 x i8] c"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 5, \22uint8\22) == T.uint8(2) and T.tvm_struct_get(LUT_Biases, 0, 6, \22uint8\22) == T.uint8(16) and T.tvm_struct_get(LUT_Biases, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.dtype is expected to be float16\00", align 1
-@.str.31 = private constant [275 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Biases_shape[0]) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape[0] has an unsatisfied constraint: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Biases_shape[0])\00", align 1
-@.str.32 = private constant [277 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Biases_shape[1]) == 50, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape[1] has an unsatisfied constraint: 50 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Biases_shape[1])\00", align 1
-@.str.33 = private constant [185 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_LUT_Biases_strides[1]), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides: expected to be compact array\00", align 1
-@.str.34 = private constant [236 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \22uint64\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \22uint64\22)\00", align 1
-@.str.35 = private constant [216 x i8] c"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 10, \22int32\22) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Biases, 0, 10, \22int32\22)\00", align 1
-@.str.36 = private constant [222 x i8] c"Assert fail: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \22int32\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \22int32\22)\00", align 1
-@.str.37 = private constant [134 x i8] c"Assert fail: not T.isnullptr(LUT_Biases), preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases is expected to have non-NULL data pointer\00", align 1
-@.str.38 = private constant [253 x i8] c"Assert fail: T.tvm_struct_get(QLUT, 0, 5, \22uint8\22) == T.uint8(0) and T.tvm_struct_get(QLUT, 0, 6, \22uint8\22) == T.uint8(8) and T.tvm_struct_get(QLUT, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.dtype is expected to be int8\00", align 1
-@.str.39 = private constant [257 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_shape[0]) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape[0] has an unsatisfied constraint: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_shape[0])\00", align 1
-@.str.40 = private constant [261 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_shape[1]) == 800, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape[1] has an unsatisfied constraint: 800 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_shape[1])\00", align 1
-@.str.41 = private constant [259 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_shape[2]) == 16, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape[2] has an unsatisfied constraint: 16 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_shape[2])\00", align 1
-@.str.42 = private constant [255 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_strides[2]) and 16 == T.Cast(\22int32\22, preprocessor_t1_int8_m6400_k3200_n1_b2_QLUT_strides[1]), preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides: expected to be compact array\00", align 1
-@.str.43 = private constant [218 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(QLUT, 0, 8, \22uint64\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(QLUT, 0, 8, \22uint64\22)\00", align 1
-@.str.44 = private constant [198 x i8] c"Assert fail: T.tvm_struct_get(QLUT, 0, 10, \22int32\22) == 1, Argument preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(QLUT, 0, 10, \22int32\22)\00", align 1
-@.str.45 = private constant [204 x i8] c"Assert fail: dev_id == T.tvm_struct_get(QLUT, 0, 9, \22int32\22), Argument preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(QLUT, 0, 9, \22int32\22)\00", align 1
-@.str.46 = private constant [122 x i8] c"Assert fail: not T.isnullptr(QLUT), preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT is expected to have non-NULL data pointer\00", align 1
-@__tvm_main__ = weak dllexport local_unnamed_addr constant [39 x i8] c"preprocessor_t1_int8_m6400_k3200_n1_b2\00", align 1
+@.str = private constant [92 x i8] c"Assert fail: num_args == 4, preprocessor_t12_int8_m4096_k4096_n512_b2: num_args should be 4\00", align 1
+@.str.1 = private constant [110 x i8] c"Assert fail: not T.isnullptr(args), preprocessor_t12_int8_m4096_k4096_n512_b2: TVMValue* arg pointer was NULL\00", align 1
+@.str.2 = private constant [112 x i8] c"Assert fail: not T.isnullptr(arg_type_ids), preprocessor_t12_int8_m4096_k4096_n512_b2: int* type_codes was NULL\00", align 1
+@.str.3 = private constant [143 x i8] c"Assert fail: B_code == 3 or B_code == 13 or B_code == 7 or B_code == 4, preprocessor_t12_int8_m4096_k4096_n512_b2: Expect arg[0] to be pointer\00", align 1
+@.str.4 = private constant [179 x i8] c"Assert fail: LUT_Scales_code == 3 or LUT_Scales_code == 13 or LUT_Scales_code == 7 or LUT_Scales_code == 4, preprocessor_t12_int8_m4096_k4096_n512_b2: Expect arg[1] to be pointer\00", align 1
+@.str.5 = private constant [179 x i8] c"Assert fail: LUT_Biases_code == 3 or LUT_Biases_code == 13 or LUT_Biases_code == 7 or LUT_Biases_code == 4, preprocessor_t12_int8_m4096_k4096_n512_b2: Expect arg[2] to be pointer\00", align 1
+@.str.6 = private constant [155 x i8] c"Assert fail: QLUT_code == 3 or QLUT_code == 13 or QLUT_code == 7 or QLUT_code == 4, preprocessor_t12_int8_m4096_k4096_n512_b2: Expect arg[3] to be pointer\00", align 1
+@.str.7 = private constant [124 x i8] c"Assert fail: not T.isnullptr(B), preprocessor_t12_int8_m4096_k4096_n512_b2.B is expected to have non-NULL DLTensor* pointer\00", align 1
+@.str.8 = private constant [126 x i8] c"Assert fail: 2 == T.tvm_struct_get(B, 0, 4, \22int32\22), preprocessor_t12_int8_m4096_k4096_n512_b2.B.ndim is expected to equal 2\00", align 1
+@.str.9 = private constant [142 x i8] c"Assert fail: not T.isnullptr(LUT_Scales), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales is expected to have non-NULL DLTensor* pointer\00", align 1
+@.str.10 = private constant [144 x i8] c"Assert fail: 2 == T.tvm_struct_get(LUT_Scales, 0, 4, \22int32\22), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.ndim is expected to equal 2\00", align 1
+@.str.11 = private constant [142 x i8] c"Assert fail: not T.isnullptr(LUT_Biases), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases is expected to have non-NULL DLTensor* pointer\00", align 1
+@.str.12 = private constant [144 x i8] c"Assert fail: 2 == T.tvm_struct_get(LUT_Biases, 0, 4, \22int32\22), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.ndim is expected to equal 2\00", align 1
+@.str.13 = private constant [130 x i8] c"Assert fail: not T.isnullptr(QLUT), preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT is expected to have non-NULL DLTensor* pointer\00", align 1
+@.str.14 = private constant [132 x i8] c"Assert fail: 3 == T.tvm_struct_get(QLUT, 0, 4, \22int32\22), preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.ndim is expected to equal 3\00", align 1
+@.str.15 = private constant [248 x i8] c"Assert fail: T.tvm_struct_get(B, 0, 5, \22uint8\22) == T.uint8(2) and T.tvm_struct_get(B, 0, 6, \22uint8\22) == T.uint8(16) and T.tvm_struct_get(B, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t12_int8_m4096_k4096_n512_b2.B.dtype is expected to be float16\00", align 1
+@.str.16 = private constant [261 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_B_shape[0]) == 512, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape[0] has an unsatisfied constraint: 512 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_B_shape[0])\00", align 1
+@.str.17 = private constant [263 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_B_shape[1]) == 4096, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape[1] has an unsatisfied constraint: 4096 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_B_shape[1])\00", align 1
+@.str.18 = private constant [257 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_B_strides[1]) and 4096 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_B_strides[0]), preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides: expected to be compact array\00", align 1
+@.str.19 = private constant [212 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(B, 0, 8, \22uint64\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.B.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(B, 0, 8, \22uint64\22)\00", align 1
+@.str.20 = private constant [192 x i8] c"Assert fail: T.tvm_struct_get(B, 0, 10, \22int32\22) == 1, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.B.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(B, 0, 10, \22int32\22)\00", align 1
+@.str.21 = private constant [119 x i8] c"Assert fail: not T.isnullptr(B), preprocessor_t12_int8_m4096_k4096_n512_b2.B is expected to have non-NULL data pointer\00", align 1
+@.str.22 = private constant [284 x i8] c"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 5, \22uint8\22) == T.uint8(2) and T.tvm_struct_get(LUT_Scales, 0, 6, \22uint8\22) == T.uint8(16) and T.tvm_struct_get(LUT_Scales, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.dtype is expected to be float16\00", align 1
+@.str.23 = private constant [288 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Scales_shape[0]) == 512, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape[0] has an unsatisfied constraint: 512 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Scales_shape[0])\00", align 1
+@.str.24 = private constant [286 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Scales_shape[1]) == 64, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape[1] has an unsatisfied constraint: 64 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Scales_shape[1])\00", align 1
+@.str.25 = private constant [282 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Scales_strides[1]) and 64 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Scales_strides[0]), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides: expected to be compact array\00", align 1
+@.str.26 = private constant [239 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \22uint64\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Scales, 0, 8, \22uint64\22)\00", align 1
+@.str.27 = private constant [219 x i8] c"Assert fail: T.tvm_struct_get(LUT_Scales, 0, 10, \22int32\22) == 1, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Scales, 0, 10, \22int32\22)\00", align 1
+@.str.28 = private constant [225 x i8] c"Assert fail: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \22int32\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Scales, 0, 9, \22int32\22)\00", align 1
+@.str.29 = private constant [137 x i8] c"Assert fail: not T.isnullptr(LUT_Scales), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales is expected to have non-NULL data pointer\00", align 1
+@.str.30 = private constant [284 x i8] c"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 5, \22uint8\22) == T.uint8(2) and T.tvm_struct_get(LUT_Biases, 0, 6, \22uint8\22) == T.uint8(16) and T.tvm_struct_get(LUT_Biases, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.dtype is expected to be float16\00", align 1
+@.str.31 = private constant [288 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Biases_shape[0]) == 512, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape[0] has an unsatisfied constraint: 512 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Biases_shape[0])\00", align 1
+@.str.32 = private constant [286 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Biases_shape[1]) == 64, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape[1] has an unsatisfied constraint: 64 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Biases_shape[1])\00", align 1
+@.str.33 = private constant [282 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Biases_strides[1]) and 64 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_LUT_Biases_strides[0]), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides: expected to be compact array\00", align 1
+@.str.34 = private constant [239 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \22uint64\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(LUT_Biases, 0, 8, \22uint64\22)\00", align 1
+@.str.35 = private constant [219 x i8] c"Assert fail: T.tvm_struct_get(LUT_Biases, 0, 10, \22int32\22) == 1, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(LUT_Biases, 0, 10, \22int32\22)\00", align 1
+@.str.36 = private constant [225 x i8] c"Assert fail: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \22int32\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(LUT_Biases, 0, 9, \22int32\22)\00", align 1
+@.str.37 = private constant [137 x i8] c"Assert fail: not T.isnullptr(LUT_Biases), preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases is expected to have non-NULL data pointer\00", align 1
+@.str.38 = private constant [256 x i8] c"Assert fail: T.tvm_struct_get(QLUT, 0, 5, \22uint8\22) == T.uint8(0) and T.tvm_struct_get(QLUT, 0, 6, \22uint8\22) == T.uint8(8) and T.tvm_struct_get(QLUT, 0, 7, \22uint16\22) == T.uint16(1), preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.dtype is expected to be int8\00", align 1
+@.str.39 = private constant [270 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_shape[0]) == 512, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape[0] has an unsatisfied constraint: 512 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_shape[0])\00", align 1
+@.str.40 = private constant [272 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_shape[1]) == 1024, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape[1] has an unsatisfied constraint: 1024 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_shape[1])\00", align 1
+@.str.41 = private constant [268 x i8] c"Assert fail: T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_shape[2]) == 16, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape[2] has an unsatisfied constraint: 16 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_shape[2])\00", align 1
+@.str.42 = private constant [352 x i8] c"Assert fail: 1 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_strides[2]) and 16 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_strides[1]) and 16384 == T.Cast(\22int32\22, preprocessor_t12_int8_m4096_k4096_n512_b2_QLUT_strides[0]), preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides: expected to be compact array\00", align 1
+@.str.43 = private constant [221 x i8] c"Assert fail: T.uint64(0) == T.tvm_struct_get(QLUT, 0, 8, \22uint64\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.byte_offset has an unsatisfied constraint: T.uint64(0) == T.tvm_struct_get(QLUT, 0, 8, \22uint64\22)\00", align 1
+@.str.44 = private constant [201 x i8] c"Assert fail: T.tvm_struct_get(QLUT, 0, 10, \22int32\22) == 1, Argument preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.device_type has an unsatisfied constraint: 1 == T.tvm_struct_get(QLUT, 0, 10, \22int32\22)\00", align 1
+@.str.45 = private constant [207 x i8] c"Assert fail: dev_id == T.tvm_struct_get(QLUT, 0, 9, \22int32\22), Argument preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.device_id has an unsatisfied constraint: dev_id == T.tvm_struct_get(QLUT, 0, 9, \22int32\22)\00", align 1
+@.str.46 = private constant [125 x i8] c"Assert fail: not T.isnullptr(QLUT), preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT is expected to have non-NULL data pointer\00", align 1
+@__tvm_main__ = weak dllexport local_unnamed_addr constant [42 x i8] c"preprocessor_t12_int8_m4096_k4096_n512_b2\00", align 1
 @llvm.global_ctors = appending global [0 x { i32, ptr, ptr }] zeroinitializer
 
-define dllexport i32 @preprocessor_t1_int8_m6400_k3200_n1_b2(ptr noalias readonly %args, ptr noalias readonly %arg_type_ids, i32 %num_args, ptr noalias nocapture readnone %out_ret_value, ptr noalias nocapture readnone %out_ret_tcode, ptr noalias nocapture readnone %resource_handle) local_unnamed_addr #0 !dbg !11 {
+define dllexport i32 @preprocessor_t12_int8_m4096_k4096_n512_b2(ptr noalias readonly %args, ptr noalias readonly %arg_type_ids, i32 %num_args, ptr noalias nocapture readnone %out_ret_value, ptr noalias nocapture readnone %out_ret_tcode, ptr noalias nocapture readnone %resource_handle) local_unnamed_addr #0 !dbg !11 {
 entry:
   call void @llvm.dbg.value(metadata ptr %args, metadata !18, metadata !DIExpression()), !dbg !24
   call void @llvm.dbg.value(metadata ptr %arg_type_ids, metadata !19, metadata !DIExpression()), !dbg !24
@@ -201,13 +201,13 @@ assert_fail15:                                    ; preds = %assert_end14
 
 assert_end16:                                     ; preds = %assert_end14
   %19 = getelementptr inbounds %1, ptr %B, i64 0, i32 4, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape = load ptr, ptr %19, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape, metadata !56, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape, metadata !56, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape = load ptr, ptr %19, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape, metadata !56, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape, metadata !56, metadata !DIExpression()), !dbg !24
   %20 = getelementptr inbounds %1, ptr %B, i64 0, i32 5, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides = load ptr, ptr %20, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides, metadata !59, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides, metadata !59, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides = load ptr, ptr %20, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides, metadata !59, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides, metadata !59, metadata !DIExpression()), !dbg !24
   %21 = getelementptr inbounds %1, ptr %B, i64 0, i32 1, i32 1, !dbg !24
   %dev_id = load i32, ptr %21, align 4, !dbg !24
   call void @llvm.dbg.declare(metadata i32 %dev_id, metadata !60, metadata !DIExpression()), !dbg !24
@@ -237,13 +237,13 @@ assert_fail21:                                    ; preds = %assert_end20
 
 assert_end22:                                     ; preds = %assert_end20
   %27 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 4, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape = load ptr, ptr %27, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape, metadata !64, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape, metadata !64, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape = load ptr, ptr %27, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape, metadata !64, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape, metadata !64, metadata !DIExpression()), !dbg !24
   %28 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 5, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides = load ptr, ptr %28, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides, metadata !65, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides, metadata !65, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides = load ptr, ptr %28, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides, metadata !65, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides, metadata !65, metadata !DIExpression()), !dbg !24
   %LUT_Scales107 = load ptr, ptr %LUT_Scales, align 8, !dbg !24
   call void @llvm.dbg.declare(metadata ptr %LUT_Scales107, metadata !66, metadata !DIExpression()), !dbg !24
   call void @llvm.dbg.declare(metadata ptr %LUT_Scales107, metadata !66, metadata !DIExpression()), !dbg !24
@@ -269,13 +269,13 @@ assert_fail27:                                    ; preds = %assert_end26
 
 assert_end28:                                     ; preds = %assert_end26
   %34 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 4, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape = load ptr, ptr %34, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape, metadata !67, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape, metadata !67, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape = load ptr, ptr %34, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape, metadata !67, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape, metadata !67, metadata !DIExpression()), !dbg !24
   %35 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 5, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides = load ptr, ptr %35, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides, metadata !68, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides, metadata !68, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides = load ptr, ptr %35, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides, metadata !68, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides, metadata !68, metadata !DIExpression()), !dbg !24
   %LUT_Biases110 = load ptr, ptr %LUT_Biases, align 8, !dbg !24
   call void @llvm.dbg.declare(metadata ptr %LUT_Biases110, metadata !69, metadata !DIExpression()), !dbg !24
   call void @llvm.dbg.declare(metadata ptr %LUT_Biases110, metadata !69, metadata !DIExpression()), !dbg !24
@@ -301,13 +301,13 @@ assert_fail33:                                    ; preds = %assert_end32
 
 assert_end34:                                     ; preds = %assert_end32
   %41 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 4, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape = load ptr, ptr %41, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape, metadata !70, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape, metadata !70, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape = load ptr, ptr %41, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape, metadata !70, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape, metadata !70, metadata !DIExpression()), !dbg !24
   %42 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 5, !dbg !24
-  %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides = load ptr, ptr %42, align 8, !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides, metadata !71, metadata !DIExpression()), !dbg !24
-  call void @llvm.dbg.declare(metadata ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides, metadata !71, metadata !DIExpression()), !dbg !24
+  %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides = load ptr, ptr %42, align 8, !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides, metadata !71, metadata !DIExpression()), !dbg !24
+  call void @llvm.dbg.declare(metadata ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides, metadata !71, metadata !DIExpression()), !dbg !24
   %QLUT109 = load ptr, ptr %QLUT, align 8, !dbg !24
   call void @llvm.dbg.declare(metadata ptr %QLUT109, metadata !72, metadata !DIExpression()), !dbg !24
   call void @llvm.dbg.declare(metadata ptr %QLUT109, metadata !72, metadata !DIExpression()), !dbg !24
@@ -331,9 +331,9 @@ assert_fail37:                                    ; preds = %assert_end34
   br label %common.ret
 
 assert_end38:                                     ; preds = %assert_end34
-  %55 = load i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape, align 8, !dbg !24, !tbaa !75
+  %55 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape, align 8, !dbg !24, !tbaa !75
   %56 = and i64 %55, 4294967295, !dbg !24
-  %57 = icmp eq i64 %56, 1, !dbg !24
+  %57 = icmp eq i64 %56, 512, !dbg !24
   br i1 %57, label %assert_end40, label %assert_fail39, !dbg !24, !prof !25
 
 assert_fail39:                                    ; preds = %assert_end38
@@ -342,10 +342,10 @@ assert_fail39:                                    ; preds = %assert_end38
   br label %common.ret
 
 assert_end40:                                     ; preds = %assert_end38
-  %59 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape, i64 1, !dbg !24
+  %59 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape, i64 1, !dbg !24
   %60 = load i64, ptr %59, align 8, !dbg !24, !tbaa !85
   %61 = and i64 %60, 4294967295, !dbg !24
-  %62 = icmp eq i64 %61, 3200, !dbg !24
+  %62 = icmp eq i64 %61, 4096, !dbg !24
   br i1 %62, label %assert_end42, label %assert_fail41, !dbg !24, !prof !25
 
 assert_fail41:                                    ; preds = %assert_end40
@@ -354,41 +354,45 @@ assert_fail41:                                    ; preds = %assert_end40
   br label %common.ret
 
 assert_end42:                                     ; preds = %assert_end40
-  %.not116 = icmp eq ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides, null, !dbg !24
+  %.not116 = icmp eq ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides, null, !dbg !24
   br i1 %.not116, label %if_end, label %if_then, !dbg !24, !prof !29
 
 if_then:                                          ; preds = %assert_end42
-  %64 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides, i64 1, !dbg !24
+  %64 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides, i64 1, !dbg !24
   %65 = load i64, ptr %64, align 8, !dbg !24, !tbaa !87
   %66 = and i64 %65, 4294967295, !dbg !24
   %67 = icmp eq i64 %66, 1, !dbg !24
-  br i1 %67, label %if_end, label %assert_fail43, !dbg !24, !prof !25
+  %68 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides, align 8, !dbg !24, !tbaa !97
+  %69 = and i64 %68, 4294967295, !dbg !24
+  %70 = icmp eq i64 %69, 4096, !dbg !24
+  %71 = and i1 %67, %70, !dbg !24
+  br i1 %71, label %if_end, label %assert_fail43, !dbg !24, !prof !25
 
 if_end:                                           ; preds = %if_then, %assert_end42
-  %68 = getelementptr inbounds %1, ptr %B, i64 0, i32 6, !dbg !24
-  %69 = load i64, ptr %68, align 8, !dbg !24
-  %70 = icmp eq i64 %69, 0, !dbg !24
-  br i1 %70, label %assert_end46, label %assert_fail45, !dbg !24, !prof !25
+  %72 = getelementptr inbounds %1, ptr %B, i64 0, i32 6, !dbg !24
+  %73 = load i64, ptr %72, align 8, !dbg !24
+  %74 = icmp eq i64 %73, 0, !dbg !24
+  br i1 %74, label %assert_end46, label %assert_fail45, !dbg !24, !prof !25
 
 assert_fail43:                                    ; preds = %if_then
-  %71 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %71(ptr nonnull @.str.18), !dbg !24
+  %75 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %75(ptr nonnull @.str.18), !dbg !24
   br label %common.ret
 
 assert_fail45:                                    ; preds = %if_end
-  %72 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %72(ptr nonnull @.str.19), !dbg !24
+  %76 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %76(ptr nonnull @.str.19), !dbg !24
   br label %common.ret
 
 assert_end46:                                     ; preds = %if_end
-  %73 = getelementptr inbounds %1, ptr %B, i64 0, i32 1, i32 0, !dbg !24
-  %74 = load i32, ptr %73, align 4, !dbg !24
-  %75 = icmp eq i32 %74, 1, !dbg !24
-  br i1 %75, label %assert_end48, label %assert_fail47, !dbg !24, !prof !25
+  %77 = getelementptr inbounds %1, ptr %B, i64 0, i32 1, i32 0, !dbg !24
+  %78 = load i32, ptr %77, align 4, !dbg !24
+  %79 = icmp eq i32 %78, 1, !dbg !24
+  br i1 %79, label %assert_end48, label %assert_fail47, !dbg !24, !prof !25
 
 assert_fail47:                                    ; preds = %assert_end46
-  %76 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %76(ptr nonnull @.str.20), !dbg !24
+  %80 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %80(ptr nonnull @.str.20), !dbg !24
   br label %common.ret
 
 assert_end48:                                     ; preds = %assert_end46
@@ -396,99 +400,103 @@ assert_end48:                                     ; preds = %assert_end46
   br i1 %.not117, label %assert_fail49, label %assert_end50, !dbg !24, !prof !29
 
 assert_fail49:                                    ; preds = %assert_end48
-  %77 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %77(ptr nonnull @.str.21), !dbg !24
+  %81 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %81(ptr nonnull @.str.21), !dbg !24
   br label %common.ret
 
 assert_end50:                                     ; preds = %assert_end48
-  %78 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 3, i32 0, !dbg !24
-  %79 = load i8, ptr %78, align 1, !dbg !24
-  %80 = icmp eq i8 %79, 2, !dbg !24
-  %81 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 3, i32 1, !dbg !24
-  %82 = load i8, ptr %81, align 1, !dbg !24
-  %83 = icmp eq i8 %82, 16, !dbg !24
-  %84 = and i1 %80, %83, !dbg !24
-  %85 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 3, i32 2, !dbg !24
-  %86 = load i16, ptr %85, align 2, !dbg !24
-  %87 = icmp eq i16 %86, 1, !dbg !24
+  %82 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 3, i32 0, !dbg !24
+  %83 = load i8, ptr %82, align 1, !dbg !24
+  %84 = icmp eq i8 %83, 2, !dbg !24
+  %85 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 3, i32 1, !dbg !24
+  %86 = load i8, ptr %85, align 1, !dbg !24
+  %87 = icmp eq i8 %86, 16, !dbg !24
   %88 = and i1 %84, %87, !dbg !24
-  br i1 %88, label %assert_end52, label %assert_fail51, !dbg !24, !prof !25
+  %89 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 3, i32 2, !dbg !24
+  %90 = load i16, ptr %89, align 2, !dbg !24
+  %91 = icmp eq i16 %90, 1, !dbg !24
+  %92 = and i1 %88, %91, !dbg !24
+  br i1 %92, label %assert_end52, label %assert_fail51, !dbg !24, !prof !25
 
 assert_fail51:                                    ; preds = %assert_end50
-  %89 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %89(ptr nonnull @.str.22), !dbg !24
+  %93 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %93(ptr nonnull @.str.22), !dbg !24
   br label %common.ret
 
 assert_end52:                                     ; preds = %assert_end50
-  %90 = load i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape, align 8, !dbg !24, !tbaa !97
-  %91 = and i64 %90, 4294967295, !dbg !24
-  %92 = icmp eq i64 %91, 1, !dbg !24
-  br i1 %92, label %assert_end54, label %assert_fail53, !dbg !24, !prof !25
+  %94 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape, align 8, !dbg !24, !tbaa !99
+  %95 = and i64 %94, 4294967295, !dbg !24
+  %96 = icmp eq i64 %95, 512, !dbg !24
+  br i1 %96, label %assert_end54, label %assert_fail53, !dbg !24, !prof !25
 
 assert_fail53:                                    ; preds = %assert_end52
-  %93 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %93(ptr nonnull @.str.23), !dbg !24
+  %97 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %97(ptr nonnull @.str.23), !dbg !24
   br label %common.ret
 
 assert_end54:                                     ; preds = %assert_end52
-  %94 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape, i64 1, !dbg !24
-  %95 = load i64, ptr %94, align 8, !dbg !24, !tbaa !107
-  %96 = and i64 %95, 4294967295, !dbg !24
-  %97 = icmp eq i64 %96, 50, !dbg !24
-  br i1 %97, label %assert_end56, label %assert_fail55, !dbg !24, !prof !25
+  %98 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape, i64 1, !dbg !24
+  %99 = load i64, ptr %98, align 8, !dbg !24, !tbaa !109
+  %100 = and i64 %99, 4294967295, !dbg !24
+  %101 = icmp eq i64 %100, 64, !dbg !24
+  br i1 %101, label %assert_end56, label %assert_fail55, !dbg !24, !prof !25
 
 assert_fail55:                                    ; preds = %assert_end54
-  %98 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %98(ptr nonnull @.str.24), !dbg !24
+  %102 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %102(ptr nonnull @.str.24), !dbg !24
   br label %common.ret
 
 assert_end56:                                     ; preds = %assert_end54
-  %.not118 = icmp eq ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides, null, !dbg !24
+  %.not118 = icmp eq ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides, null, !dbg !24
   br i1 %.not118, label %if_end58, label %if_then57, !dbg !24, !prof !29
 
 if_then57:                                        ; preds = %assert_end56
-  %99 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides, i64 1, !dbg !24
-  %100 = load i64, ptr %99, align 8, !dbg !24, !tbaa !109
-  %101 = and i64 %100, 4294967295, !dbg !24
-  %102 = icmp eq i64 %101, 1, !dbg !24
-  br i1 %102, label %if_end58, label %assert_fail59, !dbg !24, !prof !25
+  %103 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides, i64 1, !dbg !24
+  %104 = load i64, ptr %103, align 8, !dbg !24, !tbaa !111
+  %105 = and i64 %104, 4294967295, !dbg !24
+  %106 = icmp eq i64 %105, 1, !dbg !24
+  %107 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides, align 8, !dbg !24, !tbaa !121
+  %108 = and i64 %107, 4294967295, !dbg !24
+  %109 = icmp eq i64 %108, 64, !dbg !24
+  %110 = and i1 %106, %109, !dbg !24
+  br i1 %110, label %if_end58, label %assert_fail59, !dbg !24, !prof !25
 
 if_end58:                                         ; preds = %if_then57, %assert_end56
-  %103 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 6, !dbg !24
-  %104 = load i64, ptr %103, align 8, !dbg !24
-  %105 = icmp eq i64 %104, 0, !dbg !24
-  br i1 %105, label %assert_end62, label %assert_fail61, !dbg !24, !prof !25
+  %111 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 6, !dbg !24
+  %112 = load i64, ptr %111, align 8, !dbg !24
+  %113 = icmp eq i64 %112, 0, !dbg !24
+  br i1 %113, label %assert_end62, label %assert_fail61, !dbg !24, !prof !25
 
 assert_fail59:                                    ; preds = %if_then57
-  %106 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %106(ptr nonnull @.str.25), !dbg !24
+  %114 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %114(ptr nonnull @.str.25), !dbg !24
   br label %common.ret
 
 assert_fail61:                                    ; preds = %if_end58
-  %107 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %107(ptr nonnull @.str.26), !dbg !24
+  %115 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %115(ptr nonnull @.str.26), !dbg !24
   br label %common.ret
 
 assert_end62:                                     ; preds = %if_end58
-  %108 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 1, i32 0, !dbg !24
-  %109 = load i32, ptr %108, align 4, !dbg !24
-  %110 = icmp eq i32 %109, 1, !dbg !24
-  br i1 %110, label %assert_end64, label %assert_fail63, !dbg !24, !prof !25
+  %116 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 1, i32 0, !dbg !24
+  %117 = load i32, ptr %116, align 4, !dbg !24
+  %118 = icmp eq i32 %117, 1, !dbg !24
+  br i1 %118, label %assert_end64, label %assert_fail63, !dbg !24, !prof !25
 
 assert_fail63:                                    ; preds = %assert_end62
-  %111 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %111(ptr nonnull @.str.27), !dbg !24
+  %119 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %119(ptr nonnull @.str.27), !dbg !24
   br label %common.ret
 
 assert_end64:                                     ; preds = %assert_end62
-  %112 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 1, i32 1, !dbg !24
-  %113 = load i32, ptr %112, align 4, !dbg !24
-  %114 = icmp eq i32 %dev_id, %113, !dbg !24
-  br i1 %114, label %assert_end66, label %assert_fail65, !dbg !24, !prof !25
+  %120 = getelementptr inbounds %1, ptr %LUT_Scales, i64 0, i32 1, i32 1, !dbg !24
+  %121 = load i32, ptr %120, align 4, !dbg !24
+  %122 = icmp eq i32 %dev_id, %121, !dbg !24
+  br i1 %122, label %assert_end66, label %assert_fail65, !dbg !24, !prof !25
 
 assert_fail65:                                    ; preds = %assert_end64
-  %115 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %115(ptr nonnull @.str.28), !dbg !24
+  %123 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %123(ptr nonnull @.str.28), !dbg !24
   br label %common.ret
 
 assert_end66:                                     ; preds = %assert_end64
@@ -496,99 +504,103 @@ assert_end66:                                     ; preds = %assert_end64
   br i1 %.not119, label %assert_fail67, label %assert_end68, !dbg !24, !prof !29
 
 assert_fail67:                                    ; preds = %assert_end66
-  %116 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %116(ptr nonnull @.str.29), !dbg !24
+  %124 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %124(ptr nonnull @.str.29), !dbg !24
   br label %common.ret
 
 assert_end68:                                     ; preds = %assert_end66
-  %117 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 3, i32 0, !dbg !24
-  %118 = load i8, ptr %117, align 1, !dbg !24
-  %119 = icmp eq i8 %118, 2, !dbg !24
-  %120 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 3, i32 1, !dbg !24
-  %121 = load i8, ptr %120, align 1, !dbg !24
-  %122 = icmp eq i8 %121, 16, !dbg !24
-  %123 = and i1 %119, %122, !dbg !24
-  %124 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 3, i32 2, !dbg !24
-  %125 = load i16, ptr %124, align 2, !dbg !24
-  %126 = icmp eq i16 %125, 1, !dbg !24
-  %127 = and i1 %123, %126, !dbg !24
-  br i1 %127, label %assert_end70, label %assert_fail69, !dbg !24, !prof !25
+  %125 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 3, i32 0, !dbg !24
+  %126 = load i8, ptr %125, align 1, !dbg !24
+  %127 = icmp eq i8 %126, 2, !dbg !24
+  %128 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 3, i32 1, !dbg !24
+  %129 = load i8, ptr %128, align 1, !dbg !24
+  %130 = icmp eq i8 %129, 16, !dbg !24
+  %131 = and i1 %127, %130, !dbg !24
+  %132 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 3, i32 2, !dbg !24
+  %133 = load i16, ptr %132, align 2, !dbg !24
+  %134 = icmp eq i16 %133, 1, !dbg !24
+  %135 = and i1 %131, %134, !dbg !24
+  br i1 %135, label %assert_end70, label %assert_fail69, !dbg !24, !prof !25
 
 assert_fail69:                                    ; preds = %assert_end68
-  %128 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %128(ptr nonnull @.str.30), !dbg !24
+  %136 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %136(ptr nonnull @.str.30), !dbg !24
   br label %common.ret
 
 assert_end70:                                     ; preds = %assert_end68
-  %129 = load i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape, align 8, !dbg !24, !tbaa !119
-  %130 = and i64 %129, 4294967295, !dbg !24
-  %131 = icmp eq i64 %130, 1, !dbg !24
-  br i1 %131, label %assert_end72, label %assert_fail71, !dbg !24, !prof !25
+  %137 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape, align 8, !dbg !24, !tbaa !123
+  %138 = and i64 %137, 4294967295, !dbg !24
+  %139 = icmp eq i64 %138, 512, !dbg !24
+  br i1 %139, label %assert_end72, label %assert_fail71, !dbg !24, !prof !25
 
 assert_fail71:                                    ; preds = %assert_end70
-  %132 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %132(ptr nonnull @.str.31), !dbg !24
+  %140 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %140(ptr nonnull @.str.31), !dbg !24
   br label %common.ret
 
 assert_end72:                                     ; preds = %assert_end70
-  %133 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape, i64 1, !dbg !24
-  %134 = load i64, ptr %133, align 8, !dbg !24, !tbaa !129
-  %135 = and i64 %134, 4294967295, !dbg !24
-  %136 = icmp eq i64 %135, 50, !dbg !24
-  br i1 %136, label %assert_end74, label %assert_fail73, !dbg !24, !prof !25
+  %141 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape, i64 1, !dbg !24
+  %142 = load i64, ptr %141, align 8, !dbg !24, !tbaa !133
+  %143 = and i64 %142, 4294967295, !dbg !24
+  %144 = icmp eq i64 %143, 64, !dbg !24
+  br i1 %144, label %assert_end74, label %assert_fail73, !dbg !24, !prof !25
 
 assert_fail73:                                    ; preds = %assert_end72
-  %137 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %137(ptr nonnull @.str.32), !dbg !24
+  %145 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %145(ptr nonnull @.str.32), !dbg !24
   br label %common.ret
 
 assert_end74:                                     ; preds = %assert_end72
-  %.not120 = icmp eq ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides, null, !dbg !24
+  %.not120 = icmp eq ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides, null, !dbg !24
   br i1 %.not120, label %if_end76, label %if_then75, !dbg !24, !prof !29
 
 if_then75:                                        ; preds = %assert_end74
-  %138 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides, i64 1, !dbg !24
-  %139 = load i64, ptr %138, align 8, !dbg !24, !tbaa !131
-  %140 = and i64 %139, 4294967295, !dbg !24
-  %141 = icmp eq i64 %140, 1, !dbg !24
-  br i1 %141, label %if_end76, label %assert_fail77, !dbg !24, !prof !25
+  %146 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides, i64 1, !dbg !24
+  %147 = load i64, ptr %146, align 8, !dbg !24, !tbaa !135
+  %148 = and i64 %147, 4294967295, !dbg !24
+  %149 = icmp eq i64 %148, 1, !dbg !24
+  %150 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides, align 8, !dbg !24, !tbaa !145
+  %151 = and i64 %150, 4294967295, !dbg !24
+  %152 = icmp eq i64 %151, 64, !dbg !24
+  %153 = and i1 %149, %152, !dbg !24
+  br i1 %153, label %if_end76, label %assert_fail77, !dbg !24, !prof !25
 
 if_end76:                                         ; preds = %if_then75, %assert_end74
-  %142 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 6, !dbg !24
-  %143 = load i64, ptr %142, align 8, !dbg !24
-  %144 = icmp eq i64 %143, 0, !dbg !24
-  br i1 %144, label %assert_end80, label %assert_fail79, !dbg !24, !prof !25
+  %154 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 6, !dbg !24
+  %155 = load i64, ptr %154, align 8, !dbg !24
+  %156 = icmp eq i64 %155, 0, !dbg !24
+  br i1 %156, label %assert_end80, label %assert_fail79, !dbg !24, !prof !25
 
 assert_fail77:                                    ; preds = %if_then75
-  %145 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %145(ptr nonnull @.str.33), !dbg !24
+  %157 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %157(ptr nonnull @.str.33), !dbg !24
   br label %common.ret
 
 assert_fail79:                                    ; preds = %if_end76
-  %146 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %146(ptr nonnull @.str.34), !dbg !24
+  %158 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %158(ptr nonnull @.str.34), !dbg !24
   br label %common.ret
 
 assert_end80:                                     ; preds = %if_end76
-  %147 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 1, i32 0, !dbg !24
-  %148 = load i32, ptr %147, align 4, !dbg !24
-  %149 = icmp eq i32 %148, 1, !dbg !24
-  br i1 %149, label %assert_end82, label %assert_fail81, !dbg !24, !prof !25
+  %159 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 1, i32 0, !dbg !24
+  %160 = load i32, ptr %159, align 4, !dbg !24
+  %161 = icmp eq i32 %160, 1, !dbg !24
+  br i1 %161, label %assert_end82, label %assert_fail81, !dbg !24, !prof !25
 
 assert_fail81:                                    ; preds = %assert_end80
-  %150 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %150(ptr nonnull @.str.35), !dbg !24
+  %162 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %162(ptr nonnull @.str.35), !dbg !24
   br label %common.ret
 
 assert_end82:                                     ; preds = %assert_end80
-  %151 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 1, i32 1, !dbg !24
-  %152 = load i32, ptr %151, align 4, !dbg !24
-  %153 = icmp eq i32 %dev_id, %152, !dbg !24
-  br i1 %153, label %assert_end84, label %assert_fail83, !dbg !24, !prof !25
+  %163 = getelementptr inbounds %1, ptr %LUT_Biases, i64 0, i32 1, i32 1, !dbg !24
+  %164 = load i32, ptr %163, align 4, !dbg !24
+  %165 = icmp eq i32 %dev_id, %164, !dbg !24
+  br i1 %165, label %assert_end84, label %assert_fail83, !dbg !24, !prof !25
 
 assert_fail83:                                    ; preds = %assert_end82
-  %154 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %154(ptr nonnull @.str.36), !dbg !24
+  %166 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %166(ptr nonnull @.str.36), !dbg !24
   br label %common.ret
 
 assert_end84:                                     ; preds = %assert_end82
@@ -596,116 +608,120 @@ assert_end84:                                     ; preds = %assert_end82
   br i1 %.not121, label %assert_fail85, label %assert_end86, !dbg !24, !prof !29
 
 assert_fail85:                                    ; preds = %assert_end84
-  %155 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %155(ptr nonnull @.str.37), !dbg !24
+  %167 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %167(ptr nonnull @.str.37), !dbg !24
   br label %common.ret
 
 assert_end86:                                     ; preds = %assert_end84
-  %156 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 3, i32 0, !dbg !24
-  %157 = load i8, ptr %156, align 1, !dbg !24
-  %158 = icmp eq i8 %157, 0, !dbg !24
-  %159 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 3, i32 1, !dbg !24
-  %160 = load i8, ptr %159, align 1, !dbg !24
-  %161 = icmp eq i8 %160, 8, !dbg !24
-  %162 = and i1 %158, %161, !dbg !24
-  %163 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 3, i32 2, !dbg !24
-  %164 = load i16, ptr %163, align 2, !dbg !24
-  %165 = icmp eq i16 %164, 1, !dbg !24
-  %166 = and i1 %162, %165, !dbg !24
-  br i1 %166, label %assert_end88, label %assert_fail87, !dbg !24, !prof !25
+  %168 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 3, i32 0, !dbg !24
+  %169 = load i8, ptr %168, align 1, !dbg !24
+  %170 = icmp eq i8 %169, 0, !dbg !24
+  %171 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 3, i32 1, !dbg !24
+  %172 = load i8, ptr %171, align 1, !dbg !24
+  %173 = icmp eq i8 %172, 8, !dbg !24
+  %174 = and i1 %170, %173, !dbg !24
+  %175 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 3, i32 2, !dbg !24
+  %176 = load i16, ptr %175, align 2, !dbg !24
+  %177 = icmp eq i16 %176, 1, !dbg !24
+  %178 = and i1 %174, %177, !dbg !24
+  br i1 %178, label %assert_end88, label %assert_fail87, !dbg !24, !prof !25
 
 assert_fail87:                                    ; preds = %assert_end86
-  %167 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %167(ptr nonnull @.str.38), !dbg !24
+  %179 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %179(ptr nonnull @.str.38), !dbg !24
   br label %common.ret
 
 assert_end88:                                     ; preds = %assert_end86
-  %168 = load i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape, align 8, !dbg !24, !tbaa !141
-  %169 = and i64 %168, 4294967295, !dbg !24
-  %170 = icmp eq i64 %169, 1, !dbg !24
-  br i1 %170, label %assert_end90, label %assert_fail89, !dbg !24, !prof !25
+  %180 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape, align 8, !dbg !24, !tbaa !147
+  %181 = and i64 %180, 4294967295, !dbg !24
+  %182 = icmp eq i64 %181, 512, !dbg !24
+  br i1 %182, label %assert_end90, label %assert_fail89, !dbg !24, !prof !25
 
 assert_fail89:                                    ; preds = %assert_end88
-  %171 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %171(ptr nonnull @.str.39), !dbg !24
+  %183 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %183(ptr nonnull @.str.39), !dbg !24
   br label %common.ret
 
 assert_end90:                                     ; preds = %assert_end88
-  %172 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape, i64 1, !dbg !24
-  %173 = load i64, ptr %172, align 8, !dbg !24, !tbaa !151
-  %174 = and i64 %173, 4294967295, !dbg !24
-  %175 = icmp eq i64 %174, 800, !dbg !24
-  br i1 %175, label %assert_end92, label %assert_fail91, !dbg !24, !prof !25
+  %184 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape, i64 1, !dbg !24
+  %185 = load i64, ptr %184, align 8, !dbg !24, !tbaa !157
+  %186 = and i64 %185, 4294967295, !dbg !24
+  %187 = icmp eq i64 %186, 1024, !dbg !24
+  br i1 %187, label %assert_end92, label %assert_fail91, !dbg !24, !prof !25
 
 assert_fail91:                                    ; preds = %assert_end90
-  %176 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %176(ptr nonnull @.str.40), !dbg !24
+  %188 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %188(ptr nonnull @.str.40), !dbg !24
   br label %common.ret
 
 assert_end92:                                     ; preds = %assert_end90
-  %177 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape, i64 2, !dbg !24
-  %178 = load i64, ptr %177, align 8, !dbg !24, !tbaa !153
-  %179 = and i64 %178, 4294967295, !dbg !24
-  %180 = icmp eq i64 %179, 16, !dbg !24
-  br i1 %180, label %assert_end94, label %assert_fail93, !dbg !24, !prof !25
+  %189 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape, i64 2, !dbg !24
+  %190 = load i64, ptr %189, align 8, !dbg !24, !tbaa !159
+  %191 = and i64 %190, 4294967295, !dbg !24
+  %192 = icmp eq i64 %191, 16, !dbg !24
+  br i1 %192, label %assert_end94, label %assert_fail93, !dbg !24, !prof !25
 
 assert_fail93:                                    ; preds = %assert_end92
-  %181 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %181(ptr nonnull @.str.41), !dbg !24
+  %193 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %193(ptr nonnull @.str.41), !dbg !24
   br label %common.ret
 
 assert_end94:                                     ; preds = %assert_end92
-  %.not122 = icmp eq ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides, null, !dbg !24
+  %.not122 = icmp eq ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides, null, !dbg !24
   br i1 %.not122, label %if_end96, label %if_then95, !dbg !24, !prof !29
 
 if_then95:                                        ; preds = %assert_end94
-  %182 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides, i64 2, !dbg !24
-  %183 = load i64, ptr %182, align 8, !dbg !24, !tbaa !156
-  %184 = and i64 %183, 4294967295, !dbg !24
-  %185 = icmp eq i64 %184, 1, !dbg !24
-  %186 = getelementptr inbounds i64, ptr %preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides, i64 1, !dbg !24
-  %187 = load i64, ptr %186, align 8, !dbg !24, !tbaa !166
-  %188 = and i64 %187, 4294967295, !dbg !24
-  %189 = icmp eq i64 %188, 16, !dbg !24
-  %190 = and i1 %185, %189, !dbg !24
-  br i1 %190, label %if_end96, label %assert_fail97, !dbg !24, !prof !25
+  %194 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides, i64 2, !dbg !24
+  %195 = load i64, ptr %194, align 8, !dbg !24, !tbaa !162
+  %196 = and i64 %195, 4294967295, !dbg !24
+  %197 = icmp eq i64 %196, 1, !dbg !24
+  %198 = getelementptr inbounds i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides, i64 1, !dbg !24
+  %199 = load i64, ptr %198, align 8, !dbg !24, !tbaa !172
+  %200 = and i64 %199, 4294967295, !dbg !24
+  %201 = icmp eq i64 %200, 16, !dbg !24
+  %202 = and i1 %197, %201, !dbg !24
+  %203 = load i64, ptr %preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides, align 8, !dbg !24, !tbaa !175
+  %204 = and i64 %203, 4294967295, !dbg !24
+  %205 = icmp eq i64 %204, 16384, !dbg !24
+  %206 = and i1 %202, %205, !dbg !24
+  br i1 %206, label %if_end96, label %assert_fail97, !dbg !24, !prof !25
 
 if_end96:                                         ; preds = %if_then95, %assert_end94
-  %191 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 6, !dbg !24
-  %192 = load i64, ptr %191, align 8, !dbg !24
-  %193 = icmp eq i64 %192, 0, !dbg !24
-  br i1 %193, label %assert_end100, label %assert_fail99, !dbg !24, !prof !25
+  %207 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 6, !dbg !24
+  %208 = load i64, ptr %207, align 8, !dbg !24
+  %209 = icmp eq i64 %208, 0, !dbg !24
+  br i1 %209, label %assert_end100, label %assert_fail99, !dbg !24, !prof !25
 
 assert_fail97:                                    ; preds = %if_then95
-  %194 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %194(ptr nonnull @.str.42), !dbg !24
+  %210 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %210(ptr nonnull @.str.42), !dbg !24
   br label %common.ret
 
 assert_fail99:                                    ; preds = %if_end96
-  %195 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %195(ptr nonnull @.str.43), !dbg !24
+  %211 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %211(ptr nonnull @.str.43), !dbg !24
   br label %common.ret
 
 assert_end100:                                    ; preds = %if_end96
-  %196 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 1, i32 0, !dbg !24
-  %197 = load i32, ptr %196, align 4, !dbg !24
-  %198 = icmp eq i32 %197, 1, !dbg !24
-  br i1 %198, label %assert_end102, label %assert_fail101, !dbg !24, !prof !25
+  %212 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 1, i32 0, !dbg !24
+  %213 = load i32, ptr %212, align 4, !dbg !24
+  %214 = icmp eq i32 %213, 1, !dbg !24
+  br i1 %214, label %assert_end102, label %assert_fail101, !dbg !24, !prof !25
 
 assert_fail101:                                   ; preds = %assert_end100
-  %199 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %199(ptr nonnull @.str.44), !dbg !24
+  %215 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %215(ptr nonnull @.str.44), !dbg !24
   br label %common.ret
 
 assert_end102:                                    ; preds = %assert_end100
-  %200 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 1, i32 1, !dbg !24
-  %201 = load i32, ptr %200, align 4, !dbg !24
-  %202 = icmp eq i32 %dev_id, %201, !dbg !24
-  br i1 %202, label %assert_end104, label %assert_fail103, !dbg !24, !prof !25
+  %216 = getelementptr inbounds %1, ptr %QLUT, i64 0, i32 1, i32 1, !dbg !24
+  %217 = load i32, ptr %216, align 4, !dbg !24
+  %218 = icmp eq i32 %dev_id, %217, !dbg !24
+  br i1 %218, label %assert_end104, label %assert_fail103, !dbg !24, !prof !25
 
 assert_fail103:                                   ; preds = %assert_end102
-  %203 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %203(ptr nonnull @.str.45), !dbg !24
+  %219 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %219(ptr nonnull @.str.45), !dbg !24
   br label %common.ret
 
 assert_end104:                                    ; preds = %assert_end102
@@ -713,12 +729,12 @@ assert_end104:                                    ; preds = %assert_end102
   br i1 %.not123, label %assert_fail105, label %assert_end106, !dbg !24, !prof !29
 
 assert_fail105:                                   ; preds = %assert_end104
-  %204 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
-  tail call void %204(ptr nonnull @.str.46), !dbg !24
+  %220 = load ptr, ptr @__TVMAPISetLastError, align 8, !dbg !24, !tbaa !26
+  tail call void %220(ptr nonnull @.str.46), !dbg !24
   br label %common.ret
 
 assert_end106:                                    ; preds = %assert_end104
-  tail call fastcc void @preprocessor_t1_int8_m6400_k3200_n1_b2_compute_(ptr nonnull %LUT_Scales107, ptr nonnull %B108, ptr nonnull %QLUT109, ptr nonnull %LUT_Biases110), !dbg !24
+  tail call fastcc void @preprocessor_t12_int8_m4096_k4096_n512_b2_compute_(ptr nonnull %LUT_Scales107, ptr nonnull %B108, ptr nonnull %QLUT109, ptr nonnull %LUT_Biases110), !dbg !24
   br label %common.ret
 }
 
@@ -729,595 +745,631 @@ declare void @llvm.dbg.declare(metadata, metadata, metadata) #1
 declare void @llvm.assume(i1 noundef) #2
 
 ; Function Attrs: nofree noinline nosync nounwind memory(argmem: readwrite)
-define internal fastcc void @preprocessor_t1_int8_m6400_k3200_n1_b2_compute_(ptr noalias nocapture align 64 %LUT_Scales, ptr noalias align 64 %B, ptr noalias writeonly align 64 %QLUT, ptr noalias nocapture writeonly align 64 %LUT_Biases) unnamed_addr #3 !dbg !169 {
+define internal fastcc void @preprocessor_t12_int8_m4096_k4096_n512_b2_compute_(ptr noalias nocapture align 64 %LUT_Scales, ptr noalias align 64 %B, ptr noalias writeonly align 64 %QLUT, ptr noalias nocapture writeonly align 64 %LUT_Biases) unnamed_addr #3 !dbg !177 {
 entry:
-  call void @llvm.dbg.value(metadata ptr %LUT_Scales, metadata !173, metadata !DIExpression()), !dbg !177
-  call void @llvm.dbg.value(metadata ptr %B, metadata !174, metadata !DIExpression()), !dbg !177
-  call void @llvm.dbg.value(metadata ptr %QLUT, metadata !175, metadata !DIExpression()), !dbg !177
-  call void @llvm.dbg.value(metadata ptr %LUT_Biases, metadata !176, metadata !DIExpression()), !dbg !177
-  call void @llvm.dbg.declare(metadata i32 0, metadata !178, metadata !DIExpression()), !dbg !177
-  br label %for_body_kk.outer, !dbg !177
+  call void @llvm.dbg.value(metadata ptr %LUT_Scales, metadata !181, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.value(metadata ptr %B, metadata !182, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.value(metadata ptr %QLUT, metadata !183, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.value(metadata ptr %LUT_Biases, metadata !184, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.declare(metadata i32 0, metadata !186, metadata !DIExpression()), !dbg !185
+  br label %for_begin_kk.outer.preheader, !dbg !185
 
-for_body_kk.outer:                                ; preds = %entry, %for_body_kk.outer
-  %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for_body_kk.outer ]
-  call void @llvm.dbg.declare(metadata i64 %indvars.iv, metadata !178, metadata !DIExpression()), !dbg !177
-  %0 = getelementptr inbounds half, ptr %LUT_Scales, i64 %indvars.iv, !dbg !177
-  %1 = shl nsw i64 %indvars.iv, 6
-  call void @llvm.dbg.declare(metadata i32 0, metadata !179, metadata !DIExpression()), !dbg !177
-  call void @llvm.dbg.declare(metadata i64 0, metadata !179, metadata !DIExpression()), !dbg !177
-  %2 = getelementptr inbounds half, ptr %B, i64 %1, !dbg !177
-  %3 = tail call { <8 x half>, <8 x half>, <8 x half>, <8 x half> } @llvm.aarch64.neon.ld4.v8f16.p0(ptr %2), !dbg !177
-  %4 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %3, 0, !dbg !177
-  %5 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %3, 1, !dbg !177
-  %6 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %3, 2, !dbg !177
-  %7 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %3, 3, !dbg !177
-  %8 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %4), !dbg !177
-  %9 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %5), !dbg !177
-  %10 = fadd <8 x half> %8, %9, !dbg !177
-  %11 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %6), !dbg !177
-  %12 = fadd <8 x half> %11, %10, !dbg !177
-  %13 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %7), !dbg !177
-  %14 = fadd <8 x half> %13, %12, !dbg !177
-  %15 = tail call half @llvm.aarch64.neon.fmaxv.f16.v8f16(<8 x half> %14), !dbg !177
-  %16 = fdiv half %15, 0xH57F0, !dbg !177
-  %17 = fcmp ogt half %16, 0xH0000, !dbg !177
-  %18 = select i1 %17, half %16, half 0xH0000, !dbg !177
-  call void @llvm.dbg.declare(metadata i64 1, metadata !179, metadata !DIExpression()), !dbg !177
-  call void @llvm.dbg.declare(metadata i64 1, metadata !179, metadata !DIExpression()), !dbg !177
-  %19 = or i64 %1, 32, !dbg !177
-  %20 = getelementptr inbounds half, ptr %B, i64 %19, !dbg !177
-  %21 = tail call { <8 x half>, <8 x half>, <8 x half>, <8 x half> } @llvm.aarch64.neon.ld4.v8f16.p0(ptr nonnull %20), !dbg !177
-  %22 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %21, 0, !dbg !177
-  %23 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %21, 1, !dbg !177
-  %24 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %21, 2, !dbg !177
-  %25 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %21, 3, !dbg !177
-  %26 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %22), !dbg !177
-  %27 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %23), !dbg !177
-  %28 = fadd <8 x half> %26, %27, !dbg !177
-  %29 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %24), !dbg !177
-  %30 = fadd <8 x half> %29, %28, !dbg !177
-  %31 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %25), !dbg !177
-  %32 = fadd <8 x half> %31, %30, !dbg !177
-  %33 = tail call half @llvm.aarch64.neon.fmaxv.f16.v8f16(<8 x half> %32), !dbg !177
-  %34 = fdiv half %33, 0xH57F0, !dbg !177
-  %35 = fcmp olt half %18, %34, !dbg !177
-  %36 = select i1 %35, half %34, half %18, !dbg !177
-  call void @llvm.dbg.declare(metadata i64 2, metadata !179, metadata !DIExpression()), !dbg !177
-  store half %36, ptr %0, align 2, !dbg !177, !tbaa !180
-  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !177
-  call void @llvm.dbg.declare(metadata i64 %indvars.iv.next, metadata !178, metadata !DIExpression()), !dbg !177
-  %exitcond.not = icmp eq i64 %indvars.iv.next, 50, !dbg !177
-  br i1 %exitcond.not, label %for_body_k.outer2, label %for_body_kk.outer, !dbg !177, !prof !29
+for_begin_kk.outer.preheader:                     ; preds = %entry, %for_end_kk.outer
+  %indvars.iv18 = phi i64 [ 0, %entry ], [ %indvars.iv.next19, %for_end_kk.outer ]
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv18, metadata !186, metadata !DIExpression()), !dbg !185
+  %0 = shl nsw i64 %indvars.iv18, 6
+  %1 = shl nsw i64 %indvars.iv18, 12
+  call void @llvm.dbg.declare(metadata i32 0, metadata !187, metadata !DIExpression()), !dbg !185
+  br label %for_body_kk.outer, !dbg !185
 
-for_body_k.outer2:                                ; preds = %for_body_kk.outer, %lut_ctor_g4_int8_k16_b2.exit
-  %indvars.iv12 = phi i64 [ %indvars.iv.next13, %lut_ctor_g4_int8_k16_b2.exit ], [ 0, %for_body_kk.outer ]
-  call void @llvm.dbg.declare(metadata i64 %indvars.iv12, metadata !179, metadata !DIExpression()), !dbg !177
-  %37 = shl nuw nsw i64 %indvars.iv12, 8, !dbg !177
-  %38 = getelementptr inbounds i8, ptr %QLUT, i64 %37, !dbg !177
-  %39 = shl nuw nsw i64 %indvars.iv12, 6, !dbg !177
-  %40 = getelementptr inbounds half, ptr %B, i64 %39, !dbg !177
-  %41 = getelementptr inbounds half, ptr %LUT_Scales, i64 %indvars.iv12, !dbg !177
-  %42 = load half, ptr %41, align 2, !dbg !177, !tbaa !180
-  %43 = getelementptr inbounds i8, ptr %38, i64 16, !dbg !177
-  %44 = getelementptr inbounds i8, ptr %38, i64 32, !dbg !177
-  %45 = getelementptr inbounds i8, ptr %38, i64 48, !dbg !177
-  %46 = getelementptr inbounds i8, ptr %38, i64 64, !dbg !177
-  %47 = getelementptr inbounds i8, ptr %38, i64 80, !dbg !177
-  %48 = getelementptr inbounds i8, ptr %38, i64 96, !dbg !177
-  %49 = getelementptr inbounds i8, ptr %38, i64 112, !dbg !177
-  %50 = fcmp une half %42, 0xH0000, !dbg !177
-  %51 = fdiv half 0xH3C00, %42, !dbg !177
-  %52 = select i1 %50, half %51, half 0xH0000, !dbg !177
-  %53 = insertelement <8 x half> undef, half %52, i64 0, !dbg !177
-  %54 = shufflevector <8 x half> %53, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !177
-  br label %55, !dbg !177
+for_body_kk.outer:                                ; preds = %for_begin_kk.outer.preheader, %for_body_kk.outer
+  %indvars.iv = phi i64 [ 0, %for_begin_kk.outer.preheader ], [ %indvars.iv.next, %for_body_kk.outer ]
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv, metadata !187, metadata !DIExpression()), !dbg !185
+  %2 = add nuw nsw i64 %indvars.iv, %0, !dbg !185
+  %3 = getelementptr inbounds half, ptr %LUT_Scales, i64 %2, !dbg !185
+  %4 = shl nsw i64 %indvars.iv, 6
+  %5 = add nuw nsw i64 %4, %1
+  call void @llvm.dbg.declare(metadata i32 0, metadata !188, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.declare(metadata i64 0, metadata !188, metadata !DIExpression()), !dbg !185
+  %6 = getelementptr inbounds half, ptr %B, i64 %5, !dbg !185
+  %7 = tail call { <8 x half>, <8 x half>, <8 x half>, <8 x half> } @llvm.aarch64.neon.ld4.v8f16.p0(ptr %6), !dbg !185
+  %8 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %7, 0, !dbg !185
+  %9 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %7, 1, !dbg !185
+  %10 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %7, 2, !dbg !185
+  %11 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %7, 3, !dbg !185
+  %12 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %8), !dbg !185
+  %13 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %9), !dbg !185
+  %14 = fadd <8 x half> %12, %13, !dbg !185
+  %15 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %10), !dbg !185
+  %16 = fadd <8 x half> %15, %14, !dbg !185
+  %17 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %11), !dbg !185
+  %18 = fadd <8 x half> %17, %16, !dbg !185
+  %19 = tail call half @llvm.aarch64.neon.fmaxv.f16.v8f16(<8 x half> %18), !dbg !185
+  %20 = fdiv half %19, 0xH57F0, !dbg !185
+  %21 = fcmp ogt half %20, 0xH0000, !dbg !185
+  %22 = select i1 %21, half %20, half 0xH0000, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 1, metadata !188, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.declare(metadata i64 1, metadata !188, metadata !DIExpression()), !dbg !185
+  %23 = or i64 %5, 32, !dbg !185
+  %24 = getelementptr inbounds half, ptr %B, i64 %23, !dbg !185
+  %25 = tail call { <8 x half>, <8 x half>, <8 x half>, <8 x half> } @llvm.aarch64.neon.ld4.v8f16.p0(ptr nonnull %24), !dbg !185
+  %26 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %25, 0, !dbg !185
+  %27 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %25, 1, !dbg !185
+  %28 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %25, 2, !dbg !185
+  %29 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %25, 3, !dbg !185
+  %30 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %26), !dbg !185
+  %31 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %27), !dbg !185
+  %32 = fadd <8 x half> %30, %31, !dbg !185
+  %33 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %28), !dbg !185
+  %34 = fadd <8 x half> %33, %32, !dbg !185
+  %35 = tail call <8 x half> @llvm.fabs.v8f16(<8 x half> %29), !dbg !185
+  %36 = fadd <8 x half> %35, %34, !dbg !185
+  %37 = tail call half @llvm.aarch64.neon.fmaxv.f16.v8f16(<8 x half> %36), !dbg !185
+  %38 = fdiv half %37, 0xH57F0, !dbg !185
+  %39 = fcmp olt half %22, %38, !dbg !185
+  %40 = select i1 %39, half %38, half %22, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 2, metadata !188, metadata !DIExpression()), !dbg !185
+  store half %40, ptr %3, align 2, !dbg !185, !tbaa !189
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv.next, metadata !187, metadata !DIExpression()), !dbg !185
+  %exitcond.not = icmp eq i64 %indvars.iv.next, 64, !dbg !185
+  br i1 %exitcond.not, label %for_end_kk.outer, label %for_body_kk.outer, !dbg !185, !prof !29
 
-55:                                               ; preds = %55, %for_body_k.outer2
-  %56 = phi i64 [ 0, %for_body_k.outer2 ], [ %418, %55 ], !dbg !177
-  %57 = phi half [ 0xH0000, %for_body_k.outer2 ], [ %417, %55 ], !dbg !177
-  %58 = shl nsw i64 %56, 5, !dbg !177
-  %59 = getelementptr inbounds half, ptr %40, i64 %58, !dbg !177
-  %60 = tail call { <8 x half>, <8 x half>, <8 x half>, <8 x half> } @llvm.aarch64.neon.ld4.v8f16.p0(ptr %59), !dbg !177
-  %61 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %60, 0, !dbg !177
-  %62 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %60, 1, !dbg !177
-  %63 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %60, 2, !dbg !177
-  %64 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %60, 3, !dbg !177
-  %65 = fsub <8 x half> %61, %62, !dbg !177
-  %66 = fsub <8 x half> %65, %63, !dbg !177
-  %67 = fsub <8 x half> %66, %64, !dbg !177
-  %68 = fadd <8 x half> %61, %62, !dbg !177
-  %69 = fsub <8 x half> %68, %63, !dbg !177
-  %70 = fsub <8 x half> %69, %64, !dbg !177
-  %71 = fadd <8 x half> %63, %65, !dbg !177
-  %72 = fsub <8 x half> %71, %64, !dbg !177
-  %73 = fadd <8 x half> %63, %68, !dbg !177
-  %74 = fsub <8 x half> %73, %64, !dbg !177
-  %75 = fadd <8 x half> %64, %66, !dbg !177
-  %76 = fadd <8 x half> %64, %69, !dbg !177
-  %77 = fadd <8 x half> %64, %71, !dbg !177
-  %78 = fadd <8 x half> %64, %73, !dbg !177
-  %79 = fneg <8 x half> %78, !dbg !177
-  %80 = fneg <8 x half> %77, !dbg !177
-  %81 = fneg <8 x half> %76, !dbg !177
-  %82 = fneg <8 x half> %75, !dbg !177
-  %83 = fneg <8 x half> %74, !dbg !177
-  %84 = fneg <8 x half> %72, !dbg !177
-  %85 = fneg <8 x half> %70, !dbg !177
-  %86 = fneg <8 x half> %67, !dbg !177
-  %87 = shufflevector <8 x half> %79, <8 x half> poison, <2 x i32> <i32 0, i32 1>, !dbg !177
-  %88 = fpext <2 x half> %87 to <2 x float>, !dbg !177
-  %89 = shufflevector <2 x float> %88, <2 x float> poison, <2 x i32> <i32 1, i32 poison>, !dbg !177
-  %90 = fadd <2 x float> %89, %88, !dbg !177
-  %91 = extractelement <2 x float> %90, i64 0, !dbg !177
-  %92 = extractelement <8 x half> %79, i64 2, !dbg !177
-  %93 = fpext half %92 to float, !dbg !177
-  %94 = fadd float %91, %93, !dbg !177
-  %95 = extractelement <8 x half> %79, i64 3, !dbg !177
-  %96 = fpext half %95 to float, !dbg !177
-  %97 = fadd float %94, %96, !dbg !177
-  %98 = extractelement <8 x half> %79, i64 4, !dbg !177
-  %99 = fpext half %98 to float, !dbg !177
-  %100 = fadd float %97, %99, !dbg !177
-  %101 = extractelement <8 x half> %79, i64 5, !dbg !177
-  %102 = fpext half %101 to float, !dbg !177
-  %103 = fadd float %100, %102, !dbg !177
-  %104 = extractelement <8 x half> %79, i64 6, !dbg !177
-  %105 = fpext half %104 to float, !dbg !177
-  %106 = fadd float %103, %105, !dbg !177
-  %107 = extractelement <8 x half> %79, i64 7, !dbg !177
-  %108 = fpext half %107 to float, !dbg !177
-  %109 = fadd float %106, %108, !dbg !177
-  %110 = fpext half %57 to float, !dbg !177
-  %111 = fadd float %109, %110, !dbg !177
-  %112 = fmul <8 x half> %54, %79, !dbg !177
-  %113 = fmul <8 x half> %54, %67, !dbg !177
-  %114 = fmul <8 x half> %54, %80, !dbg !177
-  %115 = fmul <8 x half> %54, %70, !dbg !177
-  %116 = fmul <8 x half> %54, %81, !dbg !177
-  %117 = fmul <8 x half> %54, %72, !dbg !177
-  %118 = fmul <8 x half> %54, %82, !dbg !177
-  %119 = fmul <8 x half> %54, %74, !dbg !177
-  %120 = fmul <8 x half> %54, %83, !dbg !177
-  %121 = fmul <8 x half> %54, %75, !dbg !177
-  %122 = fmul <8 x half> %54, %84, !dbg !177
-  %123 = fmul <8 x half> %54, %76, !dbg !177
-  %124 = fmul <8 x half> %54, %85, !dbg !177
-  %125 = fmul <8 x half> %54, %77, !dbg !177
-  %126 = fmul <8 x half> %54, %86, !dbg !177
-  %127 = fmul <8 x half> %54, %78, !dbg !177
-  %128 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %112), !dbg !177
-  %129 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %128), !dbg !177
-  %130 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %113), !dbg !177
-  %131 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %130), !dbg !177
-  %132 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %114), !dbg !177
-  %133 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %132), !dbg !177
-  %134 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %115), !dbg !177
-  %135 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %134), !dbg !177
-  %136 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %116), !dbg !177
-  %137 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %136), !dbg !177
-  %138 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %117), !dbg !177
-  %139 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %138), !dbg !177
-  %140 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %118), !dbg !177
-  %141 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %140), !dbg !177
-  %142 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %119), !dbg !177
-  %143 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %142), !dbg !177
-  %144 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %120), !dbg !177
-  %145 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %144), !dbg !177
-  %146 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %121), !dbg !177
-  %147 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %146), !dbg !177
-  %148 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %122), !dbg !177
-  %149 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %148), !dbg !177
-  %150 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %123), !dbg !177
-  %151 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %150), !dbg !177
-  %152 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %124), !dbg !177
-  %153 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %152), !dbg !177
-  %154 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %125), !dbg !177
-  %155 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %154), !dbg !177
-  %156 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %126), !dbg !177
-  %157 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %156), !dbg !177
-  %158 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %127), !dbg !177
-  %159 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %158), !dbg !177
-  %160 = shl i64 %56, 7, !dbg !177
-  %161 = getelementptr inbounds i8, ptr %38, i64 %160, !dbg !177
-  %162 = extractelement <8 x i8> %129, i64 0, !dbg !177
-  store i8 %162, ptr %161, align 64, !dbg !177
-  %163 = getelementptr inbounds i8, ptr %161, i64 1, !dbg !177
-  %164 = extractelement <8 x i8> %131, i64 0, !dbg !177
-  store i8 %164, ptr %163, align 1, !dbg !177
-  %165 = getelementptr inbounds i8, ptr %161, i64 2, !dbg !177
-  %166 = extractelement <8 x i8> %133, i64 0, !dbg !177
-  store i8 %166, ptr %165, align 2, !dbg !177
-  %167 = getelementptr inbounds i8, ptr %161, i64 3, !dbg !177
-  %168 = extractelement <8 x i8> %135, i64 0, !dbg !177
-  store i8 %168, ptr %167, align 1, !dbg !177
-  %169 = getelementptr inbounds i8, ptr %161, i64 4, !dbg !177
-  %170 = extractelement <8 x i8> %137, i64 0, !dbg !177
-  store i8 %170, ptr %169, align 4, !dbg !177
-  %171 = getelementptr inbounds i8, ptr %161, i64 5, !dbg !177
-  %172 = extractelement <8 x i8> %139, i64 0, !dbg !177
-  store i8 %172, ptr %171, align 1, !dbg !177
-  %173 = getelementptr inbounds i8, ptr %161, i64 6, !dbg !177
-  %174 = extractelement <8 x i8> %141, i64 0, !dbg !177
-  store i8 %174, ptr %173, align 2, !dbg !177
-  %175 = getelementptr inbounds i8, ptr %161, i64 7, !dbg !177
-  %176 = extractelement <8 x i8> %143, i64 0, !dbg !177
-  store i8 %176, ptr %175, align 1, !dbg !177
-  %177 = getelementptr inbounds i8, ptr %161, i64 8, !dbg !177
-  %178 = extractelement <8 x i8> %145, i64 0, !dbg !177
-  store i8 %178, ptr %177, align 8, !dbg !177
-  %179 = getelementptr inbounds i8, ptr %161, i64 9, !dbg !177
-  %180 = extractelement <8 x i8> %147, i64 0, !dbg !177
-  store i8 %180, ptr %179, align 1, !dbg !177
-  %181 = getelementptr inbounds i8, ptr %161, i64 10, !dbg !177
-  %182 = extractelement <8 x i8> %149, i64 0, !dbg !177
-  store i8 %182, ptr %181, align 2, !dbg !177
-  %183 = getelementptr inbounds i8, ptr %161, i64 11, !dbg !177
-  %184 = extractelement <8 x i8> %151, i64 0, !dbg !177
-  store i8 %184, ptr %183, align 1, !dbg !177
-  %185 = getelementptr inbounds i8, ptr %161, i64 12, !dbg !177
-  %186 = extractelement <8 x i8> %153, i64 0, !dbg !177
-  store i8 %186, ptr %185, align 4, !dbg !177
-  %187 = getelementptr inbounds i8, ptr %161, i64 13, !dbg !177
-  %188 = extractelement <8 x i8> %155, i64 0, !dbg !177
-  store i8 %188, ptr %187, align 1, !dbg !177
-  %189 = getelementptr inbounds i8, ptr %161, i64 14, !dbg !177
-  %190 = extractelement <8 x i8> %157, i64 0, !dbg !177
-  store i8 %190, ptr %189, align 2, !dbg !177
-  %191 = getelementptr inbounds i8, ptr %161, i64 15, !dbg !177
-  %192 = extractelement <8 x i8> %159, i64 0, !dbg !177
-  store i8 %192, ptr %191, align 1, !dbg !177
-  %193 = getelementptr inbounds i8, ptr %43, i64 %160, !dbg !177
-  %194 = extractelement <8 x i8> %129, i64 1, !dbg !177
-  store i8 %194, ptr %193, align 16, !dbg !177
-  %195 = getelementptr inbounds i8, ptr %193, i64 1, !dbg !177
-  %196 = extractelement <8 x i8> %131, i64 1, !dbg !177
-  store i8 %196, ptr %195, align 1, !dbg !177
-  %197 = getelementptr inbounds i8, ptr %193, i64 2, !dbg !177
-  %198 = extractelement <8 x i8> %133, i64 1, !dbg !177
-  store i8 %198, ptr %197, align 2, !dbg !177
-  %199 = getelementptr inbounds i8, ptr %193, i64 3, !dbg !177
-  %200 = extractelement <8 x i8> %135, i64 1, !dbg !177
-  store i8 %200, ptr %199, align 1, !dbg !177
-  %201 = getelementptr inbounds i8, ptr %193, i64 4, !dbg !177
-  %202 = extractelement <8 x i8> %137, i64 1, !dbg !177
-  store i8 %202, ptr %201, align 4, !dbg !177
-  %203 = getelementptr inbounds i8, ptr %193, i64 5, !dbg !177
-  %204 = extractelement <8 x i8> %139, i64 1, !dbg !177
-  store i8 %204, ptr %203, align 1, !dbg !177
-  %205 = getelementptr inbounds i8, ptr %193, i64 6, !dbg !177
-  %206 = extractelement <8 x i8> %141, i64 1, !dbg !177
-  store i8 %206, ptr %205, align 2, !dbg !177
-  %207 = getelementptr inbounds i8, ptr %193, i64 7, !dbg !177
-  %208 = extractelement <8 x i8> %143, i64 1, !dbg !177
-  store i8 %208, ptr %207, align 1, !dbg !177
-  %209 = getelementptr inbounds i8, ptr %193, i64 8, !dbg !177
-  %210 = extractelement <8 x i8> %145, i64 1, !dbg !177
-  store i8 %210, ptr %209, align 8, !dbg !177
-  %211 = getelementptr inbounds i8, ptr %193, i64 9, !dbg !177
-  %212 = extractelement <8 x i8> %147, i64 1, !dbg !177
-  store i8 %212, ptr %211, align 1, !dbg !177
-  %213 = getelementptr inbounds i8, ptr %193, i64 10, !dbg !177
-  %214 = extractelement <8 x i8> %149, i64 1, !dbg !177
-  store i8 %214, ptr %213, align 2, !dbg !177
-  %215 = getelementptr inbounds i8, ptr %193, i64 11, !dbg !177
-  %216 = extractelement <8 x i8> %151, i64 1, !dbg !177
-  store i8 %216, ptr %215, align 1, !dbg !177
-  %217 = getelementptr inbounds i8, ptr %193, i64 12, !dbg !177
-  %218 = extractelement <8 x i8> %153, i64 1, !dbg !177
-  store i8 %218, ptr %217, align 4, !dbg !177
-  %219 = getelementptr inbounds i8, ptr %193, i64 13, !dbg !177
-  %220 = extractelement <8 x i8> %155, i64 1, !dbg !177
-  store i8 %220, ptr %219, align 1, !dbg !177
-  %221 = getelementptr inbounds i8, ptr %193, i64 14, !dbg !177
-  %222 = extractelement <8 x i8> %157, i64 1, !dbg !177
-  store i8 %222, ptr %221, align 2, !dbg !177
-  %223 = getelementptr inbounds i8, ptr %193, i64 15, !dbg !177
-  %224 = extractelement <8 x i8> %159, i64 1, !dbg !177
-  store i8 %224, ptr %223, align 1, !dbg !177
-  %225 = getelementptr inbounds i8, ptr %44, i64 %160, !dbg !177
-  %226 = extractelement <8 x i8> %129, i64 2, !dbg !177
-  store i8 %226, ptr %225, align 32, !dbg !177
-  %227 = getelementptr inbounds i8, ptr %225, i64 1, !dbg !177
-  %228 = extractelement <8 x i8> %131, i64 2, !dbg !177
-  store i8 %228, ptr %227, align 1, !dbg !177
-  %229 = getelementptr inbounds i8, ptr %225, i64 2, !dbg !177
-  %230 = extractelement <8 x i8> %133, i64 2, !dbg !177
-  store i8 %230, ptr %229, align 2, !dbg !177
-  %231 = getelementptr inbounds i8, ptr %225, i64 3, !dbg !177
-  %232 = extractelement <8 x i8> %135, i64 2, !dbg !177
-  store i8 %232, ptr %231, align 1, !dbg !177
-  %233 = getelementptr inbounds i8, ptr %225, i64 4, !dbg !177
-  %234 = extractelement <8 x i8> %137, i64 2, !dbg !177
-  store i8 %234, ptr %233, align 4, !dbg !177
-  %235 = getelementptr inbounds i8, ptr %225, i64 5, !dbg !177
-  %236 = extractelement <8 x i8> %139, i64 2, !dbg !177
-  store i8 %236, ptr %235, align 1, !dbg !177
-  %237 = getelementptr inbounds i8, ptr %225, i64 6, !dbg !177
-  %238 = extractelement <8 x i8> %141, i64 2, !dbg !177
-  store i8 %238, ptr %237, align 2, !dbg !177
-  %239 = getelementptr inbounds i8, ptr %225, i64 7, !dbg !177
-  %240 = extractelement <8 x i8> %143, i64 2, !dbg !177
-  store i8 %240, ptr %239, align 1, !dbg !177
-  %241 = getelementptr inbounds i8, ptr %225, i64 8, !dbg !177
-  %242 = extractelement <8 x i8> %145, i64 2, !dbg !177
-  store i8 %242, ptr %241, align 8, !dbg !177
-  %243 = getelementptr inbounds i8, ptr %225, i64 9, !dbg !177
-  %244 = extractelement <8 x i8> %147, i64 2, !dbg !177
-  store i8 %244, ptr %243, align 1, !dbg !177
-  %245 = getelementptr inbounds i8, ptr %225, i64 10, !dbg !177
-  %246 = extractelement <8 x i8> %149, i64 2, !dbg !177
-  store i8 %246, ptr %245, align 2, !dbg !177
-  %247 = getelementptr inbounds i8, ptr %225, i64 11, !dbg !177
-  %248 = extractelement <8 x i8> %151, i64 2, !dbg !177
-  store i8 %248, ptr %247, align 1, !dbg !177
-  %249 = getelementptr inbounds i8, ptr %225, i64 12, !dbg !177
-  %250 = extractelement <8 x i8> %153, i64 2, !dbg !177
-  store i8 %250, ptr %249, align 4, !dbg !177
-  %251 = getelementptr inbounds i8, ptr %225, i64 13, !dbg !177
-  %252 = extractelement <8 x i8> %155, i64 2, !dbg !177
-  store i8 %252, ptr %251, align 1, !dbg !177
-  %253 = getelementptr inbounds i8, ptr %225, i64 14, !dbg !177
-  %254 = extractelement <8 x i8> %157, i64 2, !dbg !177
-  store i8 %254, ptr %253, align 2, !dbg !177
-  %255 = getelementptr inbounds i8, ptr %225, i64 15, !dbg !177
-  %256 = extractelement <8 x i8> %159, i64 2, !dbg !177
-  store i8 %256, ptr %255, align 1, !dbg !177
-  %257 = getelementptr inbounds i8, ptr %45, i64 %160, !dbg !177
-  %258 = extractelement <8 x i8> %129, i64 3, !dbg !177
-  store i8 %258, ptr %257, align 16, !dbg !177
-  %259 = getelementptr inbounds i8, ptr %257, i64 1, !dbg !177
-  %260 = extractelement <8 x i8> %131, i64 3, !dbg !177
-  store i8 %260, ptr %259, align 1, !dbg !177
-  %261 = getelementptr inbounds i8, ptr %257, i64 2, !dbg !177
-  %262 = extractelement <8 x i8> %133, i64 3, !dbg !177
-  store i8 %262, ptr %261, align 2, !dbg !177
-  %263 = getelementptr inbounds i8, ptr %257, i64 3, !dbg !177
-  %264 = extractelement <8 x i8> %135, i64 3, !dbg !177
-  store i8 %264, ptr %263, align 1, !dbg !177
-  %265 = getelementptr inbounds i8, ptr %257, i64 4, !dbg !177
-  %266 = extractelement <8 x i8> %137, i64 3, !dbg !177
-  store i8 %266, ptr %265, align 4, !dbg !177
-  %267 = getelementptr inbounds i8, ptr %257, i64 5, !dbg !177
-  %268 = extractelement <8 x i8> %139, i64 3, !dbg !177
-  store i8 %268, ptr %267, align 1, !dbg !177
-  %269 = getelementptr inbounds i8, ptr %257, i64 6, !dbg !177
-  %270 = extractelement <8 x i8> %141, i64 3, !dbg !177
-  store i8 %270, ptr %269, align 2, !dbg !177
-  %271 = getelementptr inbounds i8, ptr %257, i64 7, !dbg !177
-  %272 = extractelement <8 x i8> %143, i64 3, !dbg !177
-  store i8 %272, ptr %271, align 1, !dbg !177
-  %273 = getelementptr inbounds i8, ptr %257, i64 8, !dbg !177
-  %274 = extractelement <8 x i8> %145, i64 3, !dbg !177
-  store i8 %274, ptr %273, align 8, !dbg !177
-  %275 = getelementptr inbounds i8, ptr %257, i64 9, !dbg !177
-  %276 = extractelement <8 x i8> %147, i64 3, !dbg !177
-  store i8 %276, ptr %275, align 1, !dbg !177
-  %277 = getelementptr inbounds i8, ptr %257, i64 10, !dbg !177
-  %278 = extractelement <8 x i8> %149, i64 3, !dbg !177
-  store i8 %278, ptr %277, align 2, !dbg !177
-  %279 = getelementptr inbounds i8, ptr %257, i64 11, !dbg !177
-  %280 = extractelement <8 x i8> %151, i64 3, !dbg !177
-  store i8 %280, ptr %279, align 1, !dbg !177
-  %281 = getelementptr inbounds i8, ptr %257, i64 12, !dbg !177
-  %282 = extractelement <8 x i8> %153, i64 3, !dbg !177
-  store i8 %282, ptr %281, align 4, !dbg !177
-  %283 = getelementptr inbounds i8, ptr %257, i64 13, !dbg !177
-  %284 = extractelement <8 x i8> %155, i64 3, !dbg !177
-  store i8 %284, ptr %283, align 1, !dbg !177
-  %285 = getelementptr inbounds i8, ptr %257, i64 14, !dbg !177
-  %286 = extractelement <8 x i8> %157, i64 3, !dbg !177
-  store i8 %286, ptr %285, align 2, !dbg !177
-  %287 = getelementptr inbounds i8, ptr %257, i64 15, !dbg !177
-  %288 = extractelement <8 x i8> %159, i64 3, !dbg !177
-  store i8 %288, ptr %287, align 1, !dbg !177
-  %289 = getelementptr inbounds i8, ptr %46, i64 %160, !dbg !177
-  %290 = extractelement <8 x i8> %129, i64 4, !dbg !177
-  store i8 %290, ptr %289, align 64, !dbg !177
-  %291 = getelementptr inbounds i8, ptr %289, i64 1, !dbg !177
-  %292 = extractelement <8 x i8> %131, i64 4, !dbg !177
-  store i8 %292, ptr %291, align 1, !dbg !177
-  %293 = getelementptr inbounds i8, ptr %289, i64 2, !dbg !177
-  %294 = extractelement <8 x i8> %133, i64 4, !dbg !177
-  store i8 %294, ptr %293, align 2, !dbg !177
-  %295 = getelementptr inbounds i8, ptr %289, i64 3, !dbg !177
-  %296 = extractelement <8 x i8> %135, i64 4, !dbg !177
-  store i8 %296, ptr %295, align 1, !dbg !177
-  %297 = getelementptr inbounds i8, ptr %289, i64 4, !dbg !177
-  %298 = extractelement <8 x i8> %137, i64 4, !dbg !177
-  store i8 %298, ptr %297, align 4, !dbg !177
-  %299 = getelementptr inbounds i8, ptr %289, i64 5, !dbg !177
-  %300 = extractelement <8 x i8> %139, i64 4, !dbg !177
-  store i8 %300, ptr %299, align 1, !dbg !177
-  %301 = getelementptr inbounds i8, ptr %289, i64 6, !dbg !177
-  %302 = extractelement <8 x i8> %141, i64 4, !dbg !177
-  store i8 %302, ptr %301, align 2, !dbg !177
-  %303 = getelementptr inbounds i8, ptr %289, i64 7, !dbg !177
-  %304 = extractelement <8 x i8> %143, i64 4, !dbg !177
-  store i8 %304, ptr %303, align 1, !dbg !177
-  %305 = getelementptr inbounds i8, ptr %289, i64 8, !dbg !177
-  %306 = extractelement <8 x i8> %145, i64 4, !dbg !177
-  store i8 %306, ptr %305, align 8, !dbg !177
-  %307 = getelementptr inbounds i8, ptr %289, i64 9, !dbg !177
-  %308 = extractelement <8 x i8> %147, i64 4, !dbg !177
-  store i8 %308, ptr %307, align 1, !dbg !177
-  %309 = getelementptr inbounds i8, ptr %289, i64 10, !dbg !177
-  %310 = extractelement <8 x i8> %149, i64 4, !dbg !177
-  store i8 %310, ptr %309, align 2, !dbg !177
-  %311 = getelementptr inbounds i8, ptr %289, i64 11, !dbg !177
-  %312 = extractelement <8 x i8> %151, i64 4, !dbg !177
-  store i8 %312, ptr %311, align 1, !dbg !177
-  %313 = getelementptr inbounds i8, ptr %289, i64 12, !dbg !177
-  %314 = extractelement <8 x i8> %153, i64 4, !dbg !177
-  store i8 %314, ptr %313, align 4, !dbg !177
-  %315 = getelementptr inbounds i8, ptr %289, i64 13, !dbg !177
-  %316 = extractelement <8 x i8> %155, i64 4, !dbg !177
-  store i8 %316, ptr %315, align 1, !dbg !177
-  %317 = getelementptr inbounds i8, ptr %289, i64 14, !dbg !177
-  %318 = extractelement <8 x i8> %157, i64 4, !dbg !177
-  store i8 %318, ptr %317, align 2, !dbg !177
-  %319 = getelementptr inbounds i8, ptr %289, i64 15, !dbg !177
-  %320 = extractelement <8 x i8> %159, i64 4, !dbg !177
-  store i8 %320, ptr %319, align 1, !dbg !177
-  %321 = getelementptr inbounds i8, ptr %47, i64 %160, !dbg !177
-  %322 = extractelement <8 x i8> %129, i64 5, !dbg !177
-  store i8 %322, ptr %321, align 16, !dbg !177
-  %323 = getelementptr inbounds i8, ptr %321, i64 1, !dbg !177
-  %324 = extractelement <8 x i8> %131, i64 5, !dbg !177
-  store i8 %324, ptr %323, align 1, !dbg !177
-  %325 = getelementptr inbounds i8, ptr %321, i64 2, !dbg !177
-  %326 = extractelement <8 x i8> %133, i64 5, !dbg !177
-  store i8 %326, ptr %325, align 2, !dbg !177
-  %327 = getelementptr inbounds i8, ptr %321, i64 3, !dbg !177
-  %328 = extractelement <8 x i8> %135, i64 5, !dbg !177
-  store i8 %328, ptr %327, align 1, !dbg !177
-  %329 = getelementptr inbounds i8, ptr %321, i64 4, !dbg !177
-  %330 = extractelement <8 x i8> %137, i64 5, !dbg !177
-  store i8 %330, ptr %329, align 4, !dbg !177
-  %331 = getelementptr inbounds i8, ptr %321, i64 5, !dbg !177
-  %332 = extractelement <8 x i8> %139, i64 5, !dbg !177
-  store i8 %332, ptr %331, align 1, !dbg !177
-  %333 = getelementptr inbounds i8, ptr %321, i64 6, !dbg !177
-  %334 = extractelement <8 x i8> %141, i64 5, !dbg !177
-  store i8 %334, ptr %333, align 2, !dbg !177
-  %335 = getelementptr inbounds i8, ptr %321, i64 7, !dbg !177
-  %336 = extractelement <8 x i8> %143, i64 5, !dbg !177
-  store i8 %336, ptr %335, align 1, !dbg !177
-  %337 = getelementptr inbounds i8, ptr %321, i64 8, !dbg !177
-  %338 = extractelement <8 x i8> %145, i64 5, !dbg !177
-  store i8 %338, ptr %337, align 8, !dbg !177
-  %339 = getelementptr inbounds i8, ptr %321, i64 9, !dbg !177
-  %340 = extractelement <8 x i8> %147, i64 5, !dbg !177
-  store i8 %340, ptr %339, align 1, !dbg !177
-  %341 = getelementptr inbounds i8, ptr %321, i64 10, !dbg !177
-  %342 = extractelement <8 x i8> %149, i64 5, !dbg !177
-  store i8 %342, ptr %341, align 2, !dbg !177
-  %343 = getelementptr inbounds i8, ptr %321, i64 11, !dbg !177
-  %344 = extractelement <8 x i8> %151, i64 5, !dbg !177
-  store i8 %344, ptr %343, align 1, !dbg !177
-  %345 = getelementptr inbounds i8, ptr %321, i64 12, !dbg !177
-  %346 = extractelement <8 x i8> %153, i64 5, !dbg !177
-  store i8 %346, ptr %345, align 4, !dbg !177
-  %347 = getelementptr inbounds i8, ptr %321, i64 13, !dbg !177
-  %348 = extractelement <8 x i8> %155, i64 5, !dbg !177
-  store i8 %348, ptr %347, align 1, !dbg !177
-  %349 = getelementptr inbounds i8, ptr %321, i64 14, !dbg !177
-  %350 = extractelement <8 x i8> %157, i64 5, !dbg !177
-  store i8 %350, ptr %349, align 2, !dbg !177
-  %351 = getelementptr inbounds i8, ptr %321, i64 15, !dbg !177
-  %352 = extractelement <8 x i8> %159, i64 5, !dbg !177
-  store i8 %352, ptr %351, align 1, !dbg !177
-  %353 = getelementptr inbounds i8, ptr %48, i64 %160, !dbg !177
-  %354 = extractelement <8 x i8> %129, i64 6, !dbg !177
-  store i8 %354, ptr %353, align 32, !dbg !177
-  %355 = getelementptr inbounds i8, ptr %353, i64 1, !dbg !177
-  %356 = extractelement <8 x i8> %131, i64 6, !dbg !177
-  store i8 %356, ptr %355, align 1, !dbg !177
-  %357 = getelementptr inbounds i8, ptr %353, i64 2, !dbg !177
-  %358 = extractelement <8 x i8> %133, i64 6, !dbg !177
-  store i8 %358, ptr %357, align 2, !dbg !177
-  %359 = getelementptr inbounds i8, ptr %353, i64 3, !dbg !177
-  %360 = extractelement <8 x i8> %135, i64 6, !dbg !177
-  store i8 %360, ptr %359, align 1, !dbg !177
-  %361 = getelementptr inbounds i8, ptr %353, i64 4, !dbg !177
-  %362 = extractelement <8 x i8> %137, i64 6, !dbg !177
-  store i8 %362, ptr %361, align 4, !dbg !177
-  %363 = getelementptr inbounds i8, ptr %353, i64 5, !dbg !177
-  %364 = extractelement <8 x i8> %139, i64 6, !dbg !177
-  store i8 %364, ptr %363, align 1, !dbg !177
-  %365 = getelementptr inbounds i8, ptr %353, i64 6, !dbg !177
-  %366 = extractelement <8 x i8> %141, i64 6, !dbg !177
-  store i8 %366, ptr %365, align 2, !dbg !177
-  %367 = getelementptr inbounds i8, ptr %353, i64 7, !dbg !177
-  %368 = extractelement <8 x i8> %143, i64 6, !dbg !177
-  store i8 %368, ptr %367, align 1, !dbg !177
-  %369 = getelementptr inbounds i8, ptr %353, i64 8, !dbg !177
-  %370 = extractelement <8 x i8> %145, i64 6, !dbg !177
-  store i8 %370, ptr %369, align 8, !dbg !177
-  %371 = getelementptr inbounds i8, ptr %353, i64 9, !dbg !177
-  %372 = extractelement <8 x i8> %147, i64 6, !dbg !177
-  store i8 %372, ptr %371, align 1, !dbg !177
-  %373 = getelementptr inbounds i8, ptr %353, i64 10, !dbg !177
-  %374 = extractelement <8 x i8> %149, i64 6, !dbg !177
-  store i8 %374, ptr %373, align 2, !dbg !177
-  %375 = getelementptr inbounds i8, ptr %353, i64 11, !dbg !177
-  %376 = extractelement <8 x i8> %151, i64 6, !dbg !177
-  store i8 %376, ptr %375, align 1, !dbg !177
-  %377 = getelementptr inbounds i8, ptr %353, i64 12, !dbg !177
-  %378 = extractelement <8 x i8> %153, i64 6, !dbg !177
-  store i8 %378, ptr %377, align 4, !dbg !177
-  %379 = getelementptr inbounds i8, ptr %353, i64 13, !dbg !177
-  %380 = extractelement <8 x i8> %155, i64 6, !dbg !177
-  store i8 %380, ptr %379, align 1, !dbg !177
-  %381 = getelementptr inbounds i8, ptr %353, i64 14, !dbg !177
-  %382 = extractelement <8 x i8> %157, i64 6, !dbg !177
-  store i8 %382, ptr %381, align 2, !dbg !177
-  %383 = getelementptr inbounds i8, ptr %353, i64 15, !dbg !177
-  %384 = extractelement <8 x i8> %159, i64 6, !dbg !177
-  store i8 %384, ptr %383, align 1, !dbg !177
-  %385 = getelementptr inbounds i8, ptr %49, i64 %160, !dbg !177
-  %386 = extractelement <8 x i8> %129, i64 7, !dbg !177
-  store i8 %386, ptr %385, align 16, !dbg !177
-  %387 = getelementptr inbounds i8, ptr %385, i64 1, !dbg !177
-  %388 = extractelement <8 x i8> %131, i64 7, !dbg !177
-  store i8 %388, ptr %387, align 1, !dbg !177
-  %389 = getelementptr inbounds i8, ptr %385, i64 2, !dbg !177
-  %390 = extractelement <8 x i8> %133, i64 7, !dbg !177
-  store i8 %390, ptr %389, align 2, !dbg !177
-  %391 = getelementptr inbounds i8, ptr %385, i64 3, !dbg !177
-  %392 = extractelement <8 x i8> %135, i64 7, !dbg !177
-  store i8 %392, ptr %391, align 1, !dbg !177
-  %393 = getelementptr inbounds i8, ptr %385, i64 4, !dbg !177
-  %394 = extractelement <8 x i8> %137, i64 7, !dbg !177
-  store i8 %394, ptr %393, align 4, !dbg !177
-  %395 = getelementptr inbounds i8, ptr %385, i64 5, !dbg !177
-  %396 = extractelement <8 x i8> %139, i64 7, !dbg !177
-  store i8 %396, ptr %395, align 1, !dbg !177
-  %397 = getelementptr inbounds i8, ptr %385, i64 6, !dbg !177
-  %398 = extractelement <8 x i8> %141, i64 7, !dbg !177
-  store i8 %398, ptr %397, align 2, !dbg !177
-  %399 = getelementptr inbounds i8, ptr %385, i64 7, !dbg !177
-  %400 = extractelement <8 x i8> %143, i64 7, !dbg !177
-  store i8 %400, ptr %399, align 1, !dbg !177
-  %401 = getelementptr inbounds i8, ptr %385, i64 8, !dbg !177
-  %402 = extractelement <8 x i8> %145, i64 7, !dbg !177
-  store i8 %402, ptr %401, align 8, !dbg !177
-  %403 = getelementptr inbounds i8, ptr %385, i64 9, !dbg !177
-  %404 = extractelement <8 x i8> %147, i64 7, !dbg !177
-  store i8 %404, ptr %403, align 1, !dbg !177
-  %405 = getelementptr inbounds i8, ptr %385, i64 10, !dbg !177
-  %406 = extractelement <8 x i8> %149, i64 7, !dbg !177
-  store i8 %406, ptr %405, align 2, !dbg !177
-  %407 = getelementptr inbounds i8, ptr %385, i64 11, !dbg !177
-  %408 = extractelement <8 x i8> %151, i64 7, !dbg !177
-  store i8 %408, ptr %407, align 1, !dbg !177
-  %409 = getelementptr inbounds i8, ptr %385, i64 12, !dbg !177
-  %410 = extractelement <8 x i8> %153, i64 7, !dbg !177
-  store i8 %410, ptr %409, align 4, !dbg !177
-  %411 = getelementptr inbounds i8, ptr %385, i64 13, !dbg !177
-  %412 = extractelement <8 x i8> %155, i64 7, !dbg !177
-  store i8 %412, ptr %411, align 1, !dbg !177
-  %413 = getelementptr inbounds i8, ptr %385, i64 14, !dbg !177
-  %414 = extractelement <8 x i8> %157, i64 7, !dbg !177
-  store i8 %414, ptr %413, align 2, !dbg !177
-  %415 = getelementptr inbounds i8, ptr %385, i64 15, !dbg !177
-  %416 = extractelement <8 x i8> %159, i64 7, !dbg !177
-  store i8 %416, ptr %415, align 1, !dbg !177
-  %417 = fptrunc float %111 to half, !dbg !177
-  %418 = add nuw nsw i64 %56, 1, !dbg !177
-  %419 = icmp eq i64 %418, 2, !dbg !177
-  br i1 %419, label %lut_ctor_g4_int8_k16_b2.exit, label %55, !dbg !177, !llvm.loop !184
+for_end_kk.outer:                                 ; preds = %for_body_kk.outer
+  %indvars.iv.next19 = add nuw nsw i64 %indvars.iv18, 1, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv.next19, metadata !186, metadata !DIExpression()), !dbg !185
+  %exitcond21.not = icmp eq i64 %indvars.iv.next19, 512, !dbg !185
+  br i1 %exitcond21.not, label %for_begin_k.outer5.preheader, label %for_begin_kk.outer.preheader, !dbg !185, !prof !29
 
-lut_ctor_g4_int8_k16_b2.exit:                     ; preds = %55
-  %420 = getelementptr inbounds half, ptr %LUT_Biases, i64 %indvars.iv12, !dbg !177
-  store half %42, ptr %41, align 2, !dbg !177, !tbaa !180
-  store half %417, ptr %420, align 2, !dbg !177, !tbaa !180
-  %indvars.iv.next13 = add nuw nsw i64 %indvars.iv12, 1, !dbg !177
-  call void @llvm.dbg.declare(metadata i64 %indvars.iv.next13, metadata !179, metadata !DIExpression()), !dbg !177
-  %exitcond15.not = icmp eq i64 %indvars.iv.next13, 50, !dbg !177
-  br i1 %exitcond15.not, label %for_end_k.outer3, label %for_body_k.outer2, !dbg !177, !prof !29
+for_begin_k.outer5.preheader:                     ; preds = %for_end_kk.outer, %for_end_k.outer7
+  %indvars.iv27 = phi i64 [ %indvars.iv.next28, %for_end_k.outer7 ], [ 0, %for_end_kk.outer ]
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv27, metadata !186, metadata !DIExpression()), !dbg !185
+  %41 = shl nsw i64 %indvars.iv27, 6
+  %42 = shl nsw i64 %indvars.iv27, 14
+  %43 = shl nsw i64 %indvars.iv27, 12
+  call void @llvm.dbg.declare(metadata i32 0, metadata !188, metadata !DIExpression()), !dbg !185
+  br label %for_body_k.outer6, !dbg !185
 
-for_end_k.outer3:                                 ; preds = %lut_ctor_g4_int8_k16_b2.exit
-  ret void, !dbg !177
+for_end_n3:                                       ; preds = %for_end_k.outer7
+  ret void, !dbg !185
+
+for_body_k.outer6:                                ; preds = %for_begin_k.outer5.preheader, %lut_ctor_g4_int8_k16_b2.exit
+  %indvars.iv22 = phi i64 [ 0, %for_begin_k.outer5.preheader ], [ %indvars.iv.next23, %lut_ctor_g4_int8_k16_b2.exit ]
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv22, metadata !188, metadata !DIExpression()), !dbg !185
+  %44 = add nuw nsw i64 %indvars.iv22, %41, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 %44, metadata !193, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.declare(metadata i64 %44, metadata !193, metadata !DIExpression()), !dbg !185
+  %45 = shl nuw nsw i64 %indvars.iv22, 8, !dbg !185
+  %46 = add nuw nsw i64 %45, %42, !dbg !185
+  %47 = getelementptr inbounds i8, ptr %QLUT, i64 %46, !dbg !185
+  %48 = shl nuw nsw i64 %indvars.iv22, 6, !dbg !185
+  %49 = add nuw nsw i64 %48, %43, !dbg !185
+  %50 = getelementptr inbounds half, ptr %B, i64 %49, !dbg !185
+  %51 = getelementptr inbounds half, ptr %LUT_Scales, i64 %44, !dbg !185
+  %52 = load half, ptr %51, align 2, !dbg !185, !tbaa !189
+  %53 = getelementptr inbounds i8, ptr %47, i64 16, !dbg !185
+  %54 = getelementptr inbounds i8, ptr %47, i64 32, !dbg !185
+  %55 = getelementptr inbounds i8, ptr %47, i64 48, !dbg !185
+  %56 = getelementptr inbounds i8, ptr %47, i64 64, !dbg !185
+  %57 = getelementptr inbounds i8, ptr %47, i64 80, !dbg !185
+  %58 = getelementptr inbounds i8, ptr %47, i64 96, !dbg !185
+  %59 = getelementptr inbounds i8, ptr %47, i64 112, !dbg !185
+  %60 = fcmp une half %52, 0xH0000, !dbg !185
+  %61 = fdiv half 0xH3C00, %52, !dbg !185
+  %62 = select i1 %60, half %61, half 0xH0000, !dbg !185
+  %63 = insertelement <8 x half> undef, half %62, i64 0, !dbg !185
+  %64 = shufflevector <8 x half> %63, <8 x half> poison, <8 x i32> zeroinitializer, !dbg !185
+  br label %65, !dbg !185
+
+65:                                               ; preds = %65, %for_body_k.outer6
+  %66 = phi i64 [ 0, %for_body_k.outer6 ], [ %428, %65 ], !dbg !185
+  %67 = phi half [ 0xH0000, %for_body_k.outer6 ], [ %427, %65 ], !dbg !185
+  %68 = shl nsw i64 %66, 5, !dbg !185
+  %69 = getelementptr inbounds half, ptr %50, i64 %68, !dbg !185
+  %70 = tail call { <8 x half>, <8 x half>, <8 x half>, <8 x half> } @llvm.aarch64.neon.ld4.v8f16.p0(ptr %69), !dbg !185
+  %71 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %70, 0, !dbg !185
+  %72 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %70, 1, !dbg !185
+  %73 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %70, 2, !dbg !185
+  %74 = extractvalue { <8 x half>, <8 x half>, <8 x half>, <8 x half> } %70, 3, !dbg !185
+  %75 = fsub <8 x half> %71, %72, !dbg !185
+  %76 = fsub <8 x half> %75, %73, !dbg !185
+  %77 = fsub <8 x half> %76, %74, !dbg !185
+  %78 = fadd <8 x half> %71, %72, !dbg !185
+  %79 = fsub <8 x half> %78, %73, !dbg !185
+  %80 = fsub <8 x half> %79, %74, !dbg !185
+  %81 = fadd <8 x half> %73, %75, !dbg !185
+  %82 = fsub <8 x half> %81, %74, !dbg !185
+  %83 = fadd <8 x half> %73, %78, !dbg !185
+  %84 = fsub <8 x half> %83, %74, !dbg !185
+  %85 = fadd <8 x half> %74, %76, !dbg !185
+  %86 = fadd <8 x half> %74, %79, !dbg !185
+  %87 = fadd <8 x half> %74, %81, !dbg !185
+  %88 = fadd <8 x half> %74, %83, !dbg !185
+  %89 = fneg <8 x half> %88, !dbg !185
+  %90 = fneg <8 x half> %87, !dbg !185
+  %91 = fneg <8 x half> %86, !dbg !185
+  %92 = fneg <8 x half> %85, !dbg !185
+  %93 = fneg <8 x half> %84, !dbg !185
+  %94 = fneg <8 x half> %82, !dbg !185
+  %95 = fneg <8 x half> %80, !dbg !185
+  %96 = fneg <8 x half> %77, !dbg !185
+  %97 = shufflevector <8 x half> %89, <8 x half> poison, <2 x i32> <i32 0, i32 1>, !dbg !185
+  %98 = fpext <2 x half> %97 to <2 x float>, !dbg !185
+  %99 = shufflevector <2 x float> %98, <2 x float> poison, <2 x i32> <i32 1, i32 poison>, !dbg !185
+  %100 = fadd <2 x float> %99, %98, !dbg !185
+  %101 = extractelement <2 x float> %100, i64 0, !dbg !185
+  %102 = extractelement <8 x half> %89, i64 2, !dbg !185
+  %103 = fpext half %102 to float, !dbg !185
+  %104 = fadd float %101, %103, !dbg !185
+  %105 = extractelement <8 x half> %89, i64 3, !dbg !185
+  %106 = fpext half %105 to float, !dbg !185
+  %107 = fadd float %104, %106, !dbg !185
+  %108 = extractelement <8 x half> %89, i64 4, !dbg !185
+  %109 = fpext half %108 to float, !dbg !185
+  %110 = fadd float %107, %109, !dbg !185
+  %111 = extractelement <8 x half> %89, i64 5, !dbg !185
+  %112 = fpext half %111 to float, !dbg !185
+  %113 = fadd float %110, %112, !dbg !185
+  %114 = extractelement <8 x half> %89, i64 6, !dbg !185
+  %115 = fpext half %114 to float, !dbg !185
+  %116 = fadd float %113, %115, !dbg !185
+  %117 = extractelement <8 x half> %89, i64 7, !dbg !185
+  %118 = fpext half %117 to float, !dbg !185
+  %119 = fadd float %116, %118, !dbg !185
+  %120 = fpext half %67 to float, !dbg !185
+  %121 = fadd float %119, %120, !dbg !185
+  %122 = fmul <8 x half> %64, %89, !dbg !185
+  %123 = fmul <8 x half> %64, %77, !dbg !185
+  %124 = fmul <8 x half> %64, %90, !dbg !185
+  %125 = fmul <8 x half> %64, %80, !dbg !185
+  %126 = fmul <8 x half> %64, %91, !dbg !185
+  %127 = fmul <8 x half> %64, %82, !dbg !185
+  %128 = fmul <8 x half> %64, %92, !dbg !185
+  %129 = fmul <8 x half> %64, %84, !dbg !185
+  %130 = fmul <8 x half> %64, %93, !dbg !185
+  %131 = fmul <8 x half> %64, %85, !dbg !185
+  %132 = fmul <8 x half> %64, %94, !dbg !185
+  %133 = fmul <8 x half> %64, %86, !dbg !185
+  %134 = fmul <8 x half> %64, %95, !dbg !185
+  %135 = fmul <8 x half> %64, %87, !dbg !185
+  %136 = fmul <8 x half> %64, %96, !dbg !185
+  %137 = fmul <8 x half> %64, %88, !dbg !185
+  %138 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %122), !dbg !185
+  %139 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %138), !dbg !185
+  %140 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %123), !dbg !185
+  %141 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %140), !dbg !185
+  %142 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %124), !dbg !185
+  %143 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %142), !dbg !185
+  %144 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %125), !dbg !185
+  %145 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %144), !dbg !185
+  %146 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %126), !dbg !185
+  %147 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %146), !dbg !185
+  %148 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %127), !dbg !185
+  %149 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %148), !dbg !185
+  %150 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %128), !dbg !185
+  %151 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %150), !dbg !185
+  %152 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %129), !dbg !185
+  %153 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %152), !dbg !185
+  %154 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %130), !dbg !185
+  %155 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %154), !dbg !185
+  %156 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %131), !dbg !185
+  %157 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %156), !dbg !185
+  %158 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %132), !dbg !185
+  %159 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %158), !dbg !185
+  %160 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %133), !dbg !185
+  %161 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %160), !dbg !185
+  %162 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %134), !dbg !185
+  %163 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %162), !dbg !185
+  %164 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %135), !dbg !185
+  %165 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %164), !dbg !185
+  %166 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %136), !dbg !185
+  %167 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %166), !dbg !185
+  %168 = tail call <8 x i16> @llvm.aarch64.neon.fcvtns.v8i16.v8f16(<8 x half> %137), !dbg !185
+  %169 = tail call <8 x i8> @llvm.aarch64.neon.sqxtn.v8i8(<8 x i16> %168), !dbg !185
+  %170 = shl i64 %66, 7, !dbg !185
+  %171 = getelementptr inbounds i8, ptr %47, i64 %170, !dbg !185
+  %172 = extractelement <8 x i8> %139, i64 0, !dbg !185
+  store i8 %172, ptr %171, align 64, !dbg !185
+  %173 = getelementptr inbounds i8, ptr %171, i64 1, !dbg !185
+  %174 = extractelement <8 x i8> %141, i64 0, !dbg !185
+  store i8 %174, ptr %173, align 1, !dbg !185
+  %175 = getelementptr inbounds i8, ptr %171, i64 2, !dbg !185
+  %176 = extractelement <8 x i8> %143, i64 0, !dbg !185
+  store i8 %176, ptr %175, align 2, !dbg !185
+  %177 = getelementptr inbounds i8, ptr %171, i64 3, !dbg !185
+  %178 = extractelement <8 x i8> %145, i64 0, !dbg !185
+  store i8 %178, ptr %177, align 1, !dbg !185
+  %179 = getelementptr inbounds i8, ptr %171, i64 4, !dbg !185
+  %180 = extractelement <8 x i8> %147, i64 0, !dbg !185
+  store i8 %180, ptr %179, align 4, !dbg !185
+  %181 = getelementptr inbounds i8, ptr %171, i64 5, !dbg !185
+  %182 = extractelement <8 x i8> %149, i64 0, !dbg !185
+  store i8 %182, ptr %181, align 1, !dbg !185
+  %183 = getelementptr inbounds i8, ptr %171, i64 6, !dbg !185
+  %184 = extractelement <8 x i8> %151, i64 0, !dbg !185
+  store i8 %184, ptr %183, align 2, !dbg !185
+  %185 = getelementptr inbounds i8, ptr %171, i64 7, !dbg !185
+  %186 = extractelement <8 x i8> %153, i64 0, !dbg !185
+  store i8 %186, ptr %185, align 1, !dbg !185
+  %187 = getelementptr inbounds i8, ptr %171, i64 8, !dbg !185
+  %188 = extractelement <8 x i8> %155, i64 0, !dbg !185
+  store i8 %188, ptr %187, align 8, !dbg !185
+  %189 = getelementptr inbounds i8, ptr %171, i64 9, !dbg !185
+  %190 = extractelement <8 x i8> %157, i64 0, !dbg !185
+  store i8 %190, ptr %189, align 1, !dbg !185
+  %191 = getelementptr inbounds i8, ptr %171, i64 10, !dbg !185
+  %192 = extractelement <8 x i8> %159, i64 0, !dbg !185
+  store i8 %192, ptr %191, align 2, !dbg !185
+  %193 = getelementptr inbounds i8, ptr %171, i64 11, !dbg !185
+  %194 = extractelement <8 x i8> %161, i64 0, !dbg !185
+  store i8 %194, ptr %193, align 1, !dbg !185
+  %195 = getelementptr inbounds i8, ptr %171, i64 12, !dbg !185
+  %196 = extractelement <8 x i8> %163, i64 0, !dbg !185
+  store i8 %196, ptr %195, align 4, !dbg !185
+  %197 = getelementptr inbounds i8, ptr %171, i64 13, !dbg !185
+  %198 = extractelement <8 x i8> %165, i64 0, !dbg !185
+  store i8 %198, ptr %197, align 1, !dbg !185
+  %199 = getelementptr inbounds i8, ptr %171, i64 14, !dbg !185
+  %200 = extractelement <8 x i8> %167, i64 0, !dbg !185
+  store i8 %200, ptr %199, align 2, !dbg !185
+  %201 = getelementptr inbounds i8, ptr %171, i64 15, !dbg !185
+  %202 = extractelement <8 x i8> %169, i64 0, !dbg !185
+  store i8 %202, ptr %201, align 1, !dbg !185
+  %203 = getelementptr inbounds i8, ptr %53, i64 %170, !dbg !185
+  %204 = extractelement <8 x i8> %139, i64 1, !dbg !185
+  store i8 %204, ptr %203, align 16, !dbg !185
+  %205 = getelementptr inbounds i8, ptr %203, i64 1, !dbg !185
+  %206 = extractelement <8 x i8> %141, i64 1, !dbg !185
+  store i8 %206, ptr %205, align 1, !dbg !185
+  %207 = getelementptr inbounds i8, ptr %203, i64 2, !dbg !185
+  %208 = extractelement <8 x i8> %143, i64 1, !dbg !185
+  store i8 %208, ptr %207, align 2, !dbg !185
+  %209 = getelementptr inbounds i8, ptr %203, i64 3, !dbg !185
+  %210 = extractelement <8 x i8> %145, i64 1, !dbg !185
+  store i8 %210, ptr %209, align 1, !dbg !185
+  %211 = getelementptr inbounds i8, ptr %203, i64 4, !dbg !185
+  %212 = extractelement <8 x i8> %147, i64 1, !dbg !185
+  store i8 %212, ptr %211, align 4, !dbg !185
+  %213 = getelementptr inbounds i8, ptr %203, i64 5, !dbg !185
+  %214 = extractelement <8 x i8> %149, i64 1, !dbg !185
+  store i8 %214, ptr %213, align 1, !dbg !185
+  %215 = getelementptr inbounds i8, ptr %203, i64 6, !dbg !185
+  %216 = extractelement <8 x i8> %151, i64 1, !dbg !185
+  store i8 %216, ptr %215, align 2, !dbg !185
+  %217 = getelementptr inbounds i8, ptr %203, i64 7, !dbg !185
+  %218 = extractelement <8 x i8> %153, i64 1, !dbg !185
+  store i8 %218, ptr %217, align 1, !dbg !185
+  %219 = getelementptr inbounds i8, ptr %203, i64 8, !dbg !185
+  %220 = extractelement <8 x i8> %155, i64 1, !dbg !185
+  store i8 %220, ptr %219, align 8, !dbg !185
+  %221 = getelementptr inbounds i8, ptr %203, i64 9, !dbg !185
+  %222 = extractelement <8 x i8> %157, i64 1, !dbg !185
+  store i8 %222, ptr %221, align 1, !dbg !185
+  %223 = getelementptr inbounds i8, ptr %203, i64 10, !dbg !185
+  %224 = extractelement <8 x i8> %159, i64 1, !dbg !185
+  store i8 %224, ptr %223, align 2, !dbg !185
+  %225 = getelementptr inbounds i8, ptr %203, i64 11, !dbg !185
+  %226 = extractelement <8 x i8> %161, i64 1, !dbg !185
+  store i8 %226, ptr %225, align 1, !dbg !185
+  %227 = getelementptr inbounds i8, ptr %203, i64 12, !dbg !185
+  %228 = extractelement <8 x i8> %163, i64 1, !dbg !185
+  store i8 %228, ptr %227, align 4, !dbg !185
+  %229 = getelementptr inbounds i8, ptr %203, i64 13, !dbg !185
+  %230 = extractelement <8 x i8> %165, i64 1, !dbg !185
+  store i8 %230, ptr %229, align 1, !dbg !185
+  %231 = getelementptr inbounds i8, ptr %203, i64 14, !dbg !185
+  %232 = extractelement <8 x i8> %167, i64 1, !dbg !185
+  store i8 %232, ptr %231, align 2, !dbg !185
+  %233 = getelementptr inbounds i8, ptr %203, i64 15, !dbg !185
+  %234 = extractelement <8 x i8> %169, i64 1, !dbg !185
+  store i8 %234, ptr %233, align 1, !dbg !185
+  %235 = getelementptr inbounds i8, ptr %54, i64 %170, !dbg !185
+  %236 = extractelement <8 x i8> %139, i64 2, !dbg !185
+  store i8 %236, ptr %235, align 32, !dbg !185
+  %237 = getelementptr inbounds i8, ptr %235, i64 1, !dbg !185
+  %238 = extractelement <8 x i8> %141, i64 2, !dbg !185
+  store i8 %238, ptr %237, align 1, !dbg !185
+  %239 = getelementptr inbounds i8, ptr %235, i64 2, !dbg !185
+  %240 = extractelement <8 x i8> %143, i64 2, !dbg !185
+  store i8 %240, ptr %239, align 2, !dbg !185
+  %241 = getelementptr inbounds i8, ptr %235, i64 3, !dbg !185
+  %242 = extractelement <8 x i8> %145, i64 2, !dbg !185
+  store i8 %242, ptr %241, align 1, !dbg !185
+  %243 = getelementptr inbounds i8, ptr %235, i64 4, !dbg !185
+  %244 = extractelement <8 x i8> %147, i64 2, !dbg !185
+  store i8 %244, ptr %243, align 4, !dbg !185
+  %245 = getelementptr inbounds i8, ptr %235, i64 5, !dbg !185
+  %246 = extractelement <8 x i8> %149, i64 2, !dbg !185
+  store i8 %246, ptr %245, align 1, !dbg !185
+  %247 = getelementptr inbounds i8, ptr %235, i64 6, !dbg !185
+  %248 = extractelement <8 x i8> %151, i64 2, !dbg !185
+  store i8 %248, ptr %247, align 2, !dbg !185
+  %249 = getelementptr inbounds i8, ptr %235, i64 7, !dbg !185
+  %250 = extractelement <8 x i8> %153, i64 2, !dbg !185
+  store i8 %250, ptr %249, align 1, !dbg !185
+  %251 = getelementptr inbounds i8, ptr %235, i64 8, !dbg !185
+  %252 = extractelement <8 x i8> %155, i64 2, !dbg !185
+  store i8 %252, ptr %251, align 8, !dbg !185
+  %253 = getelementptr inbounds i8, ptr %235, i64 9, !dbg !185
+  %254 = extractelement <8 x i8> %157, i64 2, !dbg !185
+  store i8 %254, ptr %253, align 1, !dbg !185
+  %255 = getelementptr inbounds i8, ptr %235, i64 10, !dbg !185
+  %256 = extractelement <8 x i8> %159, i64 2, !dbg !185
+  store i8 %256, ptr %255, align 2, !dbg !185
+  %257 = getelementptr inbounds i8, ptr %235, i64 11, !dbg !185
+  %258 = extractelement <8 x i8> %161, i64 2, !dbg !185
+  store i8 %258, ptr %257, align 1, !dbg !185
+  %259 = getelementptr inbounds i8, ptr %235, i64 12, !dbg !185
+  %260 = extractelement <8 x i8> %163, i64 2, !dbg !185
+  store i8 %260, ptr %259, align 4, !dbg !185
+  %261 = getelementptr inbounds i8, ptr %235, i64 13, !dbg !185
+  %262 = extractelement <8 x i8> %165, i64 2, !dbg !185
+  store i8 %262, ptr %261, align 1, !dbg !185
+  %263 = getelementptr inbounds i8, ptr %235, i64 14, !dbg !185
+  %264 = extractelement <8 x i8> %167, i64 2, !dbg !185
+  store i8 %264, ptr %263, align 2, !dbg !185
+  %265 = getelementptr inbounds i8, ptr %235, i64 15, !dbg !185
+  %266 = extractelement <8 x i8> %169, i64 2, !dbg !185
+  store i8 %266, ptr %265, align 1, !dbg !185
+  %267 = getelementptr inbounds i8, ptr %55, i64 %170, !dbg !185
+  %268 = extractelement <8 x i8> %139, i64 3, !dbg !185
+  store i8 %268, ptr %267, align 16, !dbg !185
+  %269 = getelementptr inbounds i8, ptr %267, i64 1, !dbg !185
+  %270 = extractelement <8 x i8> %141, i64 3, !dbg !185
+  store i8 %270, ptr %269, align 1, !dbg !185
+  %271 = getelementptr inbounds i8, ptr %267, i64 2, !dbg !185
+  %272 = extractelement <8 x i8> %143, i64 3, !dbg !185
+  store i8 %272, ptr %271, align 2, !dbg !185
+  %273 = getelementptr inbounds i8, ptr %267, i64 3, !dbg !185
+  %274 = extractelement <8 x i8> %145, i64 3, !dbg !185
+  store i8 %274, ptr %273, align 1, !dbg !185
+  %275 = getelementptr inbounds i8, ptr %267, i64 4, !dbg !185
+  %276 = extractelement <8 x i8> %147, i64 3, !dbg !185
+  store i8 %276, ptr %275, align 4, !dbg !185
+  %277 = getelementptr inbounds i8, ptr %267, i64 5, !dbg !185
+  %278 = extractelement <8 x i8> %149, i64 3, !dbg !185
+  store i8 %278, ptr %277, align 1, !dbg !185
+  %279 = getelementptr inbounds i8, ptr %267, i64 6, !dbg !185
+  %280 = extractelement <8 x i8> %151, i64 3, !dbg !185
+  store i8 %280, ptr %279, align 2, !dbg !185
+  %281 = getelementptr inbounds i8, ptr %267, i64 7, !dbg !185
+  %282 = extractelement <8 x i8> %153, i64 3, !dbg !185
+  store i8 %282, ptr %281, align 1, !dbg !185
+  %283 = getelementptr inbounds i8, ptr %267, i64 8, !dbg !185
+  %284 = extractelement <8 x i8> %155, i64 3, !dbg !185
+  store i8 %284, ptr %283, align 8, !dbg !185
+  %285 = getelementptr inbounds i8, ptr %267, i64 9, !dbg !185
+  %286 = extractelement <8 x i8> %157, i64 3, !dbg !185
+  store i8 %286, ptr %285, align 1, !dbg !185
+  %287 = getelementptr inbounds i8, ptr %267, i64 10, !dbg !185
+  %288 = extractelement <8 x i8> %159, i64 3, !dbg !185
+  store i8 %288, ptr %287, align 2, !dbg !185
+  %289 = getelementptr inbounds i8, ptr %267, i64 11, !dbg !185
+  %290 = extractelement <8 x i8> %161, i64 3, !dbg !185
+  store i8 %290, ptr %289, align 1, !dbg !185
+  %291 = getelementptr inbounds i8, ptr %267, i64 12, !dbg !185
+  %292 = extractelement <8 x i8> %163, i64 3, !dbg !185
+  store i8 %292, ptr %291, align 4, !dbg !185
+  %293 = getelementptr inbounds i8, ptr %267, i64 13, !dbg !185
+  %294 = extractelement <8 x i8> %165, i64 3, !dbg !185
+  store i8 %294, ptr %293, align 1, !dbg !185
+  %295 = getelementptr inbounds i8, ptr %267, i64 14, !dbg !185
+  %296 = extractelement <8 x i8> %167, i64 3, !dbg !185
+  store i8 %296, ptr %295, align 2, !dbg !185
+  %297 = getelementptr inbounds i8, ptr %267, i64 15, !dbg !185
+  %298 = extractelement <8 x i8> %169, i64 3, !dbg !185
+  store i8 %298, ptr %297, align 1, !dbg !185
+  %299 = getelementptr inbounds i8, ptr %56, i64 %170, !dbg !185
+  %300 = extractelement <8 x i8> %139, i64 4, !dbg !185
+  store i8 %300, ptr %299, align 64, !dbg !185
+  %301 = getelementptr inbounds i8, ptr %299, i64 1, !dbg !185
+  %302 = extractelement <8 x i8> %141, i64 4, !dbg !185
+  store i8 %302, ptr %301, align 1, !dbg !185
+  %303 = getelementptr inbounds i8, ptr %299, i64 2, !dbg !185
+  %304 = extractelement <8 x i8> %143, i64 4, !dbg !185
+  store i8 %304, ptr %303, align 2, !dbg !185
+  %305 = getelementptr inbounds i8, ptr %299, i64 3, !dbg !185
+  %306 = extractelement <8 x i8> %145, i64 4, !dbg !185
+  store i8 %306, ptr %305, align 1, !dbg !185
+  %307 = getelementptr inbounds i8, ptr %299, i64 4, !dbg !185
+  %308 = extractelement <8 x i8> %147, i64 4, !dbg !185
+  store i8 %308, ptr %307, align 4, !dbg !185
+  %309 = getelementptr inbounds i8, ptr %299, i64 5, !dbg !185
+  %310 = extractelement <8 x i8> %149, i64 4, !dbg !185
+  store i8 %310, ptr %309, align 1, !dbg !185
+  %311 = getelementptr inbounds i8, ptr %299, i64 6, !dbg !185
+  %312 = extractelement <8 x i8> %151, i64 4, !dbg !185
+  store i8 %312, ptr %311, align 2, !dbg !185
+  %313 = getelementptr inbounds i8, ptr %299, i64 7, !dbg !185
+  %314 = extractelement <8 x i8> %153, i64 4, !dbg !185
+  store i8 %314, ptr %313, align 1, !dbg !185
+  %315 = getelementptr inbounds i8, ptr %299, i64 8, !dbg !185
+  %316 = extractelement <8 x i8> %155, i64 4, !dbg !185
+  store i8 %316, ptr %315, align 8, !dbg !185
+  %317 = getelementptr inbounds i8, ptr %299, i64 9, !dbg !185
+  %318 = extractelement <8 x i8> %157, i64 4, !dbg !185
+  store i8 %318, ptr %317, align 1, !dbg !185
+  %319 = getelementptr inbounds i8, ptr %299, i64 10, !dbg !185
+  %320 = extractelement <8 x i8> %159, i64 4, !dbg !185
+  store i8 %320, ptr %319, align 2, !dbg !185
+  %321 = getelementptr inbounds i8, ptr %299, i64 11, !dbg !185
+  %322 = extractelement <8 x i8> %161, i64 4, !dbg !185
+  store i8 %322, ptr %321, align 1, !dbg !185
+  %323 = getelementptr inbounds i8, ptr %299, i64 12, !dbg !185
+  %324 = extractelement <8 x i8> %163, i64 4, !dbg !185
+  store i8 %324, ptr %323, align 4, !dbg !185
+  %325 = getelementptr inbounds i8, ptr %299, i64 13, !dbg !185
+  %326 = extractelement <8 x i8> %165, i64 4, !dbg !185
+  store i8 %326, ptr %325, align 1, !dbg !185
+  %327 = getelementptr inbounds i8, ptr %299, i64 14, !dbg !185
+  %328 = extractelement <8 x i8> %167, i64 4, !dbg !185
+  store i8 %328, ptr %327, align 2, !dbg !185
+  %329 = getelementptr inbounds i8, ptr %299, i64 15, !dbg !185
+  %330 = extractelement <8 x i8> %169, i64 4, !dbg !185
+  store i8 %330, ptr %329, align 1, !dbg !185
+  %331 = getelementptr inbounds i8, ptr %57, i64 %170, !dbg !185
+  %332 = extractelement <8 x i8> %139, i64 5, !dbg !185
+  store i8 %332, ptr %331, align 16, !dbg !185
+  %333 = getelementptr inbounds i8, ptr %331, i64 1, !dbg !185
+  %334 = extractelement <8 x i8> %141, i64 5, !dbg !185
+  store i8 %334, ptr %333, align 1, !dbg !185
+  %335 = getelementptr inbounds i8, ptr %331, i64 2, !dbg !185
+  %336 = extractelement <8 x i8> %143, i64 5, !dbg !185
+  store i8 %336, ptr %335, align 2, !dbg !185
+  %337 = getelementptr inbounds i8, ptr %331, i64 3, !dbg !185
+  %338 = extractelement <8 x i8> %145, i64 5, !dbg !185
+  store i8 %338, ptr %337, align 1, !dbg !185
+  %339 = getelementptr inbounds i8, ptr %331, i64 4, !dbg !185
+  %340 = extractelement <8 x i8> %147, i64 5, !dbg !185
+  store i8 %340, ptr %339, align 4, !dbg !185
+  %341 = getelementptr inbounds i8, ptr %331, i64 5, !dbg !185
+  %342 = extractelement <8 x i8> %149, i64 5, !dbg !185
+  store i8 %342, ptr %341, align 1, !dbg !185
+  %343 = getelementptr inbounds i8, ptr %331, i64 6, !dbg !185
+  %344 = extractelement <8 x i8> %151, i64 5, !dbg !185
+  store i8 %344, ptr %343, align 2, !dbg !185
+  %345 = getelementptr inbounds i8, ptr %331, i64 7, !dbg !185
+  %346 = extractelement <8 x i8> %153, i64 5, !dbg !185
+  store i8 %346, ptr %345, align 1, !dbg !185
+  %347 = getelementptr inbounds i8, ptr %331, i64 8, !dbg !185
+  %348 = extractelement <8 x i8> %155, i64 5, !dbg !185
+  store i8 %348, ptr %347, align 8, !dbg !185
+  %349 = getelementptr inbounds i8, ptr %331, i64 9, !dbg !185
+  %350 = extractelement <8 x i8> %157, i64 5, !dbg !185
+  store i8 %350, ptr %349, align 1, !dbg !185
+  %351 = getelementptr inbounds i8, ptr %331, i64 10, !dbg !185
+  %352 = extractelement <8 x i8> %159, i64 5, !dbg !185
+  store i8 %352, ptr %351, align 2, !dbg !185
+  %353 = getelementptr inbounds i8, ptr %331, i64 11, !dbg !185
+  %354 = extractelement <8 x i8> %161, i64 5, !dbg !185
+  store i8 %354, ptr %353, align 1, !dbg !185
+  %355 = getelementptr inbounds i8, ptr %331, i64 12, !dbg !185
+  %356 = extractelement <8 x i8> %163, i64 5, !dbg !185
+  store i8 %356, ptr %355, align 4, !dbg !185
+  %357 = getelementptr inbounds i8, ptr %331, i64 13, !dbg !185
+  %358 = extractelement <8 x i8> %165, i64 5, !dbg !185
+  store i8 %358, ptr %357, align 1, !dbg !185
+  %359 = getelementptr inbounds i8, ptr %331, i64 14, !dbg !185
+  %360 = extractelement <8 x i8> %167, i64 5, !dbg !185
+  store i8 %360, ptr %359, align 2, !dbg !185
+  %361 = getelementptr inbounds i8, ptr %331, i64 15, !dbg !185
+  %362 = extractelement <8 x i8> %169, i64 5, !dbg !185
+  store i8 %362, ptr %361, align 1, !dbg !185
+  %363 = getelementptr inbounds i8, ptr %58, i64 %170, !dbg !185
+  %364 = extractelement <8 x i8> %139, i64 6, !dbg !185
+  store i8 %364, ptr %363, align 32, !dbg !185
+  %365 = getelementptr inbounds i8, ptr %363, i64 1, !dbg !185
+  %366 = extractelement <8 x i8> %141, i64 6, !dbg !185
+  store i8 %366, ptr %365, align 1, !dbg !185
+  %367 = getelementptr inbounds i8, ptr %363, i64 2, !dbg !185
+  %368 = extractelement <8 x i8> %143, i64 6, !dbg !185
+  store i8 %368, ptr %367, align 2, !dbg !185
+  %369 = getelementptr inbounds i8, ptr %363, i64 3, !dbg !185
+  %370 = extractelement <8 x i8> %145, i64 6, !dbg !185
+  store i8 %370, ptr %369, align 1, !dbg !185
+  %371 = getelementptr inbounds i8, ptr %363, i64 4, !dbg !185
+  %372 = extractelement <8 x i8> %147, i64 6, !dbg !185
+  store i8 %372, ptr %371, align 4, !dbg !185
+  %373 = getelementptr inbounds i8, ptr %363, i64 5, !dbg !185
+  %374 = extractelement <8 x i8> %149, i64 6, !dbg !185
+  store i8 %374, ptr %373, align 1, !dbg !185
+  %375 = getelementptr inbounds i8, ptr %363, i64 6, !dbg !185
+  %376 = extractelement <8 x i8> %151, i64 6, !dbg !185
+  store i8 %376, ptr %375, align 2, !dbg !185
+  %377 = getelementptr inbounds i8, ptr %363, i64 7, !dbg !185
+  %378 = extractelement <8 x i8> %153, i64 6, !dbg !185
+  store i8 %378, ptr %377, align 1, !dbg !185
+  %379 = getelementptr inbounds i8, ptr %363, i64 8, !dbg !185
+  %380 = extractelement <8 x i8> %155, i64 6, !dbg !185
+  store i8 %380, ptr %379, align 8, !dbg !185
+  %381 = getelementptr inbounds i8, ptr %363, i64 9, !dbg !185
+  %382 = extractelement <8 x i8> %157, i64 6, !dbg !185
+  store i8 %382, ptr %381, align 1, !dbg !185
+  %383 = getelementptr inbounds i8, ptr %363, i64 10, !dbg !185
+  %384 = extractelement <8 x i8> %159, i64 6, !dbg !185
+  store i8 %384, ptr %383, align 2, !dbg !185
+  %385 = getelementptr inbounds i8, ptr %363, i64 11, !dbg !185
+  %386 = extractelement <8 x i8> %161, i64 6, !dbg !185
+  store i8 %386, ptr %385, align 1, !dbg !185
+  %387 = getelementptr inbounds i8, ptr %363, i64 12, !dbg !185
+  %388 = extractelement <8 x i8> %163, i64 6, !dbg !185
+  store i8 %388, ptr %387, align 4, !dbg !185
+  %389 = getelementptr inbounds i8, ptr %363, i64 13, !dbg !185
+  %390 = extractelement <8 x i8> %165, i64 6, !dbg !185
+  store i8 %390, ptr %389, align 1, !dbg !185
+  %391 = getelementptr inbounds i8, ptr %363, i64 14, !dbg !185
+  %392 = extractelement <8 x i8> %167, i64 6, !dbg !185
+  store i8 %392, ptr %391, align 2, !dbg !185
+  %393 = getelementptr inbounds i8, ptr %363, i64 15, !dbg !185
+  %394 = extractelement <8 x i8> %169, i64 6, !dbg !185
+  store i8 %394, ptr %393, align 1, !dbg !185
+  %395 = getelementptr inbounds i8, ptr %59, i64 %170, !dbg !185
+  %396 = extractelement <8 x i8> %139, i64 7, !dbg !185
+  store i8 %396, ptr %395, align 16, !dbg !185
+  %397 = getelementptr inbounds i8, ptr %395, i64 1, !dbg !185
+  %398 = extractelement <8 x i8> %141, i64 7, !dbg !185
+  store i8 %398, ptr %397, align 1, !dbg !185
+  %399 = getelementptr inbounds i8, ptr %395, i64 2, !dbg !185
+  %400 = extractelement <8 x i8> %143, i64 7, !dbg !185
+  store i8 %400, ptr %399, align 2, !dbg !185
+  %401 = getelementptr inbounds i8, ptr %395, i64 3, !dbg !185
+  %402 = extractelement <8 x i8> %145, i64 7, !dbg !185
+  store i8 %402, ptr %401, align 1, !dbg !185
+  %403 = getelementptr inbounds i8, ptr %395, i64 4, !dbg !185
+  %404 = extractelement <8 x i8> %147, i64 7, !dbg !185
+  store i8 %404, ptr %403, align 4, !dbg !185
+  %405 = getelementptr inbounds i8, ptr %395, i64 5, !dbg !185
+  %406 = extractelement <8 x i8> %149, i64 7, !dbg !185
+  store i8 %406, ptr %405, align 1, !dbg !185
+  %407 = getelementptr inbounds i8, ptr %395, i64 6, !dbg !185
+  %408 = extractelement <8 x i8> %151, i64 7, !dbg !185
+  store i8 %408, ptr %407, align 2, !dbg !185
+  %409 = getelementptr inbounds i8, ptr %395, i64 7, !dbg !185
+  %410 = extractelement <8 x i8> %153, i64 7, !dbg !185
+  store i8 %410, ptr %409, align 1, !dbg !185
+  %411 = getelementptr inbounds i8, ptr %395, i64 8, !dbg !185
+  %412 = extractelement <8 x i8> %155, i64 7, !dbg !185
+  store i8 %412, ptr %411, align 8, !dbg !185
+  %413 = getelementptr inbounds i8, ptr %395, i64 9, !dbg !185
+  %414 = extractelement <8 x i8> %157, i64 7, !dbg !185
+  store i8 %414, ptr %413, align 1, !dbg !185
+  %415 = getelementptr inbounds i8, ptr %395, i64 10, !dbg !185
+  %416 = extractelement <8 x i8> %159, i64 7, !dbg !185
+  store i8 %416, ptr %415, align 2, !dbg !185
+  %417 = getelementptr inbounds i8, ptr %395, i64 11, !dbg !185
+  %418 = extractelement <8 x i8> %161, i64 7, !dbg !185
+  store i8 %418, ptr %417, align 1, !dbg !185
+  %419 = getelementptr inbounds i8, ptr %395, i64 12, !dbg !185
+  %420 = extractelement <8 x i8> %163, i64 7, !dbg !185
+  store i8 %420, ptr %419, align 4, !dbg !185
+  %421 = getelementptr inbounds i8, ptr %395, i64 13, !dbg !185
+  %422 = extractelement <8 x i8> %165, i64 7, !dbg !185
+  store i8 %422, ptr %421, align 1, !dbg !185
+  %423 = getelementptr inbounds i8, ptr %395, i64 14, !dbg !185
+  %424 = extractelement <8 x i8> %167, i64 7, !dbg !185
+  store i8 %424, ptr %423, align 2, !dbg !185
+  %425 = getelementptr inbounds i8, ptr %395, i64 15, !dbg !185
+  %426 = extractelement <8 x i8> %169, i64 7, !dbg !185
+  store i8 %426, ptr %425, align 1, !dbg !185
+  %427 = fptrunc float %121 to half, !dbg !185
+  %428 = add nuw nsw i64 %66, 1, !dbg !185
+  %429 = icmp eq i64 %428, 2, !dbg !185
+  br i1 %429, label %lut_ctor_g4_int8_k16_b2.exit, label %65, !dbg !185, !llvm.loop !194
+
+lut_ctor_g4_int8_k16_b2.exit:                     ; preds = %65
+  %430 = getelementptr inbounds half, ptr %LUT_Biases, i64 %44, !dbg !185
+  store half %52, ptr %51, align 2, !dbg !185, !tbaa !189
+  store half %427, ptr %430, align 2, !dbg !185, !tbaa !189
+  %indvars.iv.next23 = add nuw nsw i64 %indvars.iv22, 1, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv.next23, metadata !188, metadata !DIExpression()), !dbg !185
+  %exitcond26.not = icmp eq i64 %indvars.iv.next23, 64, !dbg !185
+  br i1 %exitcond26.not, label %for_end_k.outer7, label %for_body_k.outer6, !dbg !185, !prof !29
+
+for_end_k.outer7:                                 ; preds = %lut_ctor_g4_int8_k16_b2.exit
+  %indvars.iv.next28 = add nuw nsw i64 %indvars.iv27, 1, !dbg !185
+  call void @llvm.dbg.declare(metadata i64 %indvars.iv.next28, metadata !186, metadata !DIExpression()), !dbg !185
+  %exitcond30.not = icmp eq i64 %indvars.iv.next28, 512, !dbg !185
+  br i1 %exitcond30.not, label %for_end_n3, label %for_begin_k.outer5.preheader, !dbg !185, !prof !29
 }
 
 ; Function Attrs: nofree nosync nounwind memory(none)
@@ -1515,7 +1567,7 @@ attributes #8 = { nocallback nofree nosync nounwind speculatable willreturn memo
 !8 = !{i32 2, !"tvm_target", !"llvm -mtriple=arm64-apple-darwin23.1.0 -mcpu=apple-m2"}
 !9 = !{i32 4, !"Debug Info Version", i32 3}
 !10 = !{i32 4, !"Dwarf Version", i32 2}
-!11 = distinct !DISubprogram(name: "preprocessor_t1_int8_m6400_k3200_n1_b2", scope: !1, file: !1, type: !12, flags: DIFlagPrototyped, spFlags: DISPFlagLocalToUnit | DISPFlagDefinition | DISPFlagOptimized, unit: !0, retainedNodes: !17)
+!11 = distinct !DISubprogram(name: "preprocessor_t12_int8_m4096_k4096_n512_b2", scope: !1, file: !1, type: !12, flags: DIFlagPrototyped, spFlags: DISPFlagLocalToUnit | DISPFlagDefinition | DISPFlagOptimized, unit: !0, retainedNodes: !17)
 !12 = !DISubroutineType(types: !13)
 !13 = !{!14, !15, !16, !14, !15, !16, !15}
 !14 = !DIBasicType(name: "int32", size: 32, encoding: DW_ATE_signed)
@@ -1535,158 +1587,168 @@ attributes #8 = { nocallback nofree nosync nounwind speculatable willreturn memo
 !28 = !{!"tvm-tbaa"}
 !29 = !{!"branch_weights", i32 1, i32 1048576}
 !30 = !{!31, !31, i64 0}
-!31 = !{!"0x600002cfe700.w4.b0", !32, i64 0}
-!32 = !{!"0x600002cfe700.w8.b0", !33, i64 0}
-!33 = !{!"0x600002cfe700.w16.b0", !34, i64 0}
-!34 = !{!"0x600002cfe700.w32.b0", !35, i64 0}
-!35 = !{!"0x600002cfe700.w64.b0", !36, i64 0}
-!36 = !{!"0x600002cfe700.w128.b0", !37, i64 0}
-!37 = !{!"0x600002cfe700.w256.b0", !38, i64 0}
-!38 = !{!"0x600002cfe700.w512.b0", !39, i64 0}
-!39 = !{!"0x600002cfe700.w1024.b0", !40, i64 0}
-!40 = !{!"0x600002cfe700", !28, i64 0}
+!31 = !{!"0x6000006d6eb0.w4.b0", !32, i64 0}
+!32 = !{!"0x6000006d6eb0.w8.b0", !33, i64 0}
+!33 = !{!"0x6000006d6eb0.w16.b0", !34, i64 0}
+!34 = !{!"0x6000006d6eb0.w32.b0", !35, i64 0}
+!35 = !{!"0x6000006d6eb0.w64.b0", !36, i64 0}
+!36 = !{!"0x6000006d6eb0.w128.b0", !37, i64 0}
+!37 = !{!"0x6000006d6eb0.w256.b0", !38, i64 0}
+!38 = !{!"0x6000006d6eb0.w512.b0", !39, i64 0}
+!39 = !{!"0x6000006d6eb0.w1024.b0", !40, i64 0}
+!40 = !{!"0x6000006d6eb0", !28, i64 0}
 !41 = !DILocalVariable(name: "B.code", scope: !11, file: !1, type: !14)
 !42 = !{!43, !43, i64 0}
-!43 = !{!"0x600002cfe700.w4.b4", !32, i64 0}
+!43 = !{!"0x6000006d6eb0.w4.b4", !32, i64 0}
 !44 = !DILocalVariable(name: "LUT_Scales.code", scope: !11, file: !1, type: !14)
 !45 = !{!46, !46, i64 0}
-!46 = !{!"0x600002cfe700.w4.b8", !47, i64 0}
-!47 = !{!"0x600002cfe700.w8.b8", !33, i64 0}
+!46 = !{!"0x6000006d6eb0.w4.b8", !47, i64 0}
+!47 = !{!"0x6000006d6eb0.w8.b8", !33, i64 0}
 !48 = !DILocalVariable(name: "LUT_Biases.code", scope: !11, file: !1, type: !14)
 !49 = !{!50, !50, i64 0}
-!50 = !{!"0x600002cfe700.w4.b12", !47, i64 0}
+!50 = !{!"0x6000006d6eb0.w4.b12", !47, i64 0}
 !51 = !DILocalVariable(name: "QLUT.code", scope: !11, file: !1, type: !14)
 !52 = !DILocalVariable(name: "B", scope: !11, file: !1, type: !15)
 !53 = !DILocalVariable(name: "LUT_Scales", scope: !11, file: !1, type: !15)
 !54 = !DILocalVariable(name: "LUT_Biases", scope: !11, file: !1, type: !15)
 !55 = !DILocalVariable(name: "QLUT", scope: !11, file: !1, type: !15)
-!56 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.B.shape", scope: !11, file: !1, type: !57)
+!56 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.B.shape", scope: !11, file: !1, type: !57)
 !57 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !58)
 !58 = !DIBasicType(name: "int64", size: 64, encoding: DW_ATE_signed)
-!59 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.B.strides", scope: !11, file: !1, type: !57)
+!59 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.B.strides", scope: !11, file: !1, type: !57)
 !60 = !DILocalVariable(name: "dev_id", scope: !11, file: !1, type: !14)
 !61 = !DILocalVariable(name: "B", scope: !11, file: !1, type: !62)
 !62 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !63)
 !63 = !DIBasicType(name: "float16", size: 16, encoding: DW_ATE_float)
-!64 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.shape", scope: !11, file: !1, type: !57)
-!65 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Scales.strides", scope: !11, file: !1, type: !57)
+!64 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.shape", scope: !11, file: !1, type: !57)
+!65 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Scales.strides", scope: !11, file: !1, type: !57)
 !66 = !DILocalVariable(name: "LUT_Scales", scope: !11, file: !1, type: !62)
-!67 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.shape", scope: !11, file: !1, type: !57)
-!68 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.LUT_Biases.strides", scope: !11, file: !1, type: !57)
+!67 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.shape", scope: !11, file: !1, type: !57)
+!68 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.LUT_Biases.strides", scope: !11, file: !1, type: !57)
 !69 = !DILocalVariable(name: "LUT_Biases", scope: !11, file: !1, type: !62)
-!70 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.shape", scope: !11, file: !1, type: !57)
-!71 = !DILocalVariable(name: "preprocessor_t1_int8_m6400_k3200_n1_b2.QLUT.strides", scope: !11, file: !1, type: !57)
+!70 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.shape", scope: !11, file: !1, type: !57)
+!71 = !DILocalVariable(name: "preprocessor_t12_int8_m4096_k4096_n512_b2.QLUT.strides", scope: !11, file: !1, type: !57)
 !72 = !DILocalVariable(name: "QLUT", scope: !11, file: !1, type: !73)
 !73 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !74)
 !74 = !DIBasicType(name: "int8", size: 8, encoding: DW_ATE_signed)
 !75 = !{!76, !76, i64 0}
-!76 = !{!"0x600002cff4b0.w8.b0", !77, i64 0}
-!77 = !{!"0x600002cff4b0.w16.b0", !78, i64 0}
-!78 = !{!"0x600002cff4b0.w32.b0", !79, i64 0}
-!79 = !{!"0x600002cff4b0.w64.b0", !80, i64 0}
-!80 = !{!"0x600002cff4b0.w128.b0", !81, i64 0}
-!81 = !{!"0x600002cff4b0.w256.b0", !82, i64 0}
-!82 = !{!"0x600002cff4b0.w512.b0", !83, i64 0}
-!83 = !{!"0x600002cff4b0.w1024.b0", !84, i64 0}
-!84 = !{!"0x600002cff4b0", !28, i64 0}
+!76 = !{!"0x600000683a20.w8.b0", !77, i64 0}
+!77 = !{!"0x600000683a20.w16.b0", !78, i64 0}
+!78 = !{!"0x600000683a20.w32.b0", !79, i64 0}
+!79 = !{!"0x600000683a20.w64.b0", !80, i64 0}
+!80 = !{!"0x600000683a20.w128.b0", !81, i64 0}
+!81 = !{!"0x600000683a20.w256.b0", !82, i64 0}
+!82 = !{!"0x600000683a20.w512.b0", !83, i64 0}
+!83 = !{!"0x600000683a20.w1024.b0", !84, i64 0}
+!84 = !{!"0x600000683a20", !28, i64 0}
 !85 = !{!86, !86, i64 0}
-!86 = !{!"0x600002cff4b0.w8.b8", !77, i64 0}
+!86 = !{!"0x600000683a20.w8.b8", !77, i64 0}
 !87 = !{!88, !88, i64 0}
-!88 = !{!"0x600002c1a3a0.w8.b8", !89, i64 0}
-!89 = !{!"0x600002c1a3a0.w16.b0", !90, i64 0}
-!90 = !{!"0x600002c1a3a0.w32.b0", !91, i64 0}
-!91 = !{!"0x600002c1a3a0.w64.b0", !92, i64 0}
-!92 = !{!"0x600002c1a3a0.w128.b0", !93, i64 0}
-!93 = !{!"0x600002c1a3a0.w256.b0", !94, i64 0}
-!94 = !{!"0x600002c1a3a0.w512.b0", !95, i64 0}
-!95 = !{!"0x600002c1a3a0.w1024.b0", !96, i64 0}
-!96 = !{!"0x600002c1a3a0", !28, i64 0}
+!88 = !{!"0x600000683e70.w8.b8", !89, i64 0}
+!89 = !{!"0x600000683e70.w16.b0", !90, i64 0}
+!90 = !{!"0x600000683e70.w32.b0", !91, i64 0}
+!91 = !{!"0x600000683e70.w64.b0", !92, i64 0}
+!92 = !{!"0x600000683e70.w128.b0", !93, i64 0}
+!93 = !{!"0x600000683e70.w256.b0", !94, i64 0}
+!94 = !{!"0x600000683e70.w512.b0", !95, i64 0}
+!95 = !{!"0x600000683e70.w1024.b0", !96, i64 0}
+!96 = !{!"0x600000683e70", !28, i64 0}
 !97 = !{!98, !98, i64 0}
-!98 = !{!"0x600002c1b600.w8.b0", !99, i64 0}
-!99 = !{!"0x600002c1b600.w16.b0", !100, i64 0}
-!100 = !{!"0x600002c1b600.w32.b0", !101, i64 0}
-!101 = !{!"0x600002c1b600.w64.b0", !102, i64 0}
-!102 = !{!"0x600002c1b600.w128.b0", !103, i64 0}
-!103 = !{!"0x600002c1b600.w256.b0", !104, i64 0}
-!104 = !{!"0x600002c1b600.w512.b0", !105, i64 0}
-!105 = !{!"0x600002c1b600.w1024.b0", !106, i64 0}
-!106 = !{!"0x600002c1b600", !28, i64 0}
-!107 = !{!108, !108, i64 0}
-!108 = !{!"0x600002c1b600.w8.b8", !99, i64 0}
+!98 = !{!"0x600000683e70.w8.b0", !89, i64 0}
+!99 = !{!100, !100, i64 0}
+!100 = !{!"0x600000546430.w8.b0", !101, i64 0}
+!101 = !{!"0x600000546430.w16.b0", !102, i64 0}
+!102 = !{!"0x600000546430.w32.b0", !103, i64 0}
+!103 = !{!"0x600000546430.w64.b0", !104, i64 0}
+!104 = !{!"0x600000546430.w128.b0", !105, i64 0}
+!105 = !{!"0x600000546430.w256.b0", !106, i64 0}
+!106 = !{!"0x600000546430.w512.b0", !107, i64 0}
+!107 = !{!"0x600000546430.w1024.b0", !108, i64 0}
+!108 = !{!"0x600000546430", !28, i64 0}
 !109 = !{!110, !110, i64 0}
-!110 = !{!"0x600002c2f3c0.w8.b8", !111, i64 0}
-!111 = !{!"0x600002c2f3c0.w16.b0", !112, i64 0}
-!112 = !{!"0x600002c2f3c0.w32.b0", !113, i64 0}
-!113 = !{!"0x600002c2f3c0.w64.b0", !114, i64 0}
-!114 = !{!"0x600002c2f3c0.w128.b0", !115, i64 0}
-!115 = !{!"0x600002c2f3c0.w256.b0", !116, i64 0}
-!116 = !{!"0x600002c2f3c0.w512.b0", !117, i64 0}
-!117 = !{!"0x600002c2f3c0.w1024.b0", !118, i64 0}
-!118 = !{!"0x600002c2f3c0", !28, i64 0}
-!119 = !{!120, !120, i64 0}
-!120 = !{!"0x600002c503c0.w8.b0", !121, i64 0}
-!121 = !{!"0x600002c503c0.w16.b0", !122, i64 0}
-!122 = !{!"0x600002c503c0.w32.b0", !123, i64 0}
-!123 = !{!"0x600002c503c0.w64.b0", !124, i64 0}
-!124 = !{!"0x600002c503c0.w128.b0", !125, i64 0}
-!125 = !{!"0x600002c503c0.w256.b0", !126, i64 0}
-!126 = !{!"0x600002c503c0.w512.b0", !127, i64 0}
-!127 = !{!"0x600002c503c0.w1024.b0", !128, i64 0}
-!128 = !{!"0x600002c503c0", !28, i64 0}
-!129 = !{!130, !130, i64 0}
-!130 = !{!"0x600002c503c0.w8.b8", !121, i64 0}
-!131 = !{!132, !132, i64 0}
-!132 = !{!"0x600002c52c40.w8.b8", !133, i64 0}
-!133 = !{!"0x600002c52c40.w16.b0", !134, i64 0}
-!134 = !{!"0x600002c52c40.w32.b0", !135, i64 0}
-!135 = !{!"0x600002c52c40.w64.b0", !136, i64 0}
-!136 = !{!"0x600002c52c40.w128.b0", !137, i64 0}
-!137 = !{!"0x600002c52c40.w256.b0", !138, i64 0}
-!138 = !{!"0x600002c52c40.w512.b0", !139, i64 0}
-!139 = !{!"0x600002c52c40.w1024.b0", !140, i64 0}
-!140 = !{!"0x600002c52c40", !28, i64 0}
-!141 = !{!142, !142, i64 0}
-!142 = !{!"0x600002ef2160.w8.b0", !143, i64 0}
-!143 = !{!"0x600002ef2160.w16.b0", !144, i64 0}
-!144 = !{!"0x600002ef2160.w32.b0", !145, i64 0}
-!145 = !{!"0x600002ef2160.w64.b0", !146, i64 0}
-!146 = !{!"0x600002ef2160.w128.b0", !147, i64 0}
-!147 = !{!"0x600002ef2160.w256.b0", !148, i64 0}
-!148 = !{!"0x600002ef2160.w512.b0", !149, i64 0}
-!149 = !{!"0x600002ef2160.w1024.b0", !150, i64 0}
-!150 = !{!"0x600002ef2160", !28, i64 0}
-!151 = !{!152, !152, i64 0}
-!152 = !{!"0x600002ef2160.w8.b8", !143, i64 0}
-!153 = !{!154, !154, i64 0}
-!154 = !{!"0x600002ef2160.w8.b16", !155, i64 0}
-!155 = !{!"0x600002ef2160.w16.b16", !144, i64 0}
-!156 = !{!157, !157, i64 0}
-!157 = !{!"0x600002ef2130.w8.b16", !158, i64 0}
-!158 = !{!"0x600002ef2130.w16.b16", !159, i64 0}
-!159 = !{!"0x600002ef2130.w32.b0", !160, i64 0}
-!160 = !{!"0x600002ef2130.w64.b0", !161, i64 0}
-!161 = !{!"0x600002ef2130.w128.b0", !162, i64 0}
-!162 = !{!"0x600002ef2130.w256.b0", !163, i64 0}
-!163 = !{!"0x600002ef2130.w512.b0", !164, i64 0}
-!164 = !{!"0x600002ef2130.w1024.b0", !165, i64 0}
-!165 = !{!"0x600002ef2130", !28, i64 0}
-!166 = !{!167, !167, i64 0}
-!167 = !{!"0x600002ef2130.w8.b8", !168, i64 0}
-!168 = !{!"0x600002ef2130.w16.b0", !159, i64 0}
-!169 = distinct !DISubprogram(name: "preprocessor_t1_int8_m6400_k3200_n1_b2_compute_", scope: !1, file: !1, type: !170, flags: DIFlagPrototyped, spFlags: DISPFlagLocalToUnit | DISPFlagDefinition | DISPFlagOptimized, unit: !0, retainedNodes: !172)
-!170 = !DISubroutineType(cc: DW_CC_nocall, types: !171)
-!171 = !{!14, !62, !62, !73, !62}
-!172 = !{!173, !174, !175, !176}
-!173 = !DILocalVariable(name: "LUT_Scales", arg: 1, scope: !169, file: !1, type: !62)
-!174 = !DILocalVariable(name: "B", arg: 2, scope: !169, file: !1, type: !62)
-!175 = !DILocalVariable(name: "QLUT", arg: 3, scope: !169, file: !1, type: !73)
-!176 = !DILocalVariable(name: "LUT_Biases", arg: 4, scope: !169, file: !1, type: !62)
-!177 = !DILocation(line: 0, scope: !169)
-!178 = !DILocalVariable(name: "kk.outer", scope: !169, file: !1, type: !14)
-!179 = !DILocalVariable(name: "k.outer", scope: !169, file: !1, type: !14)
-!180 = !{!181, !181, i64 0}
-!181 = !{!"__fp16", !182, i64 0}
-!182 = !{!"omnipotent char", !183, i64 0}
-!183 = !{!"Simple C++ TBAA"}
-!184 = distinct !{!184, !185}
-!185 = !{!"llvm.loop.mustprogress"}
+!110 = !{!"0x600000546430.w8.b8", !101, i64 0}
+!111 = !{!112, !112, i64 0}
+!112 = !{!"0x60000063d200.w8.b8", !113, i64 0}
+!113 = !{!"0x60000063d200.w16.b0", !114, i64 0}
+!114 = !{!"0x60000063d200.w32.b0", !115, i64 0}
+!115 = !{!"0x60000063d200.w64.b0", !116, i64 0}
+!116 = !{!"0x60000063d200.w128.b0", !117, i64 0}
+!117 = !{!"0x60000063d200.w256.b0", !118, i64 0}
+!118 = !{!"0x60000063d200.w512.b0", !119, i64 0}
+!119 = !{!"0x60000063d200.w1024.b0", !120, i64 0}
+!120 = !{!"0x60000063d200", !28, i64 0}
+!121 = !{!122, !122, i64 0}
+!122 = !{!"0x60000063d200.w8.b0", !113, i64 0}
+!123 = !{!124, !124, i64 0}
+!124 = !{!"0x60000063e8b0.w8.b0", !125, i64 0}
+!125 = !{!"0x60000063e8b0.w16.b0", !126, i64 0}
+!126 = !{!"0x60000063e8b0.w32.b0", !127, i64 0}
+!127 = !{!"0x60000063e8b0.w64.b0", !128, i64 0}
+!128 = !{!"0x60000063e8b0.w128.b0", !129, i64 0}
+!129 = !{!"0x60000063e8b0.w256.b0", !130, i64 0}
+!130 = !{!"0x60000063e8b0.w512.b0", !131, i64 0}
+!131 = !{!"0x60000063e8b0.w1024.b0", !132, i64 0}
+!132 = !{!"0x60000063e8b0", !28, i64 0}
+!133 = !{!134, !134, i64 0}
+!134 = !{!"0x60000063e8b0.w8.b8", !125, i64 0}
+!135 = !{!136, !136, i64 0}
+!136 = !{!"0x60000063da70.w8.b8", !137, i64 0}
+!137 = !{!"0x60000063da70.w16.b0", !138, i64 0}
+!138 = !{!"0x60000063da70.w32.b0", !139, i64 0}
+!139 = !{!"0x60000063da70.w64.b0", !140, i64 0}
+!140 = !{!"0x60000063da70.w128.b0", !141, i64 0}
+!141 = !{!"0x60000063da70.w256.b0", !142, i64 0}
+!142 = !{!"0x60000063da70.w512.b0", !143, i64 0}
+!143 = !{!"0x60000063da70.w1024.b0", !144, i64 0}
+!144 = !{!"0x60000063da70", !28, i64 0}
+!145 = !{!146, !146, i64 0}
+!146 = !{!"0x60000063da70.w8.b0", !137, i64 0}
+!147 = !{!148, !148, i64 0}
+!148 = !{!"0x6000006de070.w8.b0", !149, i64 0}
+!149 = !{!"0x6000006de070.w16.b0", !150, i64 0}
+!150 = !{!"0x6000006de070.w32.b0", !151, i64 0}
+!151 = !{!"0x6000006de070.w64.b0", !152, i64 0}
+!152 = !{!"0x6000006de070.w128.b0", !153, i64 0}
+!153 = !{!"0x6000006de070.w256.b0", !154, i64 0}
+!154 = !{!"0x6000006de070.w512.b0", !155, i64 0}
+!155 = !{!"0x6000006de070.w1024.b0", !156, i64 0}
+!156 = !{!"0x6000006de070", !28, i64 0}
+!157 = !{!158, !158, i64 0}
+!158 = !{!"0x6000006de070.w8.b8", !149, i64 0}
+!159 = !{!160, !160, i64 0}
+!160 = !{!"0x6000006de070.w8.b16", !161, i64 0}
+!161 = !{!"0x6000006de070.w16.b16", !150, i64 0}
+!162 = !{!163, !163, i64 0}
+!163 = !{!"0x60000062fae0.w8.b16", !164, i64 0}
+!164 = !{!"0x60000062fae0.w16.b16", !165, i64 0}
+!165 = !{!"0x60000062fae0.w32.b0", !166, i64 0}
+!166 = !{!"0x60000062fae0.w64.b0", !167, i64 0}
+!167 = !{!"0x60000062fae0.w128.b0", !168, i64 0}
+!168 = !{!"0x60000062fae0.w256.b0", !169, i64 0}
+!169 = !{!"0x60000062fae0.w512.b0", !170, i64 0}
+!170 = !{!"0x60000062fae0.w1024.b0", !171, i64 0}
+!171 = !{!"0x60000062fae0", !28, i64 0}
+!172 = !{!173, !173, i64 0}
+!173 = !{!"0x60000062fae0.w8.b8", !174, i64 0}
+!174 = !{!"0x60000062fae0.w16.b0", !165, i64 0}
+!175 = !{!176, !176, i64 0}
+!176 = !{!"0x60000062fae0.w8.b0", !174, i64 0}
+!177 = distinct !DISubprogram(name: "preprocessor_t12_int8_m4096_k4096_n512_b2_compute_", scope: !1, file: !1, type: !178, flags: DIFlagPrototyped, spFlags: DISPFlagLocalToUnit | DISPFlagDefinition | DISPFlagOptimized, unit: !0, retainedNodes: !180)
+!178 = !DISubroutineType(cc: DW_CC_nocall, types: !179)
+!179 = !{!14, !62, !62, !73, !62}
+!180 = !{!181, !182, !183, !184}
+!181 = !DILocalVariable(name: "LUT_Scales", arg: 1, scope: !177, file: !1, type: !62)
+!182 = !DILocalVariable(name: "B", arg: 2, scope: !177, file: !1, type: !62)
+!183 = !DILocalVariable(name: "QLUT", arg: 3, scope: !177, file: !1, type: !73)
+!184 = !DILocalVariable(name: "LUT_Biases", arg: 4, scope: !177, file: !1, type: !62)
+!185 = !DILocation(line: 0, scope: !177)
+!186 = !DILocalVariable(name: "n", scope: !177, file: !1, type: !14)
+!187 = !DILocalVariable(name: "kk.outer", scope: !177, file: !1, type: !14)
+!188 = !DILocalVariable(name: "k.outer", scope: !177, file: !1, type: !14)
+!189 = !{!190, !190, i64 0}
+!190 = !{!"__fp16", !191, i64 0}
+!191 = !{!"omnipotent char", !192, i64 0}
+!192 = !{!"Simple C++ TBAA"}
+!193 = !DILocalVariable(name: "cse_var_1", scope: !177, file: !1, type: !14)
+!194 = distinct !{!194, !195}
+!195 = !{!"llvm.loop.mustprogress"}

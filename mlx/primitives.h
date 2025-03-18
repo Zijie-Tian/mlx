@@ -1616,6 +1616,7 @@ class TMACMatmul : public UnaryPrimitive {
 
   int M_;
   int K_;
+  int N_kernel;
   int N_;
   int act_group_size_;
   int group_size_;

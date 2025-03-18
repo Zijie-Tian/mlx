@@ -105,7 +105,7 @@ class QGeMMLUTBitsCodegen(OpCodegen):
         kfactors = [8, 16]
 
         cfg.define_knob("bm", [bm for bm in bms if ((M // self.bits) % bm == 0) and (bm % self.bits == 0)])
-        cfg.define_knob("bn", [8, 16, 32, 64])
+        cfg.define_knob("bn", bns)
         if N <= 8:
             cfg.define_knob("bn", [8])
         else:

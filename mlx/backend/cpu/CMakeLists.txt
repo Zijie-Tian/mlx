@@ -139,7 +139,7 @@ target_sources(
 
 set(MLX_BUILD_TMAC TRUE)
 if(MLX_BUILD_TMAC)
-  # target_compile_definitions(mlx PRIVATE USE_TVM_THREADPOOL)
+  target_compile_definitions(mlx PRIVATE USE_TVM_THREADPOOL)
   
   target_compile_definitions(mlx PRIVATE USE_TVM_LIB)
   # target_sources(mlx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tmac/kernels.cc)
