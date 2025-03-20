@@ -37,7 +37,7 @@ struct TVMInternals {
 #endif
 
 // TODO : Add sync thread to this pool.
-ThreadPool TMACMatmul::_thread_pool{24};
+ThreadPool TMACMatmul::_thread_pool{12};
 
 // Initialize the static member variable
 #if defined(USE_TVM_THREADPOOL) || defined(USE_TVM_LIB)
@@ -143,9 +143,7 @@ TMACMatmul::TMACMatmul(
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));
     }
 
-    if (this->N_ >= 512) {
-        this->N_kernel = 512;
-    } else if (this->N_ >= 256) {
+    if (this->N_ >= 256) {
         this->N_kernel = 256;
     } else {
         this->N_kernel = 1;
@@ -170,7 +168,7 @@ TMACMatmul::TMACMatmul(
 #ifdef TMAC_USE_SYSLIB
             _tvm_internals -> _mod_lib = (*tvm::runtime::Registry::Get("runtime.SystemLib"))();
 #else
-            LOG(INFO) << "Loading kernels from: " << get_library_file(library_file);
+            // LOG(INFO) << "Loading kernels from: " << get_library_file(library_file);
             _tvm_internals -> _mod_lib = tvm::runtime::Module::LoadFromFile(get_library_file(library_file));
 #endif
 
@@ -345,13 +343,13 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     int64_t A_shape[3] = {M_ / bm_, K_, bm_ / ngroups_per_elem};
     int64_t Scales_shape[3] = {M_ / bm_, K_ / group_size_, bm_ / nbits_};
     int64_t activations_shape[2] = {N_, K_};
-    int64_t activation_bn_shape[2] = {1, K_};  // TODO : Now we only support batch size = 1.
+    int64_t activation_bn_shape[2] = {1, K_};   // TODO : Now we only support batch size = 1.
     int64_t output_shape[2] = {N_, M_};
     int64_t qlut_shape[3] = {N_, K_ / g_, (1 << g_)};
     int64_t luts_shape[3] = {N_, K_ / act_group_size_};
 
     int64_t A_tile_shape[3] = {nbits_, K_ / g_, bm_ / ngroups_per_elem};
-    int64_t C_tile_shape[2] = {1, bm_};     // TODO : Change this `1` to batch processing.
+    int64_t C_tile_shape[2] = {N_kernel, bm_};         // TODO : Change this `1` to batch processing.
 
     const DLDevice cpu_dev = {
         /* .device_type = */ kDLCPU,
@@ -419,17 +417,6 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
     };
 
 #endif
-    std::vector<DLTensor> A_tiles;
-    for (int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-        DLTensor A_tile = {
-            /* .data   = */ (void *)(qweight_buf + nbits_ * (K_ / g_) * m_tile_idx * bm_ / ngroups_per_elem),
-            /* .device = */ cpu_dev,
-            /* .ndim   = */ 3,
-            /* .dtype  = */ int_dtype,
-            /* .shape  = */ A_tile_shape
-        };
-        A_tiles.push_back(A_tile);
-    }
 
     std::vector<DLTensor> C_tiles;
     for(int n_idx = 0; n_idx < N_; n_idx++) {
@@ -445,8 +432,9 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
         }
     }
 
+    int N_tiles = (N_ + N_kernel - 1) / N_kernel;
     std::vector<std::future<int>> tiles;    // TODO : Working set.
-    for(int n_idx = 0; n_idx < N_; n_idx++) {
+    for(int n_idx = 0; n_idx < N_tiles; n_idx++) {
 #ifdef USE_TVM_LIB
         DLTensor B_row = {
             /* .data   = */ (void *)(activations_buf + n_idx * K_),
@@ -488,11 +476,10 @@ void TMACMatmul::eval_cpu(const std::vector<array>& inputs, array& output) {
 
 #ifdef USE_TVM_LIB
         for(int m_tile_idx = 0; m_tile_idx < this->M_ / (this->bm_); m_tile_idx++) {
-        // for(int m_tile_idx = 0; m_tile_idx < 1; m_tile_idx++) {
-            // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
+        // for(int m_tile_idx = 0; m_tile_idx < 4; m_tile_idx++) {
             tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(
-                [this, &A_tiles, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx, n_idx, ngroups_per_elem]() -> int {
-                    (_tvm_internals -> qf)(&A_tiles[m_tile_idx], &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[m_tile_idx + n_idx * this->M_ / (this->bm_ / ngroups_per_elem)]);
+                [this, &A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx, n_idx, ngroups_per_elem]() -> int {
+                    (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[m_tile_idx + n_idx * this->M_ / (this->bm_ / ngroups_per_elem)]);
                     return 0;
                 }
             ));

@@ -70,6 +70,8 @@ int main() {
             for (auto [M_high, N, K] : m_n_k_combos) {
                 for (bool transposed_high : transposed_list) {
                     // Describe the current test case.
+                    M_high = M_high * 16;
+                    
                     std::cout << "Test case: group_size=" << group_size_high
                                 << ", bits=" << nbits_high
                                 << ", M=" << M_high << ", N=" << N << ", K=" << K
@@ -99,6 +101,8 @@ int main() {
 
                     // Dequantize the weights.
                     auto w_hat = mx::dequantize(qweight_high, scales_high, biases_high, group_size, nbits_high);
+
+                    mx::eval(activation, qweight_low, scales_low, biases_low);
 
                     // Perform the quantized matrix multiplication.
                     auto y_q = mx::fast::hermes_op(
@@ -135,13 +139,13 @@ int main() {
                     
                     mx::eval(y_hat, y_q);
 
-                    // std::cout << "Y qmm : " << y_q << std::endl;
-                    // std::cout << "Y hat : " << y_hat << std::endl;
-                    // std::cout << "Y hat shape: ";
-                    // for (auto dim : y_hat.shape()) {
-                    //     std::cout << dim << " ";
-                    // }
-                    // std::cout << std::endl;
+                    std::cout << "Y qmm : " << y_q << std::endl;
+                    std::cout << "Y hat : " << y_hat << std::endl;
+                    std::cout << "Y hat shape: ";
+                    for (auto dim : y_hat.shape()) {
+                        std::cout << dim << " ";
+                    }
+                    std::cout << std::endl;
 
                 }
             }

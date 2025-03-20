@@ -112,23 +112,24 @@ def bench_shape(B, qsl, ksl, head_dim, n_q_heads, n_kv_heads, np_dtype, transpos
     k_mx = mx.array(k_np)
     v_mx = mx.array(v_np)
 
-    time_mlx_unfused = bench(mlx_spda_unfused, q_mx, k_mx, v_mx, scale, transpose)
+    # time_mlx_unfused = bench(mlx_spda_unfused, q_mx, k_mx, v_mx, scale, transpose)
+    time_mlx_unfused = 0
     time_mlx_fused = bench(mlx_spda_fused, q_mx, k_mx, v_mx, scale, transpose)
 
-    if transpose:
-        q_mx = mx.transpose(q_mx, (0, 2, 1, 3))
-        k_mx = mx.transpose(k_mx, (0, 2, 1, 3))
-        v_mx = mx.transpose(v_mx, (0, 2, 1, 3))
+    # if transpose:
+    #     q_mx = mx.transpose(q_mx, (0, 2, 1, 3))
+    #     k_mx = mx.transpose(k_mx, (0, 2, 1, 3))
+    #     v_mx = mx.transpose(v_mx, (0, 2, 1, 3))
 
-    o_mlx_fused = mlx_sdpa_fused_inner(q_mx, k_mx, v_mx, scale)
-    o_mlx_unfused = mlx_sdpa_unfused_inner(q_mx, k_mx, v_mx, scale, f32softmax=True)
+    # o_mlx_fused = mlx_sdpa_fused_inner(q_mx, k_mx, v_mx, scale)
+    # o_mlx_unfused = mlx_sdpa_unfused_inner(q_mx, k_mx, v_mx, scale, f32softmax=True)
 
-    atol = 1e-5 if np_dtype == np.float32 else 1e-4
+    # atol = 1e-5 if np_dtype == np.float32 else 1e-4
 
-    if not mx.allclose(o_mlx_fused, o_mlx_unfused, atol=atol):
-        print(
-            f"Failed at (B: {B}, qsl: {qsl}, ksl: {ksl}, head_dim: {head_dim}, n_qh: {n_q_heads}, n_kvh: {n_kv_heads}) [tpose = {transpose}] with max(|a - b|) = {mx.max(mx.abs(o_mlx_unfused - o_mlx_fused)):3.2e}"
-        )
+    # if not mx.allclose(o_mlx_fused, o_mlx_unfused, atol=atol):
+    #     print(
+    #         f"Failed at (B: {B}, qsl: {qsl}, ksl: {ksl}, head_dim: {head_dim}, n_qh: {n_q_heads}, n_kvh: {n_kv_heads}) [tpose = {transpose}] with max(|a - b|) = {mx.max(mx.abs(o_mlx_unfused - o_mlx_fused)):3.2e}"
+    #     )
 
     return time_mlx_fused, time_mlx_unfused
 

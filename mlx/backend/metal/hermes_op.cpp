@@ -44,6 +44,7 @@ struct TVMRuntime {
 TVMRuntime* Hermes::_tvm_internals = nullptr;
 #endif
 INIReader* Hermes::_reader = nullptr;
+ThreadPool Hermes::_thread_pool{12};
 
 struct HermesConfig {
   int bm;
@@ -686,7 +687,9 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
   // [6] : biases_low   : [] (LUT side currently cannot use.)
 
   //! NEVER put large output buffers in the var.
-  qmm_op_high(inputs, out_high, transpose_high, group_size_high, nbits_high, false, stream());
+  // auto future = Hermes::_thread_pool.enqueue([=]() mutable {
+  //     qmm_op_high(inputs, out_high, transpose_high, group_size_high, nbits_high, false, stream());
+  // });
 
   // ===== Low precision =====
   int ngroups_per_elem = 8 / this->g_;
@@ -810,7 +813,7 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
     int64_t luts_shape[3] = {N_, K_ / act_group_size_};
 
     int64_t A_tile_shape[3] = {nbits_low, K_ / g_, bm_ / ngroups_per_elem};
-    int64_t C_tile_shape[2] = {1, bm_};     // TODO : Change this `1` to batch processing.
+    int64_t C_tile_shape[2] = {1, bm_};       // TODO : Change this `1` to batch processing.
 
     const DLDevice cpu_dev = {
         /* .device_type = */ kDLCPU,
@@ -944,7 +947,7 @@ for(int n_idx = 0; n_idx < N_; n_idx++) {
         for(int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_); m_tile_idx++) {
         // for(int m_tile_idx = 0; m_tile_idx < 1; m_tile_idx++) {
             // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
-            tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(
+            tiles.emplace_back(Hermes::_thread_pool.enqueue(
                 [this, &A_tiles, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx, n_idx, ngroups_per_elem]() -> int {
                     (_tvm_internals -> qf)(&A_tiles[m_tile_idx], &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[m_tile_idx + n_idx * this->M_low / (this->bm_ / ngroups_per_elem)]);
                     return 0;
@@ -953,7 +956,7 @@ for(int n_idx = 0; n_idx < N_; n_idx++) {
         }
 #else
         for(int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-            tiles.emplace_back(TMACMatmul::_thread_pool.enqueue(
+            tiles.emplace_back(Hermes::_thread_pool.enqueue(
                 std::bind(
                     &qgemm_lut_int8,
                     this->bm_,
@@ -979,6 +982,7 @@ for(int n_idx = 0; n_idx < N_; n_idx++) {
 
 #endif
 
+    // future.wait();
 }
 
 } // end namespace mlx::core
