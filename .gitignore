@@ -91,6 +91,7 @@ build_xcode/
 build_debug/
 **/*.gputrace/
 tuned/
+logs/
 
 # Some data
 *.npy

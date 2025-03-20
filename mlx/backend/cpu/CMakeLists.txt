@@ -137,12 +137,13 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/embedding.cpp
           ${CMAKE_CURRENT_BINARY_DIR}/compiled_preamble.cpp)
 
-set(MLX_BUILD_TMAC TRUE)
 if(MLX_BUILD_TMAC)
-  # target_compile_definitions(mlx PRIVATE USE_TVM_THREADPOOL)
-  
-  target_compile_definitions(mlx PRIVATE USE_TVM_LIB)
-  # target_sources(mlx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tmac/kernels.cc)
+  if(MLX_BUILD_TMAC_TVM)
+    target_compile_definitions(mlx PRIVATE USE_TVM_THREADPOOL)  
+    target_compile_definitions(mlx PRIVATE USE_TVM_LIB)
+  else()
+    target_compile_definitions(mlx PRIVATE USE_TVM_LIB)
+  endif()
 endif()
 
 if(MLX_BUILD_ACCELERATE)

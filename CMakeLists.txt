@@ -42,6 +42,10 @@ option(MLX_BUILD_BLAS_FROM_SOURCE "Build OpenBLAS from source code" OFF)
 option(MLX_METAL_JIT "Use JIT compilation for Metal kernels" OFF)
 option(BUILD_SHARED_LIBS "Build mlx as a shared library" OFF)
 
+#! Added by Zijie
+option(MLX_BUILD_TMAC "USE TMAC feature." ON)
+option(MLX_BUILD_TMAC_TVM "USE TVM Thread pool" ON)
+
 add_compile_definitions("MLX_VERSION=${MLX_VERSION}")
 
 # --------------------- Processor tests -------------------------

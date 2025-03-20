@@ -36,8 +36,6 @@ int main() {
     // Fixed (M, N, K) combinations.
     std::vector<std::tuple<int, int, int>> m_n_k_combos = {
         //! Fix M, K and vary N(SEQ_LEN).
-        {4096, 64, 4096}, 
-        {4096, 128, 4096},
         {4096, 256, 4096},
         {4096, 512, 4096},
         {4096, 1024, 4096},
