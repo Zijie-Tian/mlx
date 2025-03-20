@@ -11,13 +11,13 @@
 // Inside defined INIReader.
 #include <mlx/backend/cpu/t_mac/INIReader.h>
 
-namespace mlx::core {
+namespace mlx::core::fast {
 
 constexpr size_t kAllocAlignment = 64;
 using _fkey = std::tuple<int, int, int, int, int>;
 
-struct TMACGeMMConfig;
+struct HermesConfig;
 
-struct TVMInternals; // Forward declaration
+struct TVMRuntime; // Forward declaration
 
 } // namespace mlx::core

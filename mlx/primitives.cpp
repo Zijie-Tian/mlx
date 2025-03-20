@@ -5041,6 +5041,8 @@ std::vector<Shape> TMACMatmul::output_shapes(
   return {shape};
 }
 
+//! ================== Bellow implementations are NOT SECURITY ===================
+
 std::vector<array> Embedding::vjp(
   const std::vector<array>& primals,
   const std::vector<array>& cotangents,

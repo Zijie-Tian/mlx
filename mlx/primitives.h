@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include <mlx/backend/cpu/tmac_gemv.h>
+#include <mlx/backend/common/tvm_internals.h>
 #include <mlx/threadpool.h>
 #include "mlx/array.h"
 #include "mlx/device.h"
@@ -1581,7 +1582,7 @@ class TMACMatmul : public UnaryPrimitive {
       int M,
       int K,
       int N,
-      int bm);
+      int nbits);
   ~TMACMatmul();
 
   void eval_cpu(const std::vector<array>& inputs, array& out) override;
@@ -2462,60 +2463,6 @@ class Embedding : public UnaryPrimitive {
   bool aligned;
 
   void neon_memcpy(float* dest, const float* src, size_t n) const;
-};
-
-class HermesMatmul : public UnaryPrimitive {
- public:
-  explicit HermesMatmul(
-      Stream stream,
-      const std::string& kcfg_file,
-      const std::string& library_file,
-      int M,
-      int K,
-      int N,
-      int bm);
-  ~HermesMatmul();
-
-  void eval_cpu(const std::vector<array>& inputs, array& out) override;
-  void eval_gpu(const std::vector<array>& inputs, array& out) override;
-
-  DEFINE_GRADS()
-  DEFINE_VMAP()
-  DEFINE_PRINT(HermesMatmul)
-  DEFINE_DEFAULT_IS_EQUIVALENT()
-  std::vector<Shape> output_shapes(const std::vector<array>& inputs) override;
-  auto state() const {
-    return std::make_tuple(group_size_, bm_, nbits_);
-  }
-
- public:
-  static ThreadPool _thread_pool;
-  static INIReader* _reader;
-  static TVMInternals* _tvm_internals;
-
-  void set_num_threads(int n_threads);
-  void set_workspace(int maxM, int maxK, int maxN);
-  TMACGeMMConfig get_kcfg(int M, int K, int N, int bits);
-  std::string get_template_name(_fkey key);
-
-  // workspace ptrs
-  void* _qlut;
-  void* _lut_scales;
-  void* _lut_biases;
-
-  bool _allocated;
-  std::mutex _m;
-
-  int M_;
-  int K_;
-  int N_;
-  int act_group_size_;
-  int group_size_;
-  int bm_;
-  int g_;
-  int kfactor_;
-  int nbits_;
-  int _n_threads;
 };
 
 } // namespace mlx::core

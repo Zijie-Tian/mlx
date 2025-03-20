@@ -15,6 +15,7 @@
 #include "mlx/primitives.h"
 #include "mlx/ops.h"
 
+#include <mlx/backend/common/tvm_internals.h>
 #include <mlx/backend/cpu/tmac/kernels.h>
 #include <mlx/threadpool.h>
 #include <mlx/backend/cpu/tmac_gemv.h>
@@ -567,7 +568,7 @@ TMACGeMMConfig TMACMatmul::get_kcfg(int M, int K, int N, int bits)
         _n_threads = n_threads;
         section = get_template_name({M, K, N, bits, 1});
         if (_reader -> Sections().count(section) > 0) {
-        break;
+            break;
         }
     }
     _n_threads = old_n_threads;

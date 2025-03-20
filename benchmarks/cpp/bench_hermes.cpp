@@ -1,135 +1,153 @@
-// Copyright © 2023 Apple Inc.
-
-#include <cstring>
 #include <iostream>
-#include "mlx/mlx.h"
+#include <vector>
+#include <cmath>
+#include <cassert>
+#include <tuple>
+
+// Assume the MLX framework provides these headers and functions.
+#include "mlx/random.h"
 #include "mlx/array.h"
-#include "mlx/backend/cpu/copy.h"
-#include "mlx/backend/cpu/gemm.h"
-#include "mlx/primitives.h"
-#include "mlx/ops.h"
+#include "mlx/mlx.h"
+
 #include "time_utils.h"
 
 namespace mx = mlx::core;
 
+// Helper function to compute maximum absolute value in a tensor difference.
+// double maxAbsDiff(const mx::array& a, const mx::array& b) {
+//     assert(a.shape() == b.shape());
+//     double max_diff = 0.0;
+//     const auto total = a.numel();
+//     for (size_t i = 0; i < total; i++) {
+//         double diff = std::abs(a.data()[i] - b.data()[i]);
+//         if (diff > max_diff) {
+//             max_diff = diff;
+//         }
+//     }
+//     return max_diff;
+// }
+
 int main() {
     // 创建输入数据
-    int M = 8640 * 2;
-    int K = 3200;
-    int N = 1;
+    int M_low = 4096;  // 原值为8640/2，调整为可被bm整除的值
+    // int K = 4096;
+    // int N = 1024 * 64;
+    // int N = 256;
+    // int N = 1024;
 
-    // TMAC Paramter
-    int nbits = 2;
-    int bm = 128;
+    int nbits_low = 2;
+    int bm = 256;  // 调整为M的因数 (8640 ÷ 480 = 18)
     int g = 4;
     int group_size = 128;
     int act_group_size = 64;
     int kfactor = 16;
+
     int n_threads = 12;
 
-    // 构造计算图（在lambda内部定义）
-    auto compute_graph = [](const std::vector<mx::array>& inputs) {
-        mx::array a_up = inputs[0];
-        mx::array a_down_t = inputs[1];
-        mx::array a_down_scales_t = inputs[2];
-        mx::array b = inputs[3];
-        mx::array QLUT = inputs[4];
-        mx::array LUT_Scales = inputs[5];
-        mx::array LUT_Biases = inputs[6];
+    // Fixed parameter combinations for testing.
+    std::vector<int> group_sizes = {128};              // group_size
+    std::vector<int> bits_list = {8};                    // bits
 
-        // 创建输入数据
-        int M = 6400;
-        int K = 3200;
-        int N = 1;
-        int M_down = M / 2;
-
-        // TMAC Paramter
-        int nbits = 2;
-        int bm = 128;
-        int g = 4;
-        int group_size = 128;
-        int act_group_size = 64;
-        int kfactor = 16;
-        int n_threads = 12;
-
-        mx::array c_up = mx::matmul(a_up, b, mx::Device::gpu);
-        mx::array c_down = mx::tmac_gemv(
-            a_down_t, a_down_scales_t, b,
-            M_down, K, N, nbits,
-            mx::Device::cpu
-        );
-        c_down = mx::transpose(c_down, {1, 0});
-        mx::array c = mx::concatenate({c_up, c_down}, 0);
-
-        return std::vector<mx::array>{c};
+    // Fixed (M, N, K) combinations.
+    std::vector<std::tuple<int, int, int>> m_n_k_combos = {
+        {256, 1024 * 4, 4096},
+        {512, 1024 * 4, 4096},
+        {1024, 1024 * 4, 4096},
+        {2048, 1024 * 4, 4096},
+        {4096, 1024 * 4, 4096},
+        // {256, 1024 * 128, 3200},
+        // {512, 1024 * 128, 3200},
+        // {1024, 1024 * 128, 3200},
+        // {2048, 1024 * 128, 3200},
+        // {3200, 1024 * 128, 3200},
     };
 
-    mx::array a_up = mx::random::uniform({1024, K});
-    // mx::array a_down = mx::random::uniform({M / 2, K});
+    std::vector<bool> transposed_list = {true}; // transposed
 
-    int M_down = 8640;
+    // Loop over fixed test cases.
+    for (int group_size_high : group_sizes) {
+        for (int nbits_high : bits_list) {
+            for (auto [M_high, N, K] : m_n_k_combos) {
+                for (bool transposed_high : transposed_list) {
+                    // Describe the current test case.
+                    std::cout << "Test case: group_size=" << group_size_high
+                                << ", bits=" << nbits_high
+                                << ", M=" << M_high << ", N=" << N << ", K=" << K
+                                << ", transposed=" << (transposed_high ? "true" : "false")
+                                << std::endl;
 
-    int ngroups_per_elem = 8 / g;
-    mx::array a_down_t = mx::random::randint(0, 255, {M_down / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
-    mx::array a_down_scales_t = mx::random::uniform({M_down / bm, K / group_size, bm / nbits}, mx::float16);
-    mx::array b = mx::random::uniform({K, N}, mx::float16);
-    mx::array QLUT = mx::zeros({N, K / g, 1 << g}, mx::uint8);
-    mx::array LUT_Scales = mx::zeros({N, K / act_group_size}, mx::float16);
-    mx::array LUT_Biases = mx::zeros({N, K / act_group_size}, mx::float16);
-    a_up.eval();
-    a_down_t.eval();
-    a_down_scales_t.eval();
-    b.eval();
-    QLUT.eval();
-    LUT_Scales.eval();
-    LUT_Biases.eval();
+                    // x has shape (M, K).
+                    mx::array activation = mx::random::uniform({N, K}, mx::float16);
+                    // auto x = mx::random::uniform({N, K}, mx::float16);
 
-    mx::array c_up = mx::matmul(a_up, b, mx::Device::gpu);
-    c_up.eval();
-    std::cout << c_up << std::endl;
+                    // Create weight matrix w.
+                    // If transposed: shape is (N, K), else (K, N)
+                    mx::Shape wShape = transposed_high ? mx::Shape{N, K} : mx::Shape{K, N};
+                    auto w = mx::random::uniform({M_high, K}, mx::float16);
 
-    //> Just Hack.
-    mx::array a_up_sub = mx::random::uniform({M / 8, K});
-    std::vector<mx::array> inputs = {a_up, a_down_t, a_down_scales_t, b, QLUT, LUT_Scales, LUT_Biases};
+                    //! Quantize the weights.
+                    auto quant_tuple    =   mx::quantize(w, group_size, nbits_high);
+                    auto qweight_high   =  std::get<0>(quant_tuple);
+                    auto scales_high    = std::get<1>(quant_tuple);
+                    auto biases_high    = std::get<2>(quant_tuple);
 
-    // mx::array a = mx::concatenate({a_up, a_down}, 0);
-    // mx::array c = mx::matmul(a, b);
-    // 编译计算图
-    auto compiled_fn = mx::compile(compute_graph);
+                    //! TMAC side vars.
+                    int ngroups_per_elem = 8 / g;
+                    mx::array qweight_low = mx::random::randint(0, 255, {M_low * nbits_low / bm, K / g, bm / ngroups_per_elem}, mx::uint8);
+                    mx::array scales_low = mx::random::uniform({M_low * nbits_low / bm, K / group_size, bm / nbits_low}, mx::float16);
+                    mx::array biases_low = mx::random::uniform({M_low * nbits_low / bm, K / group_size, bm / nbits_low}, mx::float16);
 
-    // TIMEM("matmul_cpu", mx::matmul, a, b, mx::Device::cpu);
-    // TIMEM("matmul_gpu", mx::matmul, a, b, mx::Device::gpu);
+                    // Dequantize the weights.
+                    auto w_hat = mx::dequantize(qweight_high, scales_high, biases_high, group_size, nbits_high);
 
-    // TIMEM("matmul_cpu_up", mx::matmul, a_up_sub, b, mx::Device::cpu)
-    // TIMEM("matmul_gpu_down", mx::matmul, a_down, b, mx::Device::gpu)
-    
-    // 执行编译后的函数
-    auto compiled_result = compiled_fn(inputs)[0];
-    // std::cout << "Reference result:\n" << c << std::endl;
-    // std::cout << "Compiled result:\n" << compiled_result << std::endl;
-    // 将vector转换为可输出的字符串格式
-    std::stringstream ss;
-    ss << "[";
-    for (size_t i = 0; i < compiled_result.shape().size(); ++i) {
-        ss << compiled_result.shape()[i];
-        if (i != compiled_result.shape().size() - 1) {
-            ss << ", ";
+                    // Perform the quantized matrix multiplication.
+                    auto y_q = mx::fast::hermes_op(
+                        activation, 
+                        qweight_high, scales_high, biases_high, 
+                        qweight_low, scales_low, biases_low,
+                        M_high, M_low, K, N, 
+                        transposed_high,
+                        group_size_high, nbits_high, nbits_low,
+                        mx::Device::gpu
+                    );
+
+                    TIMEM(
+                        "qmm",
+                        mx::fast::hermes_op,
+                        activation,
+                        qweight_high, scales_high, biases_high,
+                        qweight_low, scales_low, biases_low,
+                        M_high, M_low, K, N,
+                        transposed_high,
+                        group_size_high, nbits_high, nbits_low,
+                        mx::Device::gpu
+                    );
+
+                    auto x_transposed = mx::transpose(activation);
+                    // TIMEM(
+                    //     "matmul",
+                    //     mx::matmul,
+                    //     w_hat, x_transposed, mx::Device::gpu
+                    // )
+
+                    // x (M, K) times w_hat (K, N).
+                    auto y_hat = mx::matmul(w_hat, x_transposed);
+                    
+                    mx::eval(y_hat, y_q);
+
+                    // std::cout << "Y qmm : " << y_q << std::endl;
+                    // std::cout << "Y hat : " << y_hat << std::endl;
+                    // std::cout << "Y hat shape: ";
+                    // for (auto dim : y_hat.shape()) {
+                    //     std::cout << dim << " ";
+                    // }
+                    // std::cout << std::endl;
+
+                }
+            }
         }
     }
-    ss << "]";
-    std::cout << "Compiled result shape: " << ss.str() << std::endl;
 
-    // 性能测试（需要调整TIME宏调用方式）
-    // TODO : Fix Segmentation Fault Error when calling TIME.
-    TIMEM("compile", compiled_fn, inputs);
-    auto start_time = time_now();
-    for (int i = 0; i < 1000; ++i) {
-        compiled_result = compiled_fn(inputs)[0];
-        // eval(compiled_result);
-    }
-    auto end_time = time_now();
-    auto elapsed_time = end_time - start_time;
-    std::cout << "Elapsed time: " << elapsed_time.count() / 1000.0 << " ms" << std::endl;
-
+    std::cout << "All tests passed successfully." << std::endl;
     return 0;
 }

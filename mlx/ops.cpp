@@ -3923,8 +3923,8 @@ array quantized_matmul(
     inputs = broadcast_arrays(inputs, {-2, -1}, s);
   }
 
-  auto out_shape = inputs[0].shape();
-  out_shape.back() = w_outer_dims;
+  auto out_shape = inputs[0].shape(); // N
+  out_shape.back() = w_outer_dims;    // M
   return array(
       std::move(out_shape),
       dtype,

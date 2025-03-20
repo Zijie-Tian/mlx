@@ -88,4 +88,20 @@ MetalKernelFunction metal_kernel(
     bool ensure_row_contiguous = true,
     bool atomic_outputs = false);
 
+array hermes_op(
+    const array& activation,
+    const array& qweight_high,
+    const array& scales_high,
+    const array& biases_high,
+    const array& qweight_low,
+    const array& scales_low,
+    const array& biases_low,
+    int M_high, int M_low, int K, int N,
+    bool transpose_high,
+    int group_size_high,
+    int bits_high,
+    int bits_low,
+    StreamOrDevice s
+);
+
 } // namespace mlx::core::fast

@@ -5,4 +5,5 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/load.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/reduce.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/slicing.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/utils.cpp)
+          ${CMAKE_CURRENT_SOURCE_DIR}/utils.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/tvm_internals.cpp)

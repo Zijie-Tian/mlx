@@ -1308,4 +1308,88 @@ MetalKernelFunction metal_kernel(
   };
 }
 
+//! ================== Bellow implementations are NOT SECURITY ===================
+
+std::vector<array> Hermes::vjp(
+  const std::vector<array>& primals,
+  const std::vector<array>& cotangents,
+  const std::vector<int>& argnums,
+  const std::vector<array>&) {
+  std::vector<array> vjps = {};
+  return vjps;
+}
+
+std::vector<array> Hermes::jvp(
+  const std::vector<array>& primals,
+  const std::vector<array>& tangents,
+  const std::vector<int>& argnums) {
+  if (argnums.size() > 1 || argnums[0] != 0) {
+    throw std::runtime_error(
+        "[Hermes::jvp] No JVP wrt the quantized matrix yet.");
+  }
+  return {tangents[0]};
+}
+
+std::pair<std::vector<array>, std::vector<int>> Hermes::vmap(
+  const std::vector<array>& inputs,
+  const std::vector<int>& axes) {
+  return {};
+}
+
+std::vector<Shape> Hermes::output_shapes(
+    const std::vector<array>& inputs) {
+  return {};
+}
+
+array hermes_op(
+  const array& activation,
+  const array& qweight_high,
+  const array& scales_high,
+  const array& biases_high,
+  const array& qweight_low,
+  const array& scales_low,
+  const array& biases_low,
+  int M_high, int M_low, int K, int N,
+  bool transpose_high,
+  int group_size_high,
+  int bits_high,
+  int bits_low,
+  StreamOrDevice s
+) {
+  //> Just Comment 
+  // auto dtype = result_type(x, scales, biases);
+  // if (!issubdtype(dtype, floating)) {
+  //   std::ostringstream msg;
+  //   msg << "[quantized_matmul] Only real floating types are supported but "
+  //       << "the passed types where x.dtype() == " << x.dtype()
+  //       << ", scales.dtype() == " << scales.dtype()
+  //       << " and biases.dtype() == " << biases.dtype();
+  //   throw std::invalid_argument(msg.str());
+  // }
+  std::vector<array> inputs = {
+    activation, 
+    qweight_high, scales_high, biases_high,
+    qweight_low, scales_low, biases_low
+  };
+
+  // if (x.ndim() > 2 && w.ndim() > 2) {
+  //   inputs = broadcast_arrays(inputs, {-2, -1}, s);
+  // }
+  const std::string kcfg_path = "/Users/tianzijie/Code/mlx/mlx/backend/cpu/tmac/kcfg.ini";
+  const std::string lib_path = "/Users/tianzijie/Code/mlx/mlx/backend/cpu/tmac/kernels.dll";
+  return array(
+      Shape{N, M_high + M_low},
+      float16,
+      std::make_shared<Hermes>(
+          to_stream(s), 
+          kcfg_path, lib_path,
+          M_high, M_low, K, N, 
+          transpose_high,
+          group_size_high, bits_high,
+          bits_low
+      ),
+      std::move(inputs));
+
+}
+
 } // namespace mlx::core::fast

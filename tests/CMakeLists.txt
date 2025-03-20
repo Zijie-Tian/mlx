@@ -42,3 +42,4 @@ add_test(NAME tests COMMAND tests)
 
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/compile)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/common)

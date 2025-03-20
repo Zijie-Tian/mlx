@@ -1523,6 +1523,20 @@ array tmac_gemv(
     const int& nbits,
     StreamOrDevice s /* = {} */);
 
-array hermes_gemv();
+array hermes_op(
+    const array& activation,
+    const array& qweight_high,
+    const array& scales_high,
+    const array& biases_high,
+    const array& qweight_low,
+    const array& scales_low,
+    const array& biases_low,
+    int M_high, int M_low, int K, int N,
+    bool transpose_high = true,
+    int group_size_high = 64,
+    int bits_high = 8,
+    int bits_low = 2,
+    StreamOrDevice s = {}
+);
 
 } // namespace mlx::core
