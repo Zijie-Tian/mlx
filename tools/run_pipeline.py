@@ -1,4 +1,6 @@
 import os
+import csv
+from volcenginesdkarkruntime import Ark
 import json
 import configparser
 import subprocess
@@ -19,11 +21,82 @@ from t_mac.model_utils import get_preset_models, get_preset_kernel_shapes, get_q
 
 APPS = ["bench_tmac", "bench_decode", "bench_prefill"]
 MODES = [
-    ("benchmark", ["-a", "64", "-g", "128", "-n", "8"]),
-    # ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
+    # ("benchmark", ["-a", "64", "-g", "128", "-n", "8"]),
+    ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
     # ("llama-2-13b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
     # ("llama-3-8b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
 ]
+
+VOLCANO_CONFIG = {
+    "model_id": "ep-20250217172556-85jxm",
+    "system_prompt": """你是一个高性能计算专家，请从以下日志中提取出M、N、K参数和执行时间，
+    输出格式示例（必须严格使用纯JSON格式，不要任何格式标记）：
+    [
+        {"M":4096,"N":1,"K":4096,"nbits":2,"time_ms":12.3},
+        ...
+    ]"""
+}
+
+# 初始化客户端
+client = Ark(api_key=os.environ.get("ARK_API_KEY"))
+
+def call_volcano_llm(content: str) -> List[Dict]:
+    """调用火山引擎大模型处理日志（增强解析）"""
+    try:
+        completion = client.chat.completions.create(
+            model=VOLCANO_CONFIG["model_id"],
+            messages=[
+                {"role": "system", "content": VOLCANO_CONFIG["system_prompt"]},
+                {"role": "user", "content": content}
+            ]
+        )
+        
+        # 处理响应格式
+        response_text = completion.choices[0].message.content
+        
+        # 去除可能的Markdown格式
+        if response_text.startswith('```json'):
+            response_text = response_text[response_text.find('['):response_text.rfind(']')+1]
+        
+        return json.loads(response_text)
+    
+    except json.JSONDecodeError as e:
+        # 调试输出
+        print("原始响应内容:", response_text)
+        raise ValueError(f"JSON解析失败: {str(e)}")
+    except Exception as e:
+        raise RuntimeError(f"API调用失败: {str(e)}")
+
+def process_log_with_llm(log_path: str):
+    """使用火山引擎大模型处理日志文件"""
+    # 读取日志内容（限制长度）
+    with open(log_path, 'r') as f:
+        content = f.read(4096)  # 限制输入长度
+        
+    try:
+        # 调用模型
+        data = call_volcano_llm(content)
+        
+        # 生成CSV
+        csv_path = os.path.splitext(log_path)[0] + ".csv"
+        with open(csv_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(["M", "N", "K", "nbits", "time_ms"])  # 添加表头
+            for item in data:
+                writer.writerow([
+                    item["M"],
+                    item["N"],
+                    item["K"],
+                    item.get("nbits", 2),  # 默认值
+                    item["time_ms"]
+                ])
+        print(f"✅ 生成CSV文件: {csv_path}")
+        
+    except Exception as e:
+        print(f"⚠️ 处理失败: {str(e)}")
+        if os.path.exists(csv_path):
+            os.remove(csv_path)  # 清理无效文件
+
 
 def generate_kernel_config(mode: str) -> Dict[str, Any]:
     """生成符合要求的INI格式内核配置"""
@@ -124,6 +197,8 @@ def run_benchmarks(mode):
             subprocess.run([app_path], stdout=f, stderr=f)
         
         print(f"✅ {app} completed ➞ Log saved to: {log_file}")
+        
+        process_log_with_llm(log_file)
 
 def print_summary():
     """打印结果摘要"""
