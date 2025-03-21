@@ -135,6 +135,11 @@ _PRESET_KERNELS = {
 def get_preset_models() -> List[str]:
     return _PRESET_KERNELS.keys()
 
+#> Just for kernel benchmarks.
+def get_preset_kernel_shapes(model_arch: str) -> List:
+    if model_arch not in get_preset_models():
+        raise KeyError("Unsupported model_arch: {}".format(model_arch))
+    return _PRESET_KERNELS[model_arch]
 
 def parse_gptqv2(qweight: np.ndarray, scales: np.ndarray, qzeros: np.ndarray) -> Tuple:
     bits = 32 // (scales.shape[1] // qzeros.shape[1])

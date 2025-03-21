@@ -175,8 +175,6 @@ TMACMatmul::TMACMatmul(
 #ifdef USE_TVM_THREADPOOL
             _tvm_internals -> _config_threadpool = tvm::runtime::Registry::Get("runtime.config_threadpool");
             set_num_threads(_n_threads);
-#else
-
 #endif
             _tvm_internals -> pf = get_function(
                 TMACMatmul::_tvm_internals,
@@ -187,11 +185,11 @@ TMACMatmul::TMACMatmul(
             _tvm_internals -> qf = get_function(
                 TMACMatmul::_tvm_internals, 
                 this -> _m, 
-#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
+#ifdef USE_TVM_THREADPOOL
                 //! This `bm_ /  nbits_` is for name valid.
-                this -> get_template_name({bm_, K_, this -> N_kernel, nbits_, 1}),
-#else
                 this -> get_template_name({M_, K_, this -> N_kernel, nbits_, 1}),
+#else
+                this -> get_template_name({bm_, K_, this -> N_kernel, nbits_, 1}),
 #endif
                 {M_, K_, this -> N_kernel, nbits_, 1}
             );
@@ -519,11 +517,7 @@ std::string TMACMatmul::get_template_name(_fkey key)
     if (std::get<4>(key) != 0) {
         return
         std::string("qgemm_lut")
-#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
-            + "_t" + std::to_string(1)
-#else
             + "_t" + std::to_string(_n_threads)
-#endif
             + "_int8"
             + "_m" + std::to_string(std::get<0>(key) * std::get<3>(key))
             + "_k" + std::to_string(std::get<1>(key))
@@ -532,11 +526,7 @@ std::string TMACMatmul::get_template_name(_fkey key)
     } else {
         return
         std::string("preprocessor")
-#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
-            + "_t" + std::to_string(1)
-#else
             + "_t" + std::to_string(_n_threads)
-#endif
             + "_int8"
             + "_m" + std::to_string(std::get<0>(key) * std::get<3>(key))
             + "_k" + std::to_string(std::get<1>(key))
@@ -553,7 +543,7 @@ TMACGeMMConfig TMACMatmul::get_kcfg(int M, int K, int N, int bits)
     int old_n_threads = _n_threads;
     for (int n_threads : n_threads_hints) {
         _n_threads = n_threads;
-        section = get_template_name({M, K, N, bits, 1});
+        section = get_template_name({M, K, N, bits, n_threads});
         if (_reader -> Sections().count(section) > 0) {
             break;
         }
