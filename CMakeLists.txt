@@ -46,6 +46,30 @@ option(BUILD_SHARED_LIBS "Build mlx as a shared library" OFF)
 option(MLX_BUILD_TMAC "USE TMAC feature." ON)
 option(MLX_BUILD_TMAC_TVM "USE TVM Thread pool" ON)
 
+
+execute_process(COMMAND sysctl -n machdep.cpu.brand_string
+                OUTPUT_VARIABLE CPU_MODEL
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "CPU_MODEL: ${CPU_MODEL}")
+
+if(MLX_BUILD_TMAC_TVM)
+  string(TOUPPER ${CPU_MODEL} CPU_MODEL_UPPER)
+  if(CPU_MODEL_UPPER MATCHES "M4")
+      set(THREAD_POOL_SIZE 12)
+  elseif(CPU_MODEL_UPPER MATCHES "M2")
+      set(THREAD_POOL_SIZE 8)
+  else()
+      set(THREAD_POOL_SIZE 8)  # 默认值
+  endif()
+else()
+  set(THREAD_POOL_SIZE 1)  # 默认值
+endif()
+message(STATUS "THREAD_POOL_SIZE: ${THREAD_POOL_SIZE}")
+
+
+
+add_compile_definitions(THREAD_POOL_SIZE=${THREAD_POOL_SIZE})
+
 add_compile_definitions("MLX_VERSION=${MLX_VERSION}")
 
 # --------------------- Processor tests -------------------------

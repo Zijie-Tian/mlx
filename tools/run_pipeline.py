@@ -22,8 +22,11 @@ from t_mac.model_utils import get_preset_models, get_preset_kernel_shapes, get_q
 APPS = ["bench_tmac", "bench_decode", "bench_prefill"]
 MODES = [
     # ("benchmark", ["-a", "64", "-g", "128", "-n", "8"]),
-    ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
+    ("benchmark", ["-a", "64", "-g", "128", "-n", "8", "-t"]),
+    # ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
+    # ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8" "-t"]),
     # ("llama-2-13b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
+    # ("llama-2-13b-2bit", ["-a", "64", "-g", "128", "-n", "8", "-t"]),
     # ("llama-3-8b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
 ]
 
@@ -97,7 +100,6 @@ def process_log_with_llm(log_path: str):
         if os.path.exists(csv_path):
             os.remove(csv_path)  # 清理无效文件
 
-
 def generate_kernel_config(mode: str) -> Dict[str, Any]:
     """生成符合要求的INI格式内核配置"""
     preset_models = get_preset_models()
@@ -114,7 +116,7 @@ def generate_kernel_config(mode: str) -> Dict[str, Any]:
         config[section_name] = {
             "M": str(shape[1]),  # 第二个元素对应M
             "K": str(shape[2]),  # 第三个元素对应K
-            "N": str(shape[4])   # 第五个元素对应N
+            "N": str(shape[3])   # 第四个元素对应N
         }
     
     # 写入文件

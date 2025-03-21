@@ -137,7 +137,7 @@ TMACMatmul::TMACMatmul(
     const std::string& kcfg_file, const std::string& library_file,
     int M, int K, int N, int nbits)
     : UnaryPrimitive(stream),
-    M_(M), K_(K), N_(N), nbits_(nbits), _n_threads(8) {
+    M_(M), K_(K), N_(N), nbits_(nbits), _n_threads(THREAD_POOL_SIZE) {
     
     if (TMACMatmul::_reader == nullptr) {
         TMACMatmul::_reader = new INIReader(get_kcfg_file(kcfg_file));

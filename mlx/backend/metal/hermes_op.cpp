@@ -623,11 +623,11 @@ Hermes::Hermes(
             _tvm_internals -> qf = get_function(
                 Hermes::_tvm_internals, 
                 this -> _m, 
-#if defined(USE_TVM_LIB) && !defined(USE_TVM_THREADPOOL)
+#ifdef USE_TVM_THREADPOOL
                 //! This `bm_ /  nbits_low` is for name valid.
-                this -> get_template_name({bm_, K_, this -> N_low_kernel, nbits_low, 1}),
-#else
                 this -> get_template_name({M_low, K_, this -> N_low_kernel, nbits_low, 1}),
+#else
+                this -> get_template_name({bm_, K_, this -> N_low_kernel, nbits_low, 1}),
 #endif
                 {M_low, K_, this -> N_low_kernel, nbits_low, 1}
             );

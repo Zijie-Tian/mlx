@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cassert>
 #include <tuple>
+#include <chrono>
+#include <iomanip>
 
 // Assume the MLX framework provides these headers and functions.
 #include "mlx/random.h"
@@ -104,7 +106,9 @@ int main() {
                     TIMEM(
                         "qmm",
                         mx::quantized_matmul,
-                        x, w_q, scales, biases, transposed, group_size, bits, mx::Device::gpu
+                        x, w_q, scales, biases, 
+                        transposed, group_size, 
+                        bits, mx::Device::gpu
                     );
 
                     auto x_transposed = mx::transpose(x);

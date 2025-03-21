@@ -93,6 +93,12 @@ std::map<std::string, RunConfig> load_run_config(const std::string& path) {
 
 int main() {
     // 固定参数
+#ifdef THREAD_POOL_SIZE
+    const int thread_pool_size = THREAD_POOL_SIZE; // 线程池大小
+#else
+    const int thread_pool_size = 8; // 默认线程池大小
+#endif
+
     const int nbits = 2; 
     const int g = 4;
 
@@ -102,7 +108,8 @@ int main() {
 
     for (const auto& [section, shape] : shape_configs) {
         // 生成运行配置标识（示例：qgemm_lut_t8_int8_m4096_k4096_n1_b2）
-        std::string run_section = "qgemm_lut_t8_int8_m" + 
+        std::string run_section = "qgemm_lut_t" +
+            std::to_string(thread_pool_size) + "_int8_m" + 
             std::to_string(shape.m * nbits) + "_k" + 
             std::to_string(shape.k) + "_n" + 
             std::to_string(shape.n) + "_b" + 
