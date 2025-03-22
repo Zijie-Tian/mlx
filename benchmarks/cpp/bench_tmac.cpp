@@ -14,10 +14,19 @@ struct KernelShape {
     int m;
     int k;
     int n;
+    
+    friend std::ostream& operator<<(std::ostream& os, const KernelShape& ks) {
+        os << "KernelShape(m=" << ks.m << ", k=" << ks.k << ", n=" << ks.n << ")";
+        return os;
+    }
 };
 
 // 运行参数结构体
 struct RunConfig {
+    int m;
+    int k;
+    int n;
+    int b;
     int bm;
     int bn;
     int simd_n_in;
@@ -75,6 +84,7 @@ std::map<std::string, RunConfig> load_run_config(const std::string& path) {
     for (const auto& section : reader.Sections()) {
         if (section.find("qgemm_") == 0) {
             RunConfig cfg{
+                0,0,0,0,
                 (int) reader.GetInteger(section, "bm", 256),
                 (int) reader.GetInteger(section, "bn", 32),
                 (int) reader.GetInteger(section, "simd_n_in", 16),
@@ -85,6 +95,17 @@ std::map<std::string, RunConfig> load_run_config(const std::string& path) {
                 (int) reader.GetInteger(section, "scales_size", 1),
                 (int) reader.GetInteger(section, "n_tile_num", 16)
             };
+
+            // 从 section 名字中解析出 m, k, n 和 b 的值
+            int t_val = 0, m_val = 0, k_val = 0, n_val = 0, b_val = 0;
+            if (std::sscanf(section.c_str(),
+                            "qgemm_lut_t%d_int8_m%d_k%d_n%d_b%d",
+                            &t_val, &m_val, &k_val, &n_val, &b_val) == 5) {
+                cfg.m = m_val;
+                cfg.k = k_val;
+                cfg.n = n_val;
+                cfg.b = b_val;
+            }
             configs[section] = cfg;
         }
     }
@@ -106,13 +127,29 @@ int main() {
     auto shape_configs = load_shape_config("/Users/tianzijie/Code/mlx/tools/preset_kernels.ini");
     auto run_configs = load_run_config("/Users/tianzijie/Code/mlx/mlx/backend/cpu/tmac/kcfg.ini");
 
+    auto select_n_kernel = [&](const KernelShape &shape) -> int {
+        std::pair<std::string, RunConfig> best_candidate{"", {}};
+        int best_n_kernel = 1;    //> minimum supported bn value
+        for (const auto& [kernel_name, kernel_cfg] : run_configs) {
+            if (shape.n % kernel_cfg.n == 0 && kernel_cfg.n > best_n_kernel) {
+                best_n_kernel = kernel_cfg.n;
+                best_candidate = {kernel_name, kernel_cfg};
+            }
+        }
+        return best_n_kernel;
+    };
+
     for (const auto& [section, shape] : shape_configs) {
+        int n_kernel = select_n_kernel(shape);
+
+        std::cout << "Kernel shape : " << shape << "n_kernel : " << n_kernel << std::endl;
+
         // 生成运行配置标识（示例：qgemm_lut_t8_int8_m4096_k4096_n1_b2）
         std::string run_section = "qgemm_lut_t" +
             std::to_string(thread_pool_size) + "_int8_m" + 
             std::to_string(shape.m * nbits) + "_k" + 
             std::to_string(shape.k) + "_n" + 
-            std::to_string(shape.n) + "_b" + 
+            std::to_string(n_kernel) + "_b" + 
             std::to_string(nbits);
 
         if (!run_configs.count(run_section)) {

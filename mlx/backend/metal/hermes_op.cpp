@@ -669,10 +669,17 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
   // Pre-Allocate output buffer.
   out.set_data(allocator::malloc_or_wait(out.nbytes()));
   
-  // Split the output buffer into high and low parts
-  array out_high(out.buffer(), {N_, M_high}, out.dtype());
-  array out_low(out.buffer(), {N_, M_low}, out.dtype());
-  out_low.copy_shared_buffer(out, {0}, out.flags(), out_low.nbytes(), N_ * M_high);
+  // TODO : Following is what i want.
+  //> Split the output buffer into high and low parts
+  // array out_high(out.buffer(), {N_, M_high}, out.dtype());
+  // array out_low(out.buffer(), {N_, M_low}, out.dtype());
+  // out_low.copy_shared_buffer(out, {0}, out.flags(), out_low.nbytes(), N_ * M_high);
+
+  //> FAKE : Following Just Allocate the output buffers.
+  array out_high({N_, M_high}, out.dtype());
+  out_high.set_data(allocator::malloc_or_wait(out_high.nbytes()));
+  array out_low({N_, M_low}, out.dtype());
+  out_low.set_data(allocator::malloc_or_wait(out_low.nbytes()));
 
   // ===== Inputs =====
   // [0] : activations  : [N, K]
@@ -692,13 +699,11 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
 
   std::future<int> future = Hermes::gpu_thread_pool.enqueue([=]() mutable {
       //> Start the high precision GEMM on GPU stream.
-      std::cout << "Hermes::eval_gpu: Start high precision GEMM on GPU stream." << std::endl;
       qmm_op_high(inputs, out_high, transpose_high, group_size_high, nbits_high, false, stream());
-      std::cout << "Hermes::eval_gpu: Finish high precision GEMM on GPU stream." << std::endl;
       return 0;
   });
   tiles.push_back(std::move(future));
-
+  
   // ========================    Low precision LUT-based operator    ========================
   int ngroups_per_elem = 8 / this->g_;
 
@@ -743,6 +748,7 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
       }
   }
 
+  bool added = false;
   //> Compute along N dimension.
   int N_tiles = (N_ + N_low_kernel - 1) / N_low_kernel;
   for(int n_idx = 0; n_idx < N_tiles; n_idx++) {
@@ -760,10 +766,12 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
     for(int m_tile_idx = 0; m_tile_idx < M_low / bm_; m_tile_idx++) {
         tiles.emplace_back(Hermes::cpu_thread_pool.enqueue(
             [this, &A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx, n_idx, ngroups_per_elem]() -> int {
+                // std::cout << "Hermes::eval_gpu: Start low precision GEMM on CPU stream." << std::endl;
                 (_tvm_internals -> qf)(
                   &A, &QLUTt, &Scales, &LUTSt, &LUTBt, 
                   &C_tiles[m_tile_idx + n_idx * this->M_low / (this->bm_ / ngroups_per_elem)]
                 );
+                // std::cout << "Hermes::eval_gpu: Finish low precision GEMM on CPU stream." << std::endl;
                 return 0;
             }
         ));
@@ -772,7 +780,6 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
   // TODO : This is too SLOW, change it to sync thread.
   for (auto& tile : tiles) {
       tile.wait();
-      std::cout << "Hermes::eval_gpu: Finish low precision GEMM on CPU stream." << std::endl;
   }
 
   // Preprocess activations.
