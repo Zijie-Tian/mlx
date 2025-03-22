@@ -342,7 +342,8 @@ class Hermes : public UnaryPrimitive {
    }
  
   public:
-   static ThreadPool _thread_pool;
+   static ThreadPool cpu_thread_pool;
+   static ThreadPool gpu_thread_pool;
    static INIReader* _reader;
    static TVMRuntime* _tvm_internals;
  

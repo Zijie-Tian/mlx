@@ -44,7 +44,8 @@ struct TVMRuntime {
 TVMRuntime* Hermes::_tvm_internals = nullptr;
 #endif
 INIReader* Hermes::_reader = nullptr;
-ThreadPool Hermes::_thread_pool{12};
+ThreadPool Hermes::cpu_thread_pool{12};
+ThreadPool Hermes::gpu_thread_pool{4};
 
 struct HermesConfig {
   int bm;
@@ -685,303 +686,102 @@ void Hermes::eval_gpu(const std::vector<array>& inputs, array& out) {
   //! NEVER put large output buffers in the var.
   // qmm_op_high(inputs, out_high, transpose_high, group_size_high, nbits_high, false, stream());
 
-  auto future = Hermes::_thread_pool.enqueue([=]() mutable {
+  std::vector<std::future<int>> tiles;    // TODO : Working set.
+
+  // ========================    High precision LUT-based operator    ========================
+
+  std::future<int> future = Hermes::gpu_thread_pool.enqueue([=]() mutable {
+      //> Start the high precision GEMM on GPU stream.
+      std::cout << "Hermes::eval_gpu: Start high precision GEMM on GPU stream." << std::endl;
       qmm_op_high(inputs, out_high, transpose_high, group_size_high, nbits_high, false, stream());
+      std::cout << "Hermes::eval_gpu: Finish high precision GEMM on GPU stream." << std::endl;
+      return 0;
   });
-  future.wait();
+  tiles.push_back(std::move(future));
 
-  // ===== Low precision =====
-  // int ngroups_per_elem = 8 / this->g_;
-// #ifdef USE_TVM_THREADPOOL
+  // ========================    Low precision LUT-based operator    ========================
+  int ngroups_per_elem = 8 / this->g_;
 
-//   // 修正缓冲区转换方式
-//   auto activations_buf = inputs[0].data<float16_t>();
-//   auto qweight_buf = inputs[4].data<uint8_t>();
-//   auto scales_buf = inputs[5].data<float16_t>();
-//   auto output_buf = out_low.data<float16_t>();
+  auto activations_buf = inputs[0].data<float16_t>();
+  auto qweight_buf     = inputs[4].data<uint8_t>();
+  auto scales_buf      = inputs[5].data<float16_t>();
+  auto output_buf      = out_low.data<float16_t>();
 
-//   int64_t A_shape[3] = {M_low / bm_, K_, bm_ / ngroups_per_elem};
-//   int64_t Scales_shape[3] = {M_low / bm_, K_ / group_size_, bm_ / nbits_low};
-//   int64_t activations_shape[2] = {N_, K_};
-//   int64_t output_shape[2] = {N_, M_low};
-//   int64_t C_tile_shape[2] = {N_low_kernel, M_low};
-//   int64_t qlut_shape[3] = {N_, K_ / g_, (1 << g_)};
-//   int64_t luts_shape[3] = {N_, K_ / act_group_size_};
+  const DLDevice cpu_dev = { kDLCPU, 0 };
+  const DLDataType int_dtype   = { kDLInt, 8, 1 };
+  const DLDataType float_dtype = { kDLFloat, sizeof(float16_t) * 8, 1 };
 
-//   const DLDevice cpu_dev = {
-//       /* .device_type = */ kDLCPU,
-//       /* .device_id   = */ 0,
-//   };
-//   const DLDataType int_dtype = {
-//       /* .code  = */ kDLInt,
-//       /* .bits  = */ 8,
-//       /* .lanes = */ 1,
-//   };
-//   const DLDataType float_dtype = {
-//       /* .code  = */ kDLFloat,
-//       /* .bits  = */ sizeof(float16_t) * 8,
-//       /* .lanes = */ 1,
-//   };
+  int64_t A_shape[3]              = { M_low / bm_,       K_,  bm_ / (8 / this->g_) };
+  int64_t Scales_shape[3]         = { M_low / bm_,       K_ / group_size_, bm_ / nbits_low };
+  int64_t activations_shape[2]    = { N_,                K_ };
+  int64_t activation_bn_shape[2]  = { 1,                 K_ };   // TODO : Now we only support batch size = 1.
+  int64_t output_shape[2]         = { N_,                M_low };
+  int64_t C_tile_shape[2]         = { N_low_kernel,      M_low };
+  int64_t qlut_shape[3]           = { N_,                K_ / g_, (1 << g_) };
+  int64_t luts_shape[2]           = { N_,                K_ / act_group_size_ };
 
-//   DLTensor B = {
-//       /*.data   = */ (void *)activations_buf,
-//       /*.device = */ cpu_dev,
-//       /*.ndim   = */ 2,
-//       /*.dtype  = */ float_dtype,
-//       /*.shape  = */ activations_shape,
-//   };
+  DLTensor B       = { (void*)activations_buf,      cpu_dev, 2, float_dtype,       activations_shape };
+  DLTensor A       = { (void*)qweight_buf,          cpu_dev, 3, int_dtype,         A_shape };
+  DLTensor Scales  = { (void*)scales_buf,           cpu_dev, 3, float_dtype,       Scales_shape };
+  DLTensor C       = { (void*)output_buf,           cpu_dev, 2, float_dtype,       output_shape };
+  DLTensor QLUTt   = { (void*)(this->_qlut),        cpu_dev, 3, int_dtype,         qlut_shape };
+  DLTensor LUTSt   = { (void*)(this->_lut_scales),  cpu_dev, 2, float_dtype,       luts_shape };
+  DLTensor LUTBt   = { (void*)(this->_lut_biases),  cpu_dev, 2, float_dtype,       luts_shape };
 
-//   DLTensor A = {
-//       /*.data   = */ (void *)qweight_buf,
-//       /*.device = */ cpu_dev,
-//       /*.ndim   = */ 3,
-//       /*.dtype  = */ int_dtype,
-//       /*.shape  = */ A_shape,
-//   };
+  //> Pre-allocate tiles for C.
+  std::vector<DLTensor> C_tiles;
+  for(int n_idx = 0; n_idx < N_; n_idx++) {
+      for (int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
+          DLTensor C_tile = {
+              /* .data   = */ (void *)(output_buf + m_tile_idx * this->bm_ + n_idx * K_),
+              /* .device = */ cpu_dev,
+              /* .ndim   = */ 2,
+              /* .dtype  = */ float_dtype,
+              /* .shape  = */ C_tile_shape
+          };
+          C_tiles.push_back(C_tile);
+      }
+  }
 
-//   DLTensor Scales = {
-//       /*.data   = */ (void *)scales_buf,
-//       /*.device = */ cpu_dev,
-//       /*.ndim   = */ 3,
-//       /*.dtype  = */ float_dtype,
-//       /*.shape  = */ Scales_shape,
-//   };
-  
-//   DLTensor C = {
-//       /*.data   = */ (void *)output_buf,
-//       /*.device = */ cpu_dev,
-//       /*.ndim   = */ 2,
-//       /*.dtype  = */ float_dtype,
-//       /*.shape  = */ output_shape,
-//   };
+  //> Compute along N dimension.
+  int N_tiles = (N_ + N_low_kernel - 1) / N_low_kernel;
+  for(int n_idx = 0; n_idx < N_tiles; n_idx++) {
+    DLTensor B_row = {
+        /* .data   = */ (void *)(activations_buf + n_idx * K_),
+        /* .device = */ cpu_dev,
+        /* .ndim   = */ 2,
+        /* .dtype  = */ float_dtype,
+        /* .shape  = */ activation_bn_shape
+    };
 
-//   DLTensor QLUTt = {
-//       /* .data   = */ this -> _qlut,
-//       /* .device = */ cpu_dev,
-//       /* .ndim   = */ 3,
-//       /* .dtype  = */ int_dtype,
-//       /* .shape  = */ qlut_shape,
-//   };
-//   DLTensor LUTSt = {
-//       /* .data   = */ this -> _lut_scales,
-//       /* .device = */ cpu_dev,
-//       /* .ndim   = */ 2,
-//       /* .dtype  = */ float_dtype,
-//       /* .shape  = */ luts_shape,
-//   };
-//   DLTensor LUTBt = {
-//       /* .data   = */ this -> _lut_biases,
-//       /* .device = */ cpu_dev,
-//       /* .ndim   = */ 2,
-//       /* .dtype  = */ float_dtype,
-//       /* .shape  = */ luts_shape,
-//   };
+    (_tvm_internals -> pf)(&B_row, &LUTSt, &LUTBt, &QLUTt);
 
-//   std::vector<DLTensor> C_tiles;
-//   int N_tiles = (N_ + N_low_kernel - 1) / N_low_kernel;
-//   for (int n_idx = 0; n_idx < N_tiles; n_idx++) {
-//       DLTensor C_tile = {
-//           /* .data   = */ (void *)(output_buf + n_idx * N_low_kernel * K_),
-//           /* .device = */ cpu_dev,
-//           /* .ndim   = */ 2,
-//           /* .dtype  = */ float_dtype,
-//           /* .shape  = */ C_tile_shape
-//       };
-//       C_tiles.push_back(C_tile);
-//   }
+    //> Compute along M dimension.
+    for(int m_tile_idx = 0; m_tile_idx < M_low / bm_; m_tile_idx++) {
+        tiles.emplace_back(Hermes::cpu_thread_pool.enqueue(
+            [this, &A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx, n_idx, ngroups_per_elem]() -> int {
+                (_tvm_internals -> qf)(
+                  &A, &QLUTt, &Scales, &LUTSt, &LUTBt, 
+                  &C_tiles[m_tile_idx + n_idx * this->M_low / (this->bm_ / ngroups_per_elem)]
+                );
+                return 0;
+            }
+        ));
+    }
+  }
+  // TODO : This is too SLOW, change it to sync thread.
+  for (auto& tile : tiles) {
+      tile.wait();
+      std::cout << "Hermes::eval_gpu: Finish low precision GEMM on CPU stream." << std::endl;
+  }
 
-//   (_tvm_internals -> pf)(&B, &LUTSt, &LUTBt, &QLUTt);
-//   for(int i = 0; i < N_tiles; i++) {
-//       (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[i]);
-//   }
+  // Preprocess activations.
+  // (_tvm_internals->pf)(&B, &LUTSt, &LUTBt, &QLUTt);
 
-// #else
-//     //! ============= Turn to void pointer. =============
-//     auto activations_buf = inputs[0].data<float16_t>();
-//     auto qweight_buf = inputs[4].data<uint8_t>();
-//     auto scales_buf = inputs[5].data<float16_t>();
-//     auto output_buf = out_low.data<float16_t>();
+  // Run quantized GEMM. For simplicity, execute once instead of tiling.
+  // (_tvm_internals->qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
 
-// #ifdef USE_TVM_LIB
-//     int64_t A_shape[3] = {M_low / bm_, K_, bm_ / ngroups_per_elem};
-//     int64_t Scales_shape[3] = {M_low / bm_, K_ / group_size_, bm_ / nbits_low};
-//     int64_t activations_shape[2] = {N_, K_};
-//     int64_t activation_bn_shape[2] = {1, K_};  // TODO : Now we only support batch size = 1.
-//     int64_t output_shape[2] = {N_, M_low};
-//     int64_t qlut_shape[3] = {N_, K_ / g_, (1 << g_)};
-//     int64_t luts_shape[3] = {N_, K_ / act_group_size_};
-
-//     int64_t A_tile_shape[3] = {nbits_low, K_ / g_, bm_ / ngroups_per_elem};
-//     int64_t C_tile_shape[2] = {1, bm_};       // TODO : Change this `1` to batch processing.
-
-//     const DLDevice cpu_dev = {
-//         /* .device_type = */ kDLCPU,
-//         /* .device_id   = */ 0,
-//     };
-//     const DLDataType int_dtype = {
-//         /* .code  = */ kDLInt,
-//         /* .bits  = */ 8,
-//         /* .lanes = */ 1,
-//     };
-//     const DLDataType float_dtype = {
-//         /* .code  = */ kDLFloat,
-//         /* .bits  = */ sizeof(float16_t) * 8,
-//         /* .lanes = */ 1,
-//     };
-
-//     DLTensor B = {
-//         /*.data   = */ (void *)activations_buf,
-//         /*.device = */ cpu_dev,
-//         /*.ndim   = */ 2,
-//         /*.dtype  = */ float_dtype,
-//         /*.shape  = */ activations_shape,
-//     };
-//     DLTensor A = {
-//         /*.data   = */ (void *)qweight_buf,
-//         /*.device = */ cpu_dev,
-//         /*.ndim   = */ 3,
-//         /*.dtype  = */ int_dtype,
-//         /*.shape  = */ A_shape,
-//     };
-//     DLTensor Scales = {
-//         /*.data   = */ (void *)scales_buf,
-//         /*.device = */ cpu_dev,
-//         /*.ndim   = */ 3,
-//         /*.dtype  = */ float_dtype,
-//         /*.shape  = */ Scales_shape,
-//     };
-//     DLTensor C = {
-//         /*.data   = */ (void *)output_buf,
-//         /*.device = */ cpu_dev,
-//         /*.ndim   = */ 2,
-//         /*.dtype  = */ float_dtype,
-//         /*.shape  = */ output_shape,
-//     };
-//     DLTensor QLUTt = {
-//         /* .data   = */ this -> _qlut,
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 3,
-//         /* .dtype  = */ int_dtype,
-//         /* .shape  = */ qlut_shape,
-//     };
-//     DLTensor LUTSt = {
-//         /* .data   = */ this -> _lut_scales,
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 2,
-//         /* .dtype  = */ float_dtype,
-//         /* .shape  = */ luts_shape,
-//     };
-//     DLTensor LUTBt = {
-//         /* .data   = */ this -> _lut_biases,
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 2,
-//         /* .dtype  = */ float_dtype,
-//         /* .shape  = */ luts_shape,
-//     };
-
-// #endif
-
-// std::vector<DLTensor> A_tiles;
-// for (int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-//     DLTensor A_tile = {
-//         /* .data   = */ (void *)(qweight_buf + nbits_low * (K_ / g_) * m_tile_idx * bm_ / ngroups_per_elem),
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 3,
-//         /* .dtype  = */ int_dtype,
-//         /* .shape  = */ A_tile_shape
-//     };
-//     A_tiles.push_back(A_tile);
-// }
-
-// std::vector<DLTensor> C_tiles;
-// for(int n_idx = 0; n_idx < N_; n_idx++) {
-//     for (int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-//         DLTensor C_tile = {
-//             /* .data   = */ (void *)(output_buf + m_tile_idx * this->bm_ + n_idx * K_),
-//             /* .device = */ cpu_dev,
-//             /* .ndim   = */ 2,
-//             /* .dtype  = */ float_dtype,
-//             /* .shape  = */ C_tile_shape
-//         };
-//         C_tiles.push_back(C_tile);
-//     }
-// }
-
-// std::vector<std::future<int>> tiles;    // TODO : Working set.
-// for(int n_idx = 0; n_idx < N_; n_idx++) {
-// #ifdef USE_TVM_LIB
-//     DLTensor B_row = {
-//         /* .data   = */ (void *)(activations_buf + n_idx * K_),
-//         /* .device = */ cpu_dev,
-//         /* .ndim   = */ 2,
-//         /* .dtype  = */ float_dtype,
-//         /* .shape  = */ activation_bn_shape
-//     };
-
-//     // (_tvm_internals -> pf)(&B_row, &LUTSt, &LUTBt, &QLUTt);
-
-// #else
-//     // 修正函数调用参数
-//     int err_no = preprocessor_int8(
-//         this->M_low * this->nbits_low,
-//         this->K_,
-//         this->N_,
-//         this->nbits_low,
-//         (void*)activations_buf,
-//         (void*)this->_lut_scales,
-//         (void*)this->_lut_biases,
-//         (void*)this->_qlut
-//     );
-//     if (err_no != 0) {
-//         std::cout << "preprocessor_int8 failed with Parameters : " <<
-//         "m = " << this->bm_ <<
-//         ", k = " << this->K_ <<
-//         ", n = " << this->N_ <<
-//         ", b = " << this->nbits_low << std::endl;
-//         return;   
-//     }
-// #endif
-
-// #ifdef USE_TVM_LIB
-//         for(int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_); m_tile_idx++) {
-//         // for(int m_tile_idx = 0; m_tile_idx < 1; m_tile_idx++) {
-//             // (_tvm_internals -> qf)(&A, &QLUTt, &Scales, &LUTSt, &LUTBt, &C);
-//             tiles.emplace_back(Hermes::_thread_pool.enqueue(
-//                 [this, &A_tiles, &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles, m_tile_idx, n_idx, ngroups_per_elem]() -> int {
-//                     // (_tvm_internals -> qf)(&A_tiles[m_tile_idx], &QLUTt, &Scales, &LUTSt, &LUTBt, &C_tiles[m_tile_idx + n_idx * this->M_low / (this->bm_ / ngroups_per_elem)]);
-//                     return 0;
-//                 }
-//             ));
-//         }
-// #else
-//         for(int m_tile_idx = 0; m_tile_idx < this->M_low / (this->bm_ / ngroups_per_elem); m_tile_idx++) {
-//             tiles.emplace_back(Hermes::_thread_pool.enqueue(
-//                 std::bind(
-//                     &qgemm_lut_int8,
-//                     this->bm_,
-//                     this->K_,
-//                     this->N_,
-//                     this->nbits_low,
-//                     (void *)(qweight_buf + (this->K_ / this->g_) * m_tile_idx * this->bm_ / ngroups_per_elem), 
-//                     (void *)this->_qlut,
-//                     (void *)scales_buf,
-//                     (void *)this->_lut_scales,
-//                     (void *)this->_lut_biases, 
-//                     (void *)(output_buf + m_tile_idx * this->bm_ / ngroups_per_elem)
-//                 )
-//             ));
-//         }
-// #endif
-//     }
-
-//     // TODO : This is too SLOW, change it to sync thread.
-//     for (auto& tile : tiles) {
-//         tile.wait();
-//     }
-
-// #endif
-
-    // future.wait();
+  // future.wait();
 }
 
 } // end namespace mlx::core

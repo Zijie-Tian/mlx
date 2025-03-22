@@ -50,11 +50,7 @@ int main() {
 
     // Fixed (M, N, K) combinations.
     std::vector<std::tuple<int, int, int>> m_n_k_combos = {
-        {256, 1024 * 4, 4096},
-        {512, 1024 * 4, 4096},
-        {1024, 1024 * 4, 4096},
-        {2048, 1024 * 4, 4096},
-        {4096, 1024 * 4, 4096},
+        {256, 1024, 4096},
     };
 
     std::vector<bool> transposed_list = {true}; // transposed
@@ -110,17 +106,17 @@ int main() {
                         mx::Device::gpu
                     );
 
-                    TIMEM(
-                        "qmm",
-                        mx::fast::hermes_op,
-                        activation,
-                        qweight_high, scales_high, biases_high,
-                        qweight_low, scales_low, biases_low,
-                        M_high, M_low, K, N,
-                        transposed_high,
-                        group_size_high, nbits_high, nbits_low,
-                        mx::Device::gpu
-                    );
+                    // TIMEM(
+                    //     "qmm",
+                    //     mx::fast::hermes_op,
+                    //     activation,
+                    //     qweight_high, scales_high, biases_high,
+                    //     qweight_low, scales_low, biases_low,
+                    //     M_high, M_low, K, N,
+                    //     transposed_high,
+                    //     group_size_high, nbits_high, nbits_low,
+                    //     mx::Device::gpu
+                    // );
 
                     auto x_transposed = mx::transpose(activation);
                     // TIMEM(
@@ -134,13 +130,13 @@ int main() {
                     
                     mx::eval(y_hat, y_q);
 
-                    // std::cout << "Y qmm : " << y_q << std::endl;
-                    // std::cout << "Y hat : " << y_hat << std::endl;
-                    // std::cout << "Y hat shape: ";
-                    // for (auto dim : y_hat.shape()) {
-                    //     std::cout << dim << " ";
-                    // }
-                    // std::cout << std::endl;
+                    std::cout << "Y qmm : " << y_q << std::endl;
+                    std::cout << "Y hat : " << y_hat << std::endl;
+                    std::cout << "Y hat shape: ";
+                    for (auto dim : y_hat.shape()) {
+                        std::cout << dim << " ";
+                    }
+                    std::cout << std::endl;
 
                 }
             }
