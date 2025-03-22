@@ -36,7 +36,7 @@ int main() {
     // int N = 1024;
 
     int nbits_low = 2;
-    int bm = 256;  // 调整为M的因数 (8640 ÷ 480 = 18)
+    int bm = 512;
     int g = 4;
     int group_size = 128;
     int act_group_size = 64;
@@ -55,11 +55,6 @@ int main() {
         {1024, 1024 * 4, 4096},
         {2048, 1024 * 4, 4096},
         {4096, 1024 * 4, 4096},
-        // {256, 1024 * 128, 3200},
-        // {512, 1024 * 128, 3200},
-        // {1024, 1024 * 128, 3200},
-        // {2048, 1024 * 128, 3200},
-        // {3200, 1024 * 128, 3200},
     };
 
     std::vector<bool> transposed_list = {true}; // transposed
@@ -139,13 +134,13 @@ int main() {
                     
                     mx::eval(y_hat, y_q);
 
-                    std::cout << "Y qmm : " << y_q << std::endl;
-                    std::cout << "Y hat : " << y_hat << std::endl;
-                    std::cout << "Y hat shape: ";
-                    for (auto dim : y_hat.shape()) {
-                        std::cout << dim << " ";
-                    }
-                    std::cout << std::endl;
+                    // std::cout << "Y qmm : " << y_q << std::endl;
+                    // std::cout << "Y hat : " << y_hat << std::endl;
+                    // std::cout << "Y hat shape: ";
+                    // for (auto dim : y_hat.shape()) {
+                    //     std::cout << dim << " ";
+                    // }
+                    // std::cout << std::endl;
 
                 }
             }

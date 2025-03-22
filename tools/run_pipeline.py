@@ -22,9 +22,9 @@ from t_mac.model_utils import get_preset_models, get_preset_kernel_shapes, get_q
 APPS = ["bench_tmac", "bench_decode", "bench_prefill"]
 MODES = [
     # ("benchmark", ["-a", "64", "-g", "128", "-n", "8"]),
-    ("benchmark", ["-a", "64", "-g", "128", "-n", "8", "-t"]),
+    # ("benchmark", ["-a", "64", "-g", "128", "-n", "8", "-t"]),
     # ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
-    # ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8" "-t"]),
+    ("llama-2-7b-2bit", ["-a", "64", "-g", "128", "-n", "8" "-t"]),
     # ("llama-2-13b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
     # ("llama-2-13b-2bit", ["-a", "64", "-g", "128", "-n", "8", "-t"]),
     # ("llama-3-8b-2bit", ["-a", "64", "-g", "128", "-n", "8"]),
