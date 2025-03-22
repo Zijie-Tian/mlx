@@ -1,14 +1,45 @@
 #include <iostream>
 #include <string>
 #include <tuple>
+#include <chrono>
+#include <iomanip>
 #include <map>
 #include "mlx/mlx.h"
 #include "mlx/array.h"
-#include "time_utils.h"
+// #include "time_utils.h"
 #include "INIReader.h"
 
-
 namespace mx = mlx::core;
+
+#define milliseconds(x) \
+  (std::chrono::duration_cast<std::chrono::nanoseconds>(x).count() / 1e6)
+#define time_now() std::chrono::high_resolution_clock::now()
+
+#define TIME(FUNC, ...)                                                        \
+  std::cout << "Timing " << #FUNC << " ... " << std::flush                     \
+            << std::setprecision(5) << time_fn(FUNC, ##__VA_ARGS__) << " msec" \
+            << std::endl;
+
+#define TIMEM(MSG, FUNC, ...)                                      \
+  std::cout << "Timing " << "(" << MSG << ") " << #FUNC << " ... " \
+            << std::flush << std::setprecision(5)                  \
+            << time_fn(FUNC, ##__VA_ARGS__) << " msec" << std::endl;
+
+template <typename F, typename... Args>
+double time_fn(F fn, Args&&... args) {
+  // warmup
+  for (int i = 0; i < 5; ++i) {
+    eval(fn(std::forward<Args>(args)...));
+  }
+
+  int num_iters = 10000;
+  auto start = time_now();
+  for (int i = 0; i < num_iters; i++) {
+    eval(fn(std::forward<Args>(args)...));
+  }
+  auto end = time_now();
+  return milliseconds(end - start) / static_cast<double>(num_iters);
+}
 
 // 形状配置结构体
 struct KernelShape {
@@ -202,7 +233,7 @@ int main() {
         mx::eval(activation, qweight_low, scales_low, biases_low);
 
         // Perform the quantized matrix multiplication.
-        auto y_q = mx::fast::hermes_op(
+        auto y_q = mx::fast::hermesdecode_op(
             activation, 
             qweight_high, scales_high, biases_high, 
             qweight_low, scales_low, biases_low,
@@ -214,7 +245,7 @@ int main() {
 
         TIMEM(
             "qmm",
-            mx::fast::hermes_op,
+            mx::fast::hermesdecode_op,
             activation,
             qweight_high, scales_high, biases_high,
             qweight_low, scales_low, biases_low,
@@ -224,7 +255,7 @@ int main() {
             mx::Device::gpu
         );
     }
-
+    
     std::cout << "All tests passed successfully." << std::endl;
     return 0;
 }

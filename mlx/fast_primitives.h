@@ -315,68 +315,133 @@ class CustomKernel : public Primitive {
 };
 
 class Hermes : public UnaryPrimitive {
+    public:
+    explicit Hermes(
+        Stream stream,
+        const std::string& kcfg_file,
+        const std::string& library_file,
+        int M_high, int M_low, int K, int N,
+        bool transpose_high,
+        int group_size_high,
+        int nbits_high,
+        int nbits_low
+      );
+  
+    ~Hermes();
+  
+    void eval_cpu(const std::vector<array>& inputs, array& out) override {}
+    void eval_gpu(const std::vector<array>& inputs, array& out) override;
+  
+    DEFINE_GRADS()
+    DEFINE_VMAP()
+    DEFINE_PRINT(Hermes)
+    DEFINE_DEFAULT_IS_EQUIVALENT()
+    std::vector<Shape> output_shapes(const std::vector<array>& inputs) override;
+    auto state() const {
+      return std::make_tuple(group_size_, bm_, nbits_low);  //! Just impl.
+    }
+  
+    public:
+    static ThreadPool cpu_thread_pool;
+    static ThreadPool gpu_thread_pool;
+    static INIReader* _reader;
+    static TVMRuntime* _tvm_internals;
+  
+    void set_num_threads(int n_threads);
+    void set_workspace(int maxM, int maxK, int maxN);
+    HermesConfig get_kcfg(int M, int K, int N, int bits);
+    std::string get_template_name(_fkey key);
+  
+    // workspace ptrs
+    void* _qlut;
+    void* _lut_scales;
+    void* _lut_biases;
+  
+    bool _allocated;
+    std::mutex _m;
+  
+    int M_high;
+    bool transpose_high;
+    int group_size_high;
+    int nbits_high;
+    
+    int M_low;
+    int K_;
+    int N_;
+    int N_low_kernel;  //! Only available for Hermes low-bit parts.
+    int bm_;
+    int g_;
+    int kfactor_;
+    int group_size_;
+    int act_group_size_;
+    int nbits_low;
+    
+    int _n_threads;
+};
+
+class HermesDecode : public UnaryPrimitive {
   public:
-   explicit Hermes(
-       Stream stream,
-       const std::string& kcfg_file,
-       const std::string& library_file,
-       int M_high, int M_low, int K, int N,
-       bool transpose_high,
-       int group_size_high,
-       int nbits_high,
-       int nbits_low
-     );
- 
-   ~Hermes();
- 
-   void eval_cpu(const std::vector<array>& inputs, array& out) override {}
-   void eval_gpu(const std::vector<array>& inputs, array& out) override;
- 
-   DEFINE_GRADS()
-   DEFINE_VMAP()
-   DEFINE_PRINT(Hermes)
-   DEFINE_DEFAULT_IS_EQUIVALENT()
-   std::vector<Shape> output_shapes(const std::vector<array>& inputs) override;
-   auto state() const {
-     return std::make_tuple(group_size_, bm_, nbits_low);  //! Just impl.
-   }
- 
+  explicit HermesDecode(
+      Stream stream,
+      const std::string& kcfg_file,
+      const std::string& library_file,
+      int M_high, int M_low, int K, int N,
+      bool transpose_high,
+      int group_size_high,
+      int nbits_high,
+      int nbits_low
+    );
+
+  ~HermesDecode();
+
+  void eval_cpu(const std::vector<array>& inputs, array& out) override {}
+  void eval_gpu(const std::vector<array>& inputs, array& out) override;
+
+  DEFINE_GRADS()
+  DEFINE_VMAP()
+  DEFINE_PRINT(Hermes)
+  DEFINE_DEFAULT_IS_EQUIVALENT()
+  std::vector<Shape> output_shapes(const std::vector<array>& inputs) override;
+  auto state() const {
+    return std::make_tuple(group_size_, bm_, nbits_low);  //! Just impl.
+  }
+
   public:
-   static ThreadPool cpu_thread_pool;
-   static ThreadPool gpu_thread_pool;
-   static INIReader* _reader;
-   static TVMRuntime* _tvm_internals;
- 
-   void set_num_threads(int n_threads);
-   void set_workspace(int maxM, int maxK, int maxN);
-   HermesConfig get_kcfg(int M, int K, int N, int bits);
-   std::string get_template_name(_fkey key);
- 
-   // workspace ptrs
-   void* _qlut;
-   void* _lut_scales;
-   void* _lut_biases;
- 
-   bool _allocated;
-   std::mutex _m;
- 
-   int M_high;
-   bool transpose_high;
-   int group_size_high;
-   int nbits_high;
-   
-   int M_low;
-   int K_;
-   int N_;
-   int N_low_kernel;  //! Only available for Hermes low-bit parts.
-   int bm_;
-   int g_;
-   int kfactor_;
-   int group_size_;
-   int act_group_size_;
-   int nbits_low;
-   
-   int _n_threads;
- };
+  static ThreadPool cpu_thread_pool;
+  static ThreadPool gpu_thread_pool;
+  static INIReader* _reader;
+  static TVMRuntime* _tvm_internals;
+
+  void set_num_threads(int n_threads);
+  void set_workspace(int maxM, int maxK, int maxN);
+  HermesConfig get_kcfg(int M, int K, int N, int bits);
+  std::string get_template_name(_fkey key);
+
+  // workspace ptrs
+  void* _qlut;
+  void* _lut_scales;
+  void* _lut_biases;
+
+  bool _allocated;
+  std::mutex _m;
+
+  int M_high;
+  bool transpose_high;
+  int group_size_high;
+  int nbits_high;
+  
+  int M_low;
+  int K_;
+  int N_;
+  int N_low_kernel;  //! Only available for Hermes low-bit parts.
+  int bm_;
+  int g_;
+  int kfactor_;
+  int group_size_;
+  int act_group_size_;
+  int nbits_low;
+  
+  int _n_threads;
+};
 
 } // namespace mlx::core::fast
